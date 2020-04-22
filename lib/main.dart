@@ -41,6 +41,13 @@ class _LoginPageState extends State<LoginPage> {
 //        title: new Text('Communicator'),
 //      ),
       body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+              colors: [Colors.black26, Colors.white10],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight
+          ),
+        ),
         padding: const EdgeInsets.all(20.0),
         alignment: Alignment.center,
         child: SingleChildScrollView(

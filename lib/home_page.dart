@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'AttendanceFragment.dart';
+
 class DrawerItem {
   String title;
   IconData icon;
@@ -8,9 +10,9 @@ class DrawerItem {
 
 class HomePage extends StatefulWidget {
   final drawerItems = [
-    new DrawerItem("Fragment 1", Icons.rss_feed),
-    new DrawerItem("Fragment 2", Icons.local_pizza),
-    new DrawerItem("Fragment 3", Icons.info)
+    new DrawerItem("Attendance", Icons.access_alarms),
+    new DrawerItem("Reports", Icons.report),
+    new DrawerItem("Settings", Icons.settings)
   ];
 
   @override
@@ -24,8 +26,8 @@ class HomePageState extends State<HomePage> {
 
   _getDrawerItemWidget(int pos) {
     switch (pos) {
-//      case 0:
-//        return new FirstFragment();
+      case 0:
+        return new AttendanceFragment();
 //      case 1:
 //        return new SecondFragment();
 //      case 2:
