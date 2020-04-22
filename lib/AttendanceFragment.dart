@@ -8,7 +8,7 @@ final List<String> department = <String>[
   "Computer Science and Engineering",
   "Electrical and Electronics Engineering",
   "Electronics and Communication Engineering",
-  "Mechanical Engineering"
+  "Mechanical Engineering",
 ];
 
 final List<String> year = <String>[
@@ -36,8 +36,7 @@ final List<String> year4 = <String>[
 ];
 
 final List<String> subject = <String>[
-  "Waiting for API",
-  "Waiting for API",
+  "Waiting for API Endpoint",
   "Waiting for API",
 ];
 
@@ -45,6 +44,7 @@ var _valueSem = "01";
 var _valueDept = "Information Technology";
 var _valueYear = "I";
 var _valueSubject = "Waiting for API Endpoint";
+var _season = "even";
 
 final dateFormat = DateFormat("EEEE, MMMM d, yyyy");
 final List<bool> isSelected = [
@@ -58,14 +58,19 @@ final List<bool> isSelected = [
   false
 ];
 
-var semesterController;
+List<String> semesterController;
 
 void preselect() {
-  _valueSem = year2[0];
+  semesterController = year1;
+  if (_season == "odd") {
+    _valueSem = year1[0];
+  }
+  else {
+    _valueSem = year1[1];
+  }
   _valueDept = department[0];
   _valueYear = year[0];
   _valueSubject = subject[0];
-  semesterController = year2;
 }
 
 class AttendanceFragment extends StatefulWidget {
@@ -199,6 +204,42 @@ class _AttendanceFragmentState extends State<AttendanceFragment> {
                               onChanged: (value) {
                                 setState(() {
                                   _valueYear = value;
+                                  if (value == "I") {
+                                    if (_season == "odd") {
+                                      _valueSem = "01";
+                                    }
+                                    else {
+                                      _valueSem = "02";
+                                    }
+                                    semesterController = year1;
+                                  }
+                                  else if (value == "II") {
+                                    if (_season == "odd") {
+                                      _valueSem = "03";
+                                    }
+                                    else {
+                                      _valueSem = "04";
+                                    }
+                                    semesterController = year2;
+                                  }
+                                  else if (value == "III") {
+                                    if (_season == "odd") {
+                                      _valueSem = "05";
+                                    }
+                                    else {
+                                      _valueSem = "06";
+                                    }
+                                    semesterController = year3;
+                                  }
+                                  else if (value == "IV") {
+                                    if (_season == "odd") {
+                                      _valueSem = "07";
+                                    }
+                                    else {
+                                      _valueSem = "08";
+                                    }
+                                    semesterController = year4;
+                                  }
                                 });
                               },
                               items: year.map(
