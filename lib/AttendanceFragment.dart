@@ -2,6 +2,50 @@ import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+
+final List<String> department = <String>[
+  "Information Technology",
+  "Computer Science and Engineering",
+  "Electrical and Electronics Engineering",
+  "Electronics and Communication Engineering",
+  "Mechanical Engineering"
+];
+
+final List<String> year = <String>[
+  "I",
+  "II",
+  "III",
+  "IV",
+];
+
+final List<String> year1 = <String>[
+  "01",
+  "02",
+];
+final List<String> year2 = <String>[
+  "03",
+  "04",
+];
+final List<String> year3 = <String>[
+  "05",
+  "06",
+];
+final List<String> year4 = <String>[
+  "07",
+  "08",
+];
+
+final List<String> subject = <String>[
+  "Waiting for API",
+  "Waiting for API",
+  "Waiting for API",
+];
+
+var _valueSem = "01";
+var _valueDept = "Information Technology";
+var _valueYear = "I";
+var _valueSubject = "Waiting for API Endpoint";
+
 final dateFormat = DateFormat("EEEE, MMMM d, yyyy");
 final List<bool> isSelected = [
   false,
@@ -14,11 +58,24 @@ final List<bool> isSelected = [
   false
 ];
 
+var semesterController;
+
+void preselect() {
+  _valueSem = year2[0];
+  _valueDept = department[0];
+  _valueYear = year[0];
+  _valueSubject = subject[0];
+  semesterController = year2;
+}
+
 class AttendanceFragment extends StatefulWidget {
   AttendanceFragment({Key key}) : super(key: key);
 
   @override
-  _AttendanceFragmentState createState() => new _AttendanceFragmentState();
+  _AttendanceFragmentState createState() {
+    preselect();
+    return new _AttendanceFragmentState();
+  }
 }
 
 class _AttendanceFragmentState extends State<AttendanceFragment> {
@@ -60,6 +117,17 @@ class _AttendanceFragmentState extends State<AttendanceFragment> {
               Padding(
                 padding: EdgeInsets.only(top: 10),
               ),
+              Padding(
+                padding: const EdgeInsets.only(left: 5, right: 5, bottom: 5),
+                child: new Text(
+                  "Department",
+                  style: new TextStyle(
+                      fontSize: 12.0,
+                      color: const Color(0xFF000000),
+                      fontWeight: FontWeight.w200,
+                      fontFamily: "Roboto"),
+                ),
+              ),
               Container(
                 padding: EdgeInsets.only(left: 10, right: 10),
                 decoration: new BoxDecoration(
@@ -68,22 +136,25 @@ class _AttendanceFragmentState extends State<AttendanceFragment> {
                 ),
                 child: new DropdownButton<String>(
                   isExpanded: true,
-                  onChanged: popupButtonSelected,
-                  value: "Child 1",
                   style: new TextStyle(
                     fontSize: 15,
                     color: const Color(0xFF202020),
                     fontWeight: FontWeight.w300,
                   ),
-                  items: <DropdownMenuItem<String>>[
-                    const DropdownMenuItem<String>(
-                        value: "Child 1",
-                        child: const Text("Information Technology")),
-                    const DropdownMenuItem<String>(
-                        value: "Child 2", child: const Text("Child 2")),
-                    const DropdownMenuItem<String>(
-                        value: "Child 3", child: const Text("Child 3")),
-                  ],
+                  value: _valueDept,
+                  onChanged: (value) {
+                    setState(() {
+                      _valueDept = value;
+                    });
+                  },
+                  items: department.map(
+                        (item) {
+                      return DropdownMenuItem(
+                        value: item,
+                        child: new Text(item),
+                      );
+                    },
+                  ).toList(),
                 ),
               ),
               new Padding(
@@ -95,63 +166,118 @@ class _AttendanceFragmentState extends State<AttendanceFragment> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     Expanded(
-                      child: Container(
-                        padding: EdgeInsets.only(left: 10, right: 10),
-                        decoration: new BoxDecoration(
-                          border: new Border.all(color: Colors.black38),
-                          borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                        ),
-                        child: new DropdownButton<String>(
-                          isExpanded: true,
-                          onChanged: popupButtonSelected,
-                          value: "Child 1",
-                          style: new TextStyle(
-                            fontSize: 15,
-                            color: const Color(0xFF202020),
-                            fontWeight: FontWeight.w300,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                left: 5, right: 5, bottom: 5),
+                            child: new Text(
+                              "Year",
+                              style: new TextStyle(
+                                  fontSize: 12.0,
+                                  color: const Color(0xFF000000),
+                                  fontWeight: FontWeight.w200,
+                                  fontFamily: "Roboto"),
+                            ),
                           ),
-                          items: <DropdownMenuItem<String>>[
-                            const DropdownMenuItem<String>(
-                                value: "Child 1", child: const Text("II")),
-                            const DropdownMenuItem<String>(
-                                value: "Child 2", child: const Text("Child 2")),
-                            const DropdownMenuItem<String>(
-                                value: "Child 3", child: const Text("Child 3")),
-                          ],
-                        ),
+                          Container(
+                            padding: EdgeInsets.only(left: 10, right: 10),
+                            decoration: new BoxDecoration(
+                              border: new Border.all(color: Colors.black38),
+                              borderRadius: BorderRadius.all(Radius.circular(
+                                  5.0)),
+                            ),
+                            child: new DropdownButton<String>(
+                              isExpanded: true,
+                              style: new TextStyle(
+                                fontSize: 15,
+                                color: const Color(0xFF202020),
+                                fontWeight: FontWeight.w300,
+                              ),
+                              value: _valueYear,
+                              onChanged: (value) {
+                                setState(() {
+                                  _valueYear = value;
+                                });
+                              },
+                              items: year.map(
+                                    (item) {
+                                  return DropdownMenuItem(
+                                    value: item,
+                                    child: new Text(item),
+                                  );
+                                },
+                              ).toList(),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                     new Padding(padding: EdgeInsets.only(right: 5)),
                     new Expanded(
-                      child: Container(
-                        padding: EdgeInsets.only(left: 10, right: 10),
-                        decoration: new BoxDecoration(
-                          border: new Border.all(color: Colors.black38),
-                          borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                        ),
-                        child: new DropdownButton<String>(
-                          isExpanded: true,
-                          onChanged: popupButtonSelected,
-                          value: "Child 1",
-                          style: new TextStyle(
-                            fontSize: 15,
-                            color: const Color(0xFF202020),
-                            fontWeight: FontWeight.w300,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                left: 5, right: 5, bottom: 5),
+                            child: new Text(
+                              "Semester",
+                              style: new TextStyle(
+                                  fontSize: 12.0,
+                                  color: const Color(0xFF000000),
+                                  fontWeight: FontWeight.w200,
+                                  fontFamily: "Roboto"),
+                            ),
                           ),
-                          items: <DropdownMenuItem<String>>[
-                            const DropdownMenuItem<String>(
-                                value: "Child 1", child: const Text("04")),
-                            const DropdownMenuItem<String>(
-                                value: "Child 2", child: const Text("Child 2")),
-                            const DropdownMenuItem<String>(
-                                value: "Child 3", child: const Text("Child 3")),
-                          ],
-                        ),
+                          Container(
+                            padding: EdgeInsets.only(left: 10, right: 10),
+                            decoration: new BoxDecoration(
+                              border: new Border.all(color: Colors.black38),
+                              borderRadius: BorderRadius.all(Radius.circular(
+                                  5.0)),
+                            ),
+                            child: new DropdownButton<String>(
+                              isExpanded: true,
+                              style: new TextStyle(
+                                fontSize: 15,
+                                color: const Color(0xFF202020),
+                                fontWeight: FontWeight.w300,
+                              ),
+                              value: _valueSem,
+                              onChanged: (value) {
+                                setState(() {
+                                  _valueSem = value;
+                                });
+                              },
+                              items: semesterController.map(
+                                    (item) {
+                                  return DropdownMenuItem(
+                                    value: item,
+                                    child: new Text(item),
+                                  );
+                                },
+                              ).toList(),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ]),
               new Padding(
                 padding: EdgeInsets.only(top: 10),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 5, right: 5, bottom: 5),
+                child: new Text(
+                  "Subject",
+                  style: new TextStyle(
+                      fontSize: 12.0,
+                      color: const Color(0xFF000000),
+                      fontWeight: FontWeight.w200,
+                      fontFamily: "Roboto"),
+                ),
               ),
               Container(
                 padding: EdgeInsets.only(left: 10, right: 10),
@@ -161,25 +287,40 @@ class _AttendanceFragmentState extends State<AttendanceFragment> {
                 ),
                 child: new DropdownButton<String>(
                   isExpanded: true,
-                  onChanged: popupButtonSelected,
-                  value: "Child 1",
                   style: new TextStyle(
                     fontSize: 15,
                     color: const Color(0xFF202020),
                     fontWeight: FontWeight.w300,
                   ),
-                  items: <DropdownMenuItem<String>>[
-                    const DropdownMenuItem<String>(
-                        value: "Child 1", child: const Text("Data Structures")),
-                    const DropdownMenuItem<String>(
-                        value: "Child 2", child: const Text("Child 2")),
-                    const DropdownMenuItem<String>(
-                        value: "Child 3", child: const Text("Child 3")),
-                  ],
+                  value: _valueSubject,
+                  onChanged: (value) {
+                    setState(() {
+                      _valueSubject = value;
+                    });
+                  },
+                  items: subject.map(
+                        (item) {
+                      return DropdownMenuItem(
+                        value: item,
+                        child: new Text(item),
+                      );
+                    },
+                  ).toList(),
                 ),
               ),
               new Padding(
                 padding: EdgeInsets.only(top: 10),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 5, right: 5, bottom: 5),
+                child: new Text(
+                  "Select hours (you can select more than one)",
+                  style: new TextStyle(
+                      fontSize: 12.0,
+                      color: const Color(0xFF000000),
+                      fontWeight: FontWeight.w200,
+                      fontFamily: "Roboto"),
+                ),
               ),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,

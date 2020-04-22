@@ -1,3 +1,4 @@
+import 'package:attendance/home_page.dart';
 import 'package:flutter/material.dart';
 
 GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
         accentColor: Colors.deepPurpleAccent,
         canvasColor: const Color(0xFFfafafa),
       ),
-      home: new LoginPage(),
+      home: new HomePage(),
     );
   }
 }
@@ -167,7 +168,12 @@ class _LoginPageState extends State<LoginPage> {
                                 splashColor: Colors.purple,
                                 elevation: 5.0,
                                 onPressed: () {
-//                                    login(context);
+                                  if (userController.text == 'rah' &&
+                                      passController.text == 'rah') {
+                                    Navigator.pushReplacement(context,
+                                        MaterialPageRoute(
+                                            builder: (context) => HomePage()));
+                                  }
                                 }),
                           ),
                         ],
