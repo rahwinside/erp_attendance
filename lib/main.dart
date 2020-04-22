@@ -63,114 +63,112 @@ class _LoginPageState extends State<LoginPage> {
                   width: 190.0,
                   height: 190.0,
                 ),
-                new Container(
-                  child: Form(
-                    key: _formKey,
-                    autovalidate: false,
-                    child: Column(
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.only(top: 5),
+                Form(
+                  key: _formKey,
+                  autovalidate: false,
+                  child: Column(
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(top: 5),
+                      ),
+                      TextFormField(
+                        style: TextStyle(
+                          color: Colors.black,
                         ),
-                        TextFormField(
-                          style: TextStyle(
-                            color: Colors.black,
+                        validator: (input) {
+                          if (!RegExp(
+                              r"^[a-zA-Z0-9._]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                              .hasMatch(input))
+                            return 'Check your email address';
+                        },
+                        onFieldSubmitted: (input) {
+                          FocusScope.of(context).requestFocus(_focusNode);
+                        },
+                        controller: userController,
+                        //keyboardType: TextInputType.numberWithOptions(),
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.only(left: 10),
+                          labelText: "Email address",
+                          labelStyle: TextStyle(
+                            color: Colors.black38,
+                            fontFamily: "Roboto",
+                            fontWeight: FontWeight.w300,
                           ),
-                          validator: (input) {
-                            if (!RegExp(
-                                    r"^[a-zA-Z0-9._]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                                .hasMatch(input))
-                              return 'Check your email address';
-                          },
-                          onFieldSubmitted: (input) {
-                            FocusScope.of(context).requestFocus(_focusNode);
-                          },
-                          controller: userController,
-                          //keyboardType: TextInputType.numberWithOptions(),
-                          decoration: InputDecoration(
-                            contentPadding: EdgeInsets.only(left: 10),
-                            labelText: "Email address",
-                            labelStyle: TextStyle(
-                              color: Colors.black38,
-                              fontFamily: "Roboto",
-                              fontWeight: FontWeight.w300,
-                            ),
-                            hintText: "username@licet.ac.in",
-                            hintStyle: TextStyle(
-                              color: Colors.black38,
-                              fontFamily: "Roboto",
-                              fontWeight: FontWeight.w300,
-                            ),
-                            errorStyle: TextStyle(
-                              color: Colors.redAccent,
-                            ),
-                            border: OutlineInputBorder(
-                              gapPadding: 1.0,
-                              borderRadius: BorderRadius.circular(5.0),
-                            ),
+                          hintText: "username@licet.ac.in",
+                          hintStyle: TextStyle(
+                            color: Colors.black38,
+                            fontFamily: "Roboto",
+                            fontWeight: FontWeight.w300,
                           ),
-                          textAlign: TextAlign.left,
+                          errorStyle: TextStyle(
+                            color: Colors.redAccent,
+                          ),
+                          border: OutlineInputBorder(
+                            gapPadding: 1.0,
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),
                         ),
-                        Container(
-                          margin: EdgeInsets.only(top: 5.0),
+                        textAlign: TextAlign.left,
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(top: 5.0),
+                      ),
+                      TextFormField(
+                        style: TextStyle(
+                          color: Colors.black,
                         ),
-                        TextFormField(
-                          style: TextStyle(
-                            color: Colors.black,
+                        focusNode: _focusNode,
+                        validator: (input) {
+                          if (input.length < 8)
+                            return 'Password must be minimum of 8 characters';
+                        },
+                        controller: passController,
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.only(left: 10),
+                          errorStyle: TextStyle(
+                            color: Colors.redAccent,
                           ),
-                          focusNode: _focusNode,
-                          validator: (input) {
-                            if (input.length < 8)
-                              return 'Password must be minimum of 8 characters';
-                          },
-                          controller: passController,
-                          decoration: InputDecoration(
-                            contentPadding: EdgeInsets.only(left: 10),
-                            errorStyle: TextStyle(
-                              color: Colors.redAccent,
-                            ),
-                            labelText: "Password",
-                            labelStyle: TextStyle(
-                              color: Colors.black38,
-                              fontFamily: "Roboto",
-                              fontWeight: FontWeight.w300,
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                            ),
+                          labelText: "Password",
+                          labelStyle: TextStyle(
+                            color: Colors.black38,
+                            fontFamily: "Roboto",
+                            fontWeight: FontWeight.w300,
                           ),
-                          obscureText: true,
-                          textAlign: TextAlign.left,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.only(top: 5, left: 5),
-                              child: RaisedButton(
-                                  child: Text(
-                                    "Sign In",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 15,
-                                      fontFamily: 'Roboto',
-                                      fontWeight: FontWeight.normal,
-                                    ),
+                        obscureText: true,
+                        textAlign: TextAlign.left,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.only(top: 5, left: 5),
+                            child: RaisedButton(
+                                child: Text(
+                                  "Sign In",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 15,
+                                    fontFamily: 'Roboto',
+                                    fontWeight: FontWeight.normal,
                                   ),
-                                  color: Colors.deepPurple,
-                                  splashColor: Colors.purple,
-                                  elevation: 5.0,
-                                  onPressed: () {
+                                ),
+                                color: Colors.deepPurple,
+                                splashColor: Colors.purple,
+                                elevation: 5.0,
+                                onPressed: () {
 //                                    login(context);
-                                  }),
-                            ),
-                          ],
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(bottom: 10),
-                        ),
-                      ],
-                    ),
+                                }),
+                          ),
+                        ],
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 10),
+                      ),
+                    ],
                   ),
                 ),
                 new Text(
@@ -186,6 +184,4 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
-
-  void buttonPressed() {}
 }
