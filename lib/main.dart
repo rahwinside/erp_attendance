@@ -1,4 +1,5 @@
-import 'package:attendance/home_page.dart';
+import 'package:attendance/routes.dart';
+import 'package:attendance/screens/home/home_page.dart';
 import 'package:flutter/material.dart';
 
 GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
@@ -18,7 +19,8 @@ class MyApp extends StatelessWidget {
         accentColor: Colors.deepPurpleAccent,
         canvasColor: const Color(0xFFfafafa),
       ),
-      home: new HomePage(),
+      routes: routes,
+//      home: new LoginScreen(),
     );
   }
 }
@@ -172,7 +174,8 @@ class _LoginPageState extends State<LoginPage> {
                                       passController.text == 'rah') {
                                     Navigator.pushReplacement(context,
                                         MaterialPageRoute(
-                                            builder: (context) => HomePage()));
+                                            builder: (context) =>
+                                                HomeScreen()));
                                   }
                                 }),
                           ),

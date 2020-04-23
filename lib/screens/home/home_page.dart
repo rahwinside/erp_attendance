@@ -1,14 +1,17 @@
+import 'package:attendance/models/user.dart';
+import 'package:attendance/screens/home/AttendanceFragment.dart';
 import 'package:flutter/material.dart';
 
-import 'AttendanceFragment.dart';
+import 'home_screen_presenter.dart';
 
 class DrawerItem {
   String title;
   IconData icon;
+
   DrawerItem(this.title, this.icon);
 }
 
-class HomePage extends StatefulWidget {
+class HomeScreen extends StatefulWidget {
   final drawerItems = [
     new DrawerItem("Attendance", Icons.access_alarms),
     new DrawerItem("Reports", Icons.report),
@@ -17,34 +20,43 @@ class HomePage extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return new HomePageState();
+    return new HomeScreenState();
   }
 }
 
-class HomePageState extends State<HomePage> {
-  int _selectedDrawerIndex = 0;
+class HomeScreenState extends State<HomeScreen> implements HomeScreenContract {
 
-  _getDrawerItemWidget(int pos) {
-    switch (pos) {
-      case 0:
-        return new AttendanceFragment();
+  HomeScreenPresenter _presenter;
+  String _homeText;
+
+  HomeScreenState() {
+    _presenter = new HomeScreenPresenter(this);
+    _presenter.getUserInfo();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    int _selectedDrawerIndex = 0;
+
+    _getDrawerItemWidget(int pos) {
+      switch (pos) {
+        case 0:
+          return new AttendanceFragment();
 //      case 1:
 //        return new SecondFragment();
 //      case 2:
 //        return new ThirdFragment();
 
-      default:
-        return new Text("Error");
+        default:
+          return new Text("Error");
+      }
     }
-  }
 
-  _onSelectItem(int index) {
-    setState(() => _selectedDrawerIndex = index);
-    Navigator.of(context).pop(); // close the drawer
-  }
+    _onSelectItem(int index) {
+      setState(() => _selectedDrawerIndex = index);
+      Navigator.of(context).pop(); // close the drawer
+    }
 
-  @override
-  Widget build(BuildContext context) {
     var drawerOptions = <Widget>[];
     for (var i = 0; i < widget.drawerItems.length; i++) {
       var d = widget.drawerItems[i];
@@ -68,7 +80,7 @@ class HomePageState extends State<HomePage> {
         child: new Column(
           children: <Widget>[
             new UserAccountsDrawerHeader(
-                accountName: new Text("John Doe"), accountEmail: null),
+                accountName: new Text(_homeText), accountEmail: new Text("hi")),
             new Column(children: drawerOptions)
           ],
         ),
@@ -76,4 +88,19 @@ class HomePageState extends State<HomePage> {
       body: _getDrawerItemWidget(_selectedDrawerIndex),
     );
   }
+
+  @override
+  void onDisplayUserInfo(User user) {
+    setState(() {
+      _homeText = 'Hello ${user.username}';
+    });
+  }
+
+  @override
+  void onErrorUserInfo() {
+    setState(() {
+      _homeText = 'There was an error retrieving user info';
+    });
+  }
+
 }
