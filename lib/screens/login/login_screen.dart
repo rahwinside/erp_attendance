@@ -20,6 +20,7 @@ class LoginScreen extends StatefulWidget {
 
 class LoginScreenState extends State<LoginScreen>
     implements LoginScreenContract, AuthStateListener {
+  BuildContext _ctx;
 
   bool _isLoading = false;
   final formKey = new GlobalKey<FormState>();
@@ -52,11 +53,12 @@ class LoginScreenState extends State<LoginScreen>
   @override
   onAuthStateChanged(AuthState state) {
     if (state == AuthState.LOGGED_IN)
-      Navigator.of(context).pushReplacementNamed("/home");
+      Navigator.of(_ctx).pushReplacementNamed("/home");
   }
 
   @override
   Widget build(BuildContext context) {
+    _ctx = context;
     var loginBtn = Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
@@ -199,9 +201,9 @@ class LoginScreenState extends State<LoginScreen>
             new Text(
               "Forgot your login details?",
               style: new TextStyle(
-                  fontSize: 12.0,
-                  color: const Color(0xFF000000),
-                  fontWeight: FontWeight.w200,
+                fontSize: 12.0,
+                color: const Color(0xFF000000),
+                fontWeight: FontWeight.w200,
                 fontFamily: "Roboto",
               ),
             )

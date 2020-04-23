@@ -30,6 +30,7 @@ class HomeScreen extends StatefulWidget {
 class HomeScreenState extends State<HomeScreen>
     implements HomeScreenContract, AuthStateListener {
 
+  BuildContext _ctx;
   HomeScreenPresenter _presenter;
   String _fullNameText = "Loading...";
   String _deptText = "Loading...";
@@ -71,7 +72,7 @@ class HomeScreenState extends State<HomeScreen>
                 ),
               ),
               onPressed: () {
-                Navigator.of(context).pushReplacementNamed("/home");
+                Navigator.of(_ctx).pushReplacementNamed("/home");
               },
             ),
             FlatButton(
@@ -95,6 +96,7 @@ class HomeScreenState extends State<HomeScreen>
 
   @override
   Widget build(BuildContext context) {
+    _ctx = context;
     var drawerOptions = <Widget>[];
     for (var i = 0; i < widget.drawerItems.length; i++) {
       var d = widget.drawerItems[i];
@@ -157,7 +159,7 @@ class HomeScreenState extends State<HomeScreen>
   @override
   onAuthStateChanged(AuthState state) {
     if (state == AuthState.LOGGED_OUT)
-      Navigator.of(context).pushReplacementNamed("/login");
+      Navigator.of(_ctx).pushReplacementNamed("/login");
   }
 
   Future<void> _logout() async {
