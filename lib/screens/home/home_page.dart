@@ -15,7 +15,8 @@ class HomeScreen extends StatefulWidget {
   final drawerItems = [
     new DrawerItem("Attendance", Icons.access_alarms),
     new DrawerItem("Reports", Icons.report),
-    new DrawerItem("Settings", Icons.settings)
+    new DrawerItem("Settings", Icons.settings),
+    new DrawerItem("Logout", Icons.close),
   ];
 
   @override
@@ -27,8 +28,9 @@ class HomeScreen extends StatefulWidget {
 class HomeScreenState extends State<HomeScreen> implements HomeScreenContract {
 
   HomeScreenPresenter _presenter;
-  String _fullNameText;
-  String _deptText;
+  String _fullNameText = "Loading...";
+  String _deptText = "Loading...";
+  String _picURL = "https://weareeverywhere.in/images/profile-pictures/default.jpg";
 
   HomeScreenState() {
     _presenter = new HomeScreenPresenter(this);
@@ -82,7 +84,13 @@ class HomeScreenState extends State<HomeScreen> implements HomeScreenContract {
           children: <Widget>[
             new UserAccountsDrawerHeader(
                 accountName: new Text(_fullNameText),
-                accountEmail: new Text(_deptText)),
+              accountEmail: new Text(_deptText),
+              currentAccountPicture: CircleAvatar(
+                radius: 60.0,
+                backgroundColor: const Color(0xFF778899),
+                backgroundImage: NetworkImage(_picURL), // for Network image
+              ),
+            ),
             new Column(children: drawerOptions)
           ],
         ),
@@ -94,16 +102,18 @@ class HomeScreenState extends State<HomeScreen> implements HomeScreenContract {
   @override
   void onDisplayUserInfo(User user) {
     setState(() {
-      _fullNameText = user.username;
+      _fullNameText = user.full_name;
       _deptText = user.department;
+      _picURL = user.picture_url;
     });
   }
 
   @override
   void onErrorUserInfo() {
     setState(() {
-      _fullNameText = 'There was an error retrieving user info';
-      _deptText = 'There was an error retrieving user info';
+      _fullNameText = 'There was an error retrieving your info';
+      _deptText = 'There was an error retrieving your info';
+      _picURL = 'There was an error retrieving your info';
     });
   }
 
