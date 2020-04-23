@@ -20,7 +20,6 @@ class LoginScreen extends StatefulWidget {
 
 class LoginScreenState extends State<LoginScreen>
     implements LoginScreenContract, AuthStateListener {
-  BuildContext _ctx;
 
   bool _isLoading = false;
   final formKey = new GlobalKey<FormState>();
@@ -53,12 +52,11 @@ class LoginScreenState extends State<LoginScreen>
   @override
   onAuthStateChanged(AuthState state) {
     if (state == AuthState.LOGGED_IN)
-      Navigator.of(_ctx).pushReplacementNamed("/home");
+      Navigator.of(context).pushReplacementNamed("/home");
   }
 
   @override
   Widget build(BuildContext context) {
-    _ctx = context;
     var loginBtn = Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[

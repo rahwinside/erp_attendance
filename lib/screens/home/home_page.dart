@@ -18,7 +18,7 @@ class HomeScreen extends StatefulWidget {
     new DrawerItem("Attendance", Icons.access_alarms),
     new DrawerItem("Reports", Icons.report),
     new DrawerItem("Settings", Icons.settings),
-    new DrawerItem("Logout", Icons.close),
+    new DrawerItem("Log out", Icons.close),
   ];
 
   @override
@@ -30,7 +30,6 @@ class HomeScreen extends StatefulWidget {
 class HomeScreenState extends State<HomeScreen>
     implements HomeScreenContract, AuthStateListener {
 
-  BuildContext _ctx;
   HomeScreenPresenter _presenter;
   String _fullNameText = "Loading...";
   String _deptText = "Loading...";
@@ -54,8 +53,35 @@ class HomeScreenState extends State<HomeScreen>
       case 2:
         return new Text("Error");
       case 3:
-        _logout();
-        return new Text("Logged out.");
+        return AlertDialog(
+          title: Text('Log out'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('Do you want to log out of Communicator?'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text(
+                'No',
+                style: TextStyle(
+                  color: Colors.black38,
+                ),
+              ),
+              onPressed: () {
+                Navigator.of(context).pushReplacementNamed("/home");
+              },
+            ),
+            FlatButton(
+              child: Text('Yes'),
+              onPressed: () {
+                _logout();
+              },
+            ),
+          ],
+        );
 
       default:
         return new Text("Error");
@@ -63,15 +89,12 @@ class HomeScreenState extends State<HomeScreen>
   }
 
   _onSelectItem(int index) {
-    print("fired 1");
     setState(() => _selectedDrawerIndex = index);
-    print("fired 2" + index.toString() + _selectedDrawerIndex.toString());
     Navigator.of(context).pop(); // close the drawer
   }
 
   @override
   Widget build(BuildContext context) {
-    _ctx = context;
     var drawerOptions = <Widget>[];
     for (var i = 0; i < widget.drawerItems.length; i++) {
       var d = widget.drawerItems[i];
@@ -92,19 +115,21 @@ class HomeScreenState extends State<HomeScreen>
         title: new Text(widget.drawerItems[_selectedDrawerIndex].title),
       ),
       drawer: new Drawer(
-        child: new Column(
-          children: <Widget>[
-            new UserAccountsDrawerHeader(
-              accountName: new Text(_fullNameText),
-              accountEmail: new Text(_deptText),
-              currentAccountPicture: CircleAvatar(
-                radius: 60.0,
-                backgroundColor: const Color(0xFF778899),
-                backgroundImage: NetworkImage(_picURL), // for Network image
+        child: SingleChildScrollView(
+          child: new Column(
+            children: <Widget>[
+              new UserAccountsDrawerHeader(
+                accountName: new Text(_fullNameText),
+                accountEmail: new Text(_deptText),
+                currentAccountPicture: CircleAvatar(
+                  radius: 60.0,
+                  backgroundColor: const Color(0xFF778899),
+                  backgroundImage: NetworkImage(_picURL), // for Network image
+                ),
               ),
-            ),
-            new Column(children: drawerOptions)
-          ],
+              new Column(children: drawerOptions)
+            ],
+          ),
         ),
       ),
       body: _getDrawerItemWidget(_selectedDrawerIndex),
@@ -132,7 +157,7 @@ class HomeScreenState extends State<HomeScreen>
   @override
   onAuthStateChanged(AuthState state) {
     if (state == AuthState.LOGGED_OUT)
-      Navigator.of(_ctx).pushReplacementNamed("/login");
+      Navigator.of(context).pushReplacementNamed("/login");
   }
 
   Future<void> _logout() async {
