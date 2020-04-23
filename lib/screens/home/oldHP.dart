@@ -5,7 +5,6 @@ import 'AttendanceFragment.dart';
 class DrawerItem {
   String title;
   IconData icon;
-
   DrawerItem(this.title, this.icon);
 }
 
@@ -49,12 +48,14 @@ class HomeScreenState extends State<HomeScreen> {
     var drawerOptions = <Widget>[];
     for (var i = 0; i < widget.drawerItems.length; i++) {
       var d = widget.drawerItems[i];
-      drawerOptions.add(new ListTile(
-        leading: new Icon(d.icon),
-        title: new Text(d.title),
-        selected: i == _selectedDrawerIndex,
-        onTap: () => _onSelectItem(i),
-      ));
+      drawerOptions.add(
+          new ListTile(
+            leading: new Icon(d.icon),
+            title: new Text(d.title),
+            selected: i == _selectedDrawerIndex,
+            onTap: () => _onSelectItem(i),
+          )
+      );
     }
 
     return new Scaffold(

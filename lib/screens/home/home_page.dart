@@ -43,35 +43,35 @@ class HomeScreenState extends State<HomeScreen>
     authStateProvider.subscribe(this);
   }
 
+  int _selectedDrawerIndex = 0;
+
+  _getDrawerItemWidget(int pos) {
+    switch (pos) {
+      case 0:
+        return new AttendanceFragment();
+      case 1:
+        return new Text("Error");
+      case 2:
+        return new Text("Error");
+      case 3:
+        _logout();
+        return new Text("Logged out.");
+
+      default:
+        return new Text("Error");
+    }
+  }
+
+  _onSelectItem(int index) {
+    print("fired 1");
+    setState(() => _selectedDrawerIndex = index);
+    print("fired 2" + index.toString() + _selectedDrawerIndex.toString());
+    Navigator.of(context).pop(); // close the drawer
+  }
+
   @override
   Widget build(BuildContext context) {
     _ctx = context;
-    int _selectedDrawerIndex = 0;
-
-    _getDrawerItemWidget(int pos) {
-      switch (pos) {
-        case 0:
-          return new AttendanceFragment();
-        case 1:
-          return new Text("Error");
-        case 2:
-          return new Text("Error");
-        case 3:
-          _logout();
-          return new Text("Logged out.");
-
-        default:
-          return new Text("Error");
-      }
-    }
-
-    _onSelectItem(int index) {
-      print("fired 1");
-      setState(() => _selectedDrawerIndex = index);
-      print("fired 2" + index.toString() + _selectedDrawerIndex.toString());
-      Navigator.of(context).pop(); // close the drawer
-    }
-
     var drawerOptions = <Widget>[];
     for (var i = 0; i < widget.drawerItems.length; i++) {
       var d = widget.drawerItems[i];
