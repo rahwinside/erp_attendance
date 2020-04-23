@@ -1,3 +1,4 @@
+import 'package:attendance/auth.dart';
 import 'package:attendance/models/user.dart';
 import 'package:attendance/screens/home/AttendanceFragment.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +26,8 @@ class HomeScreen extends StatefulWidget {
   }
 }
 
-class HomeScreenState extends State<HomeScreen> implements HomeScreenContract {
+class HomeScreenState extends State<HomeScreen>
+    implements HomeScreenContract, AuthStateListener {
 
   HomeScreenPresenter _presenter;
   String _fullNameText = "Loading...";
@@ -83,7 +85,7 @@ class HomeScreenState extends State<HomeScreen> implements HomeScreenContract {
         child: new Column(
           children: <Widget>[
             new UserAccountsDrawerHeader(
-                accountName: new Text(_fullNameText),
+              accountName: new Text(_fullNameText),
               accountEmail: new Text(_deptText),
               currentAccountPicture: CircleAvatar(
                 radius: 60.0,
@@ -115,6 +117,11 @@ class HomeScreenState extends State<HomeScreen> implements HomeScreenContract {
       _deptText = 'There was an error retrieving your info';
       _picURL = 'There was an error retrieving your info';
     });
+  }
+
+  @override
+  void onAuthStateChanged(AuthState state) {
+    // TODO: implement onAuthStateChanged
   }
 
 }
