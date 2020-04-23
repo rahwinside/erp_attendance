@@ -27,7 +27,8 @@ class HomeScreen extends StatefulWidget {
 class HomeScreenState extends State<HomeScreen> implements HomeScreenContract {
 
   HomeScreenPresenter _presenter;
-  String _homeText;
+  String _fullNameText;
+  String _deptText;
 
   HomeScreenState() {
     _presenter = new HomeScreenPresenter(this);
@@ -80,7 +81,8 @@ class HomeScreenState extends State<HomeScreen> implements HomeScreenContract {
         child: new Column(
           children: <Widget>[
             new UserAccountsDrawerHeader(
-                accountName: new Text(_homeText), accountEmail: new Text("hi")),
+                accountName: new Text(_fullNameText),
+                accountEmail: new Text(_deptText)),
             new Column(children: drawerOptions)
           ],
         ),
@@ -92,14 +94,16 @@ class HomeScreenState extends State<HomeScreen> implements HomeScreenContract {
   @override
   void onDisplayUserInfo(User user) {
     setState(() {
-      _homeText = 'Hello ${user.username}';
+      _fullNameText = user.username;
+      _deptText = user.department;
     });
   }
 
   @override
   void onErrorUserInfo() {
     setState(() {
-      _homeText = 'There was an error retrieving user info';
+      _fullNameText = 'There was an error retrieving user info';
+      _deptText = 'There was an error retrieving user info';
     });
   }
 

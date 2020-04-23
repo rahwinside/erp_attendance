@@ -78,14 +78,6 @@ class LoginScreenState extends State<LoginScreen>
             color: Colors.deepPurple,
             splashColor: Colors.purple,
             elevation: 5.0,
-//              onPressed: () {
-//                if (userController.text == 'rah' &&
-//                    passController.text == 'rah') {
-//                  Navigator.pushReplacement(context,
-//                      MaterialPageRoute(
-//                          builder: (context) => HomePage()));
-//                }
-//              }
           ),
         ),
       ],
@@ -212,7 +204,8 @@ class LoginScreenState extends State<LoginScreen>
                   fontSize: 12.0,
                   color: const Color(0xFF000000),
                   fontWeight: FontWeight.w200,
-                  fontFamily: "Roboto"),
+                fontFamily: "Roboto",
+              ),
             )
           ],
         ),

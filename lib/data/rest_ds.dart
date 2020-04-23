@@ -13,18 +13,18 @@ class RestDataSource {
       "username": username,
       "password": password,
       "userType": "admin",
-    }).then((dynamic resToken) {
-      print(resToken.toString());
-      print(resToken.runtimeType);
-      if (resToken == "invalid-password")
+    }).then((dynamic res) {
+      res["username"] = username;
+      print(res.toString());
+      print(res.runtimeType);
+      if (res == "invalid-password")
         throw new Exception("Please check your credentials.");
-      else if (resToken == "auth-error")
+      else if (res == "auth-error")
         throw new Exception(
             "Server is under maintenance, please try again later.");
 
-      var identity = {"username": username, "authToken": resToken};
-
-      return new User.map(identity);
+//        return null;
+      return new User.map(res);
     });
   }
 }

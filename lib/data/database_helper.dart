@@ -24,7 +24,7 @@ class DatabaseHelper {
   initDb() async {
     io.Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, "main.db");
-//    await deleteDatabase(path);
+    await deleteDatabase(path);
     var theDb = await openDatabase(path, version: 1, onCreate: _onCreate);
     return theDb;
   }
@@ -32,7 +32,7 @@ class DatabaseHelper {
   void _onCreate(Database db, int version) async {
     // When creating the db, create the table
     await db.execute(
-        "CREATE TABLE User(id INTEGER PRIMARY KEY, username TEXT, authToken TEXT)");
+        "CREATE TABLE User(id INTEGER PRIMARY KEY, username TEXT, auth_token TEXT, full_name TEXT, department TEXT, picture_url TEXT)");
     print("Created tables");
   }
 
@@ -59,7 +59,9 @@ class DatabaseHelper {
     List<Map> list = await dbClient.rawQuery('SELECT * FROM User');
     if (list.isNotEmpty) {
       var element = list.elementAt(0);
-      return new User(element["username"], element["authToken"]);
+      return new User(
+          element["username"], element["auth_token"], element["full_name"],
+          element["department"], element["picture_url"]);
     } else {
       return null;
     }
