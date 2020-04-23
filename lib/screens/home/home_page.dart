@@ -1,4 +1,5 @@
 import 'package:attendance/auth.dart';
+import 'package:attendance/data/database_helper.dart';
 import 'package:attendance/models/user.dart';
 import 'package:attendance/screens/home/AttendanceFragment.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +30,7 @@ class HomeScreen extends StatefulWidget {
 class HomeScreenState extends State<HomeScreen>
     implements HomeScreenContract, AuthStateListener {
 
+  BuildContext _ctx;
   HomeScreenPresenter _presenter;
   String _fullNameText = "Loading...";
   String _deptText = "Loading...";
@@ -37,20 +39,26 @@ class HomeScreenState extends State<HomeScreen>
   HomeScreenState() {
     _presenter = new HomeScreenPresenter(this);
     _presenter.getUserInfo();
+    var authStateProvider = new AuthStateProvider();
+    authStateProvider.subscribe(this);
   }
 
   @override
   Widget build(BuildContext context) {
+    _ctx = context;
     int _selectedDrawerIndex = 0;
 
     _getDrawerItemWidget(int pos) {
       switch (pos) {
         case 0:
           return new AttendanceFragment();
-//      case 1:
-//        return new SecondFragment();
-//      case 2:
-//        return new ThirdFragment();
+        case 1:
+          return new Text("Error");
+        case 2:
+          return new Text("Error");
+        case 3:
+          _logout();
+          return new Text("Logged out.");
 
         default:
           return new Text("Error");
@@ -58,7 +66,9 @@ class HomeScreenState extends State<HomeScreen>
     }
 
     _onSelectItem(int index) {
+      print("fired 1");
       setState(() => _selectedDrawerIndex = index);
+      print("fired 2" + index.toString() + _selectedDrawerIndex.toString());
       Navigator.of(context).pop(); // close the drawer
     }
 
@@ -120,8 +130,16 @@ class HomeScreenState extends State<HomeScreen>
   }
 
   @override
-  void onAuthStateChanged(AuthState state) {
-    // TODO: implement onAuthStateChanged
+  onAuthStateChanged(AuthState state) {
+    if (state == AuthState.LOGGED_OUT)
+      Navigator.of(_ctx).pushReplacementNamed("/login");
+  }
+
+  Future<void> _logout() async {
+    var db = new DatabaseHelper();
+    await db.deleteUsers();
+    var authStateProvider = new AuthStateProvider();
+    authStateProvider.notify(AuthState.LOGGED_OUT);
   }
 
 }
