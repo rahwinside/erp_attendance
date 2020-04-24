@@ -1,4 +1,3 @@
-import 'package:attendance/screens/home/AttendanceFragment.dart';
 import 'package:attendance/screens/home/home_page.dart';
 import 'package:flutter/material.dart';
 
@@ -20,7 +19,7 @@ class MyApp extends StatelessWidget {
         canvasColor: const Color(0xFFfafafa),
       ),
 //      routes: routes,
-      home: new AttendanceFragment(),
+      home: new HomeScreen(),
     );
   }
 }

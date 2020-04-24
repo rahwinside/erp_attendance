@@ -93,8 +93,19 @@ class _AttendanceFragmentState extends State<AttendanceFragment> {
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
+//              Padding(
+//                padding: const EdgeInsets.only(left: 5, right: 5),
+//                child: new Text(
+//                  "Date of class",
+//                  style: new TextStyle(
+//                      fontSize: 12.0,
+//                      color: const Color(0xFF000000),
+//                      fontWeight: FontWeight.w200,
+//                      fontFamily: "Poppins"),
+//                ),
+//              ),
               Padding(
-                padding: const EdgeInsets.only(left: 5, right: 5, top: 10),
+                padding: const EdgeInsets.only(left: 5, right: 5),
                 child: new DateTimeField(
                   style: TextStyle(
                     fontFamily: "Poppins",
@@ -102,7 +113,7 @@ class _AttendanceFragmentState extends State<AttendanceFragment> {
                   ),
                   decoration: InputDecoration(
                     contentPadding: const EdgeInsets.all(0),
-                    labelText: "Class on",
+                    labelText: "Date of class",
                     labelStyle: TextStyle(
                       fontFamily: "Poppins",
                       fontWeight: FontWeight.w200,
@@ -110,6 +121,7 @@ class _AttendanceFragmentState extends State<AttendanceFragment> {
                     ),
                   ),
                   format: dateFormat,
+                  initialValue: DateTime.now(),
                   onShowPicker: (context, currentValue) {
                     return showDatePicker(
                         context: context,

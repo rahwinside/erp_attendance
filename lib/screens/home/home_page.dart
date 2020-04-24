@@ -18,6 +18,7 @@ class HomeScreen extends StatefulWidget {
     new DrawerItem("Attendance", Icons.access_alarms),
     new DrawerItem("Reports", Icons.report),
     new DrawerItem("Settings", Icons.settings),
+    new DrawerItem("About", Icons.info),
     new DrawerItem("Log out", Icons.close),
   ];
 
@@ -117,7 +118,7 @@ class HomeScreenState extends State<HomeScreen>
       drawerOptions.add(
           new ListTile(
             leading: new Icon(d.icon),
-            title: new Text(d.title),
+            title: new Text(d.title, style: TextStyle(fontFamily: "Poppins"),),
             selected: i == _selectedDrawerIndex,
             onTap: () => _onSelectItem(i),
           )
@@ -141,8 +142,12 @@ class HomeScreenState extends State<HomeScreen>
           child: new Column(
             children: <Widget>[
               new UserAccountsDrawerHeader(
-                accountName: new Text(_fullNameText),
-                accountEmail: new Text(_deptText),
+                accountName: new Text(_fullNameText, style: TextStyle(
+                    fontFamily: "Poppins", fontWeight: FontWeight.w600)),
+                accountEmail: new Text(_deptText, style: TextStyle(
+                    fontFamily: "Poppins",
+                    fontWeight: FontWeight.w400,
+                    fontSize: 12)),
                 currentAccountPicture: CircleAvatar(
                   radius: 60.0,
                   backgroundColor: const Color(0xFF778899),
