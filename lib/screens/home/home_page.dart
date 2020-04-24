@@ -114,7 +114,12 @@ class HomeScreenState extends State<HomeScreen>
       appBar: new AppBar(
         // here we display the title corresponding to the fragment
         // you can instead choose to have a static title
-        title: new Text(widget.drawerItems[_selectedDrawerIndex].title),
+        title: new Text(
+          widget.drawerItems[_selectedDrawerIndex].title,
+          style: TextStyle(
+            fontFamily: "Poppins",
+          ),
+        ),
       ),
       drawer: new Drawer(
         child: SingleChildScrollView(

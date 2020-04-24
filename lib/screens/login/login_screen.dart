@@ -59,28 +59,23 @@ class LoginScreenState extends State<LoginScreen>
   @override
   Widget build(BuildContext context) {
     _ctx = context;
-    var loginBtn = Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: <Widget>[
-        Padding(
-          padding: EdgeInsets.only(top: 5),
-          child: RaisedButton(
-            onPressed: _submit,
-            child: Text(
-              "Sign In",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 15,
-                fontFamily: 'Poppins',
-                fontWeight: FontWeight.normal,
-              ),
-            ),
-            color: Colors.deepPurple,
-            splashColor: Colors.purple,
-            elevation: 5.0,
+    var loginBtn = Padding(
+      padding: EdgeInsets.only(top: 5),
+      child: RaisedButton(
+        onPressed: _submit,
+        child: Text(
+          "Sign In",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 15,
+            fontFamily: 'Poppins',
+            fontWeight: FontWeight.normal,
           ),
         ),
-      ],
+        color: Colors.deepPurple,
+        splashColor: Colors.purple,
+        elevation: 5.0,
+      ),
     );
 
     var loginForm = new Container(
@@ -209,7 +204,8 @@ class LoginScreenState extends State<LoginScreen>
               Padding(
                 padding: EdgeInsets.only(top: 10),
               ),
-              _isLoading ? new CircularProgressIndicator() : loginBtn,
+              _isLoading ? Padding(padding: EdgeInsets.only(left: 5),
+                  child: new CircularProgressIndicator()) : loginBtn,
               Padding(
                 padding: EdgeInsets.only(top: 10),
               ),
