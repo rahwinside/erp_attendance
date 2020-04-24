@@ -2,7 +2,6 @@ import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-
 final List<String> department = <String>[
   "Information Technology",
   "Computer Science and Engineering",
@@ -94,57 +93,59 @@ class _AttendanceFragmentState extends State<AttendanceFragment> {
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              new DateTimeField(
-                decoration: InputDecoration(
-                  contentPadding: EdgeInsets.only(left: 10),
-                  labelText: "Class on",
-                  labelStyle: TextStyle(
-                    color: Colors.black38,
-                    fontWeight: FontWeight.w300,
+              Padding(
+                padding: const EdgeInsets.only(left: 5, right: 5, top: 10),
+                child: new DateTimeField(
+                  style: TextStyle(
+                    fontFamily: "Poppins",
+                    color: Colors.black,
                   ),
-                  errorStyle: TextStyle(
-                    color: Colors.redAccent,
+                  decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.all(0),
+                    labelText: "Class on",
+                    labelStyle: TextStyle(
+                      fontFamily: "Poppins",
+                      fontWeight: FontWeight.w200,
+                      color: Colors.black,
+                    ),
                   ),
-                  border: OutlineInputBorder(
-                    gapPadding: 1.0,
-                    borderRadius: BorderRadius.circular(5.0),
-                  ),
+                  format: dateFormat,
+                  onShowPicker: (context, currentValue) {
+                    return showDatePicker(
+                        context: context,
+                        firstDate: DateTime(2020),
+                        initialDate: currentValue ?? DateTime.now(),
+                        lastDate: DateTime.now());
+                  },
                 ),
-                format: dateFormat,
-                onShowPicker: (context, currentValue) {
-                  return showDatePicker(
-                      context: context,
-                      firstDate: DateTime(2020),
-                      initialDate: currentValue ?? DateTime.now(),
-                      lastDate: DateTime.now());
-                },
               ),
               Padding(
                 padding: EdgeInsets.only(top: 10),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 5, right: 5, bottom: 5),
+                padding: const EdgeInsets.only(left: 5, right: 5),
                 child: new Text(
                   "Department",
                   style: new TextStyle(
                       fontSize: 12.0,
                       color: const Color(0xFF000000),
                       fontWeight: FontWeight.w200,
-                      fontFamily: "Roboto"),
+                      fontFamily: "Poppins"),
                 ),
               ),
               Container(
-                padding: EdgeInsets.only(left: 10, right: 10),
-                decoration: new BoxDecoration(
-                  border: new Border.all(color: Colors.black38),
-                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                ),
+                padding: EdgeInsets.only(left: 5, right: 5),
+//                decoration: new BoxDecoration(
+//                  border: new Border.all(color: Colors.black38),
+//                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
+//                ),
                 child: new DropdownButton<String>(
                   isExpanded: true,
                   style: new TextStyle(
+                    fontFamily: "Poppins",
                     fontSize: 15,
                     color: const Color(0xFF202020),
-                    fontWeight: FontWeight.w300,
+
                   ),
                   value: _valueDept,
                   onChanged: (value) {
@@ -176,29 +177,30 @@ class _AttendanceFragmentState extends State<AttendanceFragment> {
                         children: <Widget>[
                           Padding(
                             padding: const EdgeInsets.only(
-                                left: 5, right: 5, bottom: 5),
+                                left: 5, right: 5),
                             child: new Text(
                               "Year",
                               style: new TextStyle(
                                   fontSize: 12.0,
                                   color: const Color(0xFF000000),
                                   fontWeight: FontWeight.w200,
-                                  fontFamily: "Roboto"),
+                                  fontFamily: "Poppins"),
                             ),
                           ),
                           Container(
-                            padding: EdgeInsets.only(left: 10, right: 10),
-                            decoration: new BoxDecoration(
-                              border: new Border.all(color: Colors.black38),
-                              borderRadius: BorderRadius.all(Radius.circular(
-                                  5.0)),
-                            ),
+                            padding: EdgeInsets.only(left: 5, right: 5),
+//                            decoration: new BoxDecoration(
+//                              border: new Border.all(color: Colors.black38),
+//                              borderRadius: BorderRadius.all(Radius.circular(
+//                                  5.0)),
+//                            ),
                             child: new DropdownButton<String>(
                               isExpanded: true,
                               style: new TextStyle(
+                                fontFamily: "Poppins",
                                 fontSize: 15,
                                 color: const Color(0xFF202020),
-                                fontWeight: FontWeight.w300,
+
                               ),
                               value: _valueYear,
                               onChanged: (value) {
@@ -262,29 +264,30 @@ class _AttendanceFragmentState extends State<AttendanceFragment> {
                         children: <Widget>[
                           Padding(
                             padding: const EdgeInsets.only(
-                                left: 5, right: 5, bottom: 5),
+                                left: 5, right: 5),
                             child: new Text(
                               "Semester",
                               style: new TextStyle(
                                   fontSize: 12.0,
                                   color: const Color(0xFF000000),
                                   fontWeight: FontWeight.w200,
-                                  fontFamily: "Roboto"),
+                                  fontFamily: "Poppins"),
                             ),
                           ),
                           Container(
-                            padding: EdgeInsets.only(left: 10, right: 10),
-                            decoration: new BoxDecoration(
-                              border: new Border.all(color: Colors.black38),
-                              borderRadius: BorderRadius.all(Radius.circular(
-                                  5.0)),
-                            ),
+                            padding: EdgeInsets.only(left: 5, right: 5),
+//                            decoration: new BoxDecoration(
+//                              border: new Border.all(color: Colors.black38),
+//                              borderRadius: BorderRadius.all(Radius.circular(
+//                                  5.0)),
+//                            ),
                             child: new DropdownButton<String>(
                               isExpanded: true,
                               style: new TextStyle(
+                                fontFamily: "Poppins",
                                 fontSize: 15,
                                 color: const Color(0xFF202020),
-                                fontWeight: FontWeight.w300,
+
                               ),
                               value: _valueSem,
                               onChanged: (value) {
@@ -310,28 +313,29 @@ class _AttendanceFragmentState extends State<AttendanceFragment> {
                 padding: EdgeInsets.only(top: 10),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 5, right: 5, bottom: 5),
+                padding: const EdgeInsets.only(left: 5, right: 5),
                 child: new Text(
                   "Subject",
                   style: new TextStyle(
                       fontSize: 12.0,
                       color: const Color(0xFF000000),
                       fontWeight: FontWeight.w200,
-                      fontFamily: "Roboto"),
+                      fontFamily: "Poppins"),
                 ),
               ),
               Container(
-                padding: EdgeInsets.only(left: 10, right: 10),
-                decoration: new BoxDecoration(
-                  border: new Border.all(color: Colors.black38),
-                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                ),
+                padding: EdgeInsets.only(left: 5, right: 5),
+//                decoration: new BoxDecoration(
+//                  border: new Border.all(color: Colors.black38),
+//                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
+//                ),
                 child: new DropdownButton<String>(
                   isExpanded: true,
                   style: new TextStyle(
+                    fontFamily: "Poppins",
                     fontSize: 15,
                     color: const Color(0xFF202020),
-                    fontWeight: FontWeight.w300,
+
                   ),
                   value: _valueSubject,
                   onChanged: (value) {
@@ -353,14 +357,14 @@ class _AttendanceFragmentState extends State<AttendanceFragment> {
                 padding: EdgeInsets.only(top: 10),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 5, right: 5, bottom: 5),
+                padding: const EdgeInsets.only(left: 5, right: 5),
                 child: new Text(
                   "Select hours (you can select more than one)",
                   style: new TextStyle(
                       fontSize: 12.0,
                       color: const Color(0xFF000000),
                       fontWeight: FontWeight.w200,
-                      fontFamily: "Roboto"),
+                      fontFamily: "Poppins"),
                 ),
               ),
               SingleChildScrollView(
@@ -404,9 +408,7 @@ class _AttendanceFragmentState extends State<AttendanceFragment> {
                     "Take Attendance",
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 15,
-                      fontFamily: 'Roboto',
-                      fontWeight: FontWeight.normal,
+                      fontFamily: 'Poppins',
                     ),
                   ))
             ]),

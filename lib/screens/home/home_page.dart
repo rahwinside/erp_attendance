@@ -36,6 +36,9 @@ class HomeScreenState extends State<HomeScreen>
   String _deptText = "Loading...";
   String _picURL = "https://weareeverywhere.in/images/profile-pictures/default.jpg";
 
+  final scaffoldKey = new GlobalKey<ScaffoldState>();
+
+
   HomeScreenState() {
     _presenter = new HomeScreenPresenter(this);
     _presenter.getUserInfo();
@@ -54,35 +57,46 @@ class HomeScreenState extends State<HomeScreen>
       case 2:
         return new Text("Error");
       case 3:
-        return AlertDialog(
-          title: Text('Log out'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text('Do you want to log out of Communicator?'),
-              ],
+        _logout();
+        return Center(
+          child: Text(
+            "Logging out...",
+            style: TextStyle(
+              fontFamily: "Poppins",
+              fontWeight: FontWeight.w300,
+              fontSize: 20,
             ),
           ),
-          actions: <Widget>[
-            FlatButton(
-              child: Text(
-                'No',
-                style: TextStyle(
-                  color: Colors.black38,
-                ),
-              ),
-              onPressed: () {
-                Navigator.of(_ctx).pushReplacementNamed("/home");
-              },
-            ),
-            FlatButton(
-              child: Text('Yes'),
-              onPressed: () {
-                _logout();
-              },
-            ),
-          ],
         );
+//        return AlertDialog(
+//          title: Text('Log out'),
+//          content: SingleChildScrollView(
+//            child: ListBody(
+//              children: <Widget>[
+//                Text('Do you want to log out of Communicator?'),
+//              ],
+//            ),
+//          ),
+//          actions: <Widget>[
+//            FlatButton(
+//              child: Text(
+//                'No',
+//                style: TextStyle(
+//                  color: Colors.black38,
+//                ),
+//              ),
+//              onPressed: () {
+//                Navigator.of(_ctx).pushReplacementNamed("/home");
+//              },
+//            ),
+//            FlatButton(
+//              child: Text('Yes'),
+//              onPressed: () {
+//                _logout();
+//              },
+//            ),
+//          ],
+//        );
 
       default:
         return new Text("Error");
@@ -111,6 +125,7 @@ class HomeScreenState extends State<HomeScreen>
     }
 
     return new Scaffold(
+      key: scaffoldKey,
       appBar: new AppBar(
         // here we display the title corresponding to the fragment
         // you can instead choose to have a static title
@@ -163,8 +178,11 @@ class HomeScreenState extends State<HomeScreen>
 
   @override
   onAuthStateChanged(AuthState state) {
-    if (state == AuthState.LOGGED_OUT)
-      Navigator.of(_ctx).pushReplacementNamed("/login");
+    if (state == AuthState.LOGGED_OUT) {
+      print(context.toString());
+      print(context.runtimeType);
+      Navigator.pushNamedAndRemoveUntil(context, '/login', (context) => false);
+    }
   }
 
   Future<void> _logout() async {

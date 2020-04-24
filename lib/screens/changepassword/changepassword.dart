@@ -3,38 +3,38 @@ import 'dart:ui';
 import 'package:attendance/auth.dart';
 import 'package:attendance/data/database_helper.dart';
 import 'package:attendance/models/user.dart';
-import 'package:attendance/screens/changepassword/changepassword.dart';
-import 'package:attendance/screens/home/home_page.dart';
-import 'package:attendance/screens/login/login_screen_presenter.dart';
+import 'package:attendance/screens/changepassword/change_password_presenter.dart';
 import 'package:flutter/material.dart';
 
 FocusNode _focusNode = FocusNode();
-TextEditingController userController = TextEditingController();
-TextEditingController passController = TextEditingController();
+TextEditingController newPassController = TextEditingController();
+TextEditingController newPassController2 = TextEditingController();
 
-class LoginScreen extends StatefulWidget {
+class ChangePasswordScreen extends StatefulWidget {
+  final String username;
+
+  ChangePasswordScreen({Key key, @required this.username}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return new LoginScreenState();
+    return new ChangePasswordScreenState();
   }
 }
 
-class LoginScreenState extends State<LoginScreen>
-    implements LoginScreenContract, AuthStateListener {
-
+class ChangePasswordScreenState extends State<ChangePasswordScreen>
+    implements ChangePasswordScreenContract, AuthStateListener {
   BuildContext _ctx;
 
   bool _isLoading = false;
   final formKey = new GlobalKey<FormState>();
   final scaffoldKey = new GlobalKey<ScaffoldState>();
-  String _username, _password;
+  String _password1, _password2;
 
-  LoginScreenPresenter _presenter;
+  ChangePasswordScreenPresenter _presenter;
 
-  LoginScreenState() {
-//    resetUsers();
-    _presenter = new LoginScreenPresenter(this);
+  ChangePasswordScreenState() {
+    _presenter = new ChangePasswordScreenPresenter(this);
     var authStateProvider = new AuthStateProvider();
     authStateProvider.subscribe(this);
   }
@@ -45,7 +45,7 @@ class LoginScreenState extends State<LoginScreen>
     if (form.validate()) {
       setState(() => _isLoading = true);
       form.save();
-      _presenter.doLogin(userController.text, passController.text);
+      _presenter.doUpdate(widget.username, "licet@123", newPassController.text);
     }
   }
 
@@ -56,24 +56,9 @@ class LoginScreenState extends State<LoginScreen>
 
   @override
   onAuthStateChanged(AuthState state) {
-    if (state == AuthState.LOGGED_IN) {
-      print(context.toString());
-      print(context.runtimeType);
-      if (passController.text == "licet@123") {
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(
-              builder: (context) =>
-                  ChangePasswordScreen(username: userController.text,),
-            ));
-      } else {
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(
-              builder: (context) => HomeScreen(),
-            ));
-      }
-    }
+    if (state == AuthState.LOGGED_IN)
+      Navigator.of(_ctx).pushReplacementNamed("/home");
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +68,7 @@ class LoginScreenState extends State<LoginScreen>
       child: RaisedButton(
         onPressed: _submit,
         child: Text(
-          "Sign In",
+          "Change Password",
           style: TextStyle(
             color: Colors.white,
             fontSize: 15,
@@ -122,25 +107,36 @@ class LoginScreenState extends State<LoginScreen>
                   mainAxisSize: MainAxisSize.max,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    new Row(
+                    Row(
                       children: <Widget>[
-                        new Image.asset(
-                          'images/licetlogo.png',
-                          fit: BoxFit.fill,
-                          width: 100.0,
-                          height: 100.0,
-                        ),
-                        new Text(
-                          " Communicator",
-                          style: new TextStyle(
-                              fontSize: 23.0,
-                              color: const Color(0xFF000000),
-                              fontWeight: FontWeight.w400,
-                              fontFamily: "Poppins"),
+                        Flexible(
+                          child: new Text(
+                            "Let's get you a new password!",
+                            style: new TextStyle(
+                                fontSize: 23.0,
+                                color: const Color(0xFF000000),
+                                fontWeight: FontWeight.w400,
+                                fontFamily: "Poppins"),
+                          ),
                         ),
                       ],
                     ),
-
+                    Padding(
+                      padding: EdgeInsets.only(top: 5),
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Flexible(
+                          child: new Text(
+                            "The default password needs to be changed for the safety of your account.",
+                            style: new TextStyle(
+                                color: const Color(0xFF000000),
+                                fontWeight: FontWeight.w300,
+                                fontFamily: "Poppins"),
+                          ),
+                        ),
+                      ],
+                    ),
                     new Form(
                       key: formKey,
                       child: new Column(
@@ -148,46 +144,38 @@ class LoginScreenState extends State<LoginScreen>
                           Padding(
                             padding: EdgeInsets.only(top: 5),
                           ),
-                          new TextFormField(
+                          TextFormField(
                             style: TextStyle(
                               fontFamily: "Poppins",
                               fontWeight: FontWeight.w400,
                               color: Colors.black,
                             ),
-                            validator: (input) {
-                              if (!RegExp(
-                                  r"^[a-zA-Z0-9._]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                                  .hasMatch(input))
-                                return 'Check your email address';
-                            },
                             onFieldSubmitted: (input) {
                               FocusScope.of(context).requestFocus(_focusNode);
                             },
-                            controller: userController,
+                            validator: (input) {
+                              if (input.length < 8)
+                                return 'Password must be minimum of 8 characters';
+                            },
+                            controller: newPassController,
                             decoration: InputDecoration(
                               contentPadding: EdgeInsets.only(left: 10),
-                              labelText: "Email address",
+                              errorStyle: TextStyle(
+                                color: Colors.redAccent,
+                              ),
+                              labelText: "New password",
                               labelStyle: TextStyle(
                                 color: Colors.black38,
                                 fontFamily: "Poppins",
                                 fontWeight: FontWeight.w400,
                               ),
-                              hintText: "username@licet.ac.in",
-                              hintStyle: TextStyle(
-                                color: Colors.black38,
-                                fontFamily: "Poppins",
-                                fontWeight: FontWeight.w400,
-                              ),
-                              errorStyle: TextStyle(
-                                color: Colors.redAccent,
-                              ),
 //                        border: OutlineInputBorder(
-//                          gapPadding: 1.0,
 //                          borderRadius: BorderRadius.circular(5.0),
 //                        ),
                             ),
+                            obscureText: true,
                             textAlign: TextAlign.left,
-                            onSaved: (val) => _username = val,
+                            onSaved: (val) => _password1 = val,
                           ),
                           Padding(
                             padding: EdgeInsets.only(top: 5),
@@ -202,14 +190,17 @@ class LoginScreenState extends State<LoginScreen>
                             validator: (input) {
                               if (input.length < 8)
                                 return 'Password must be minimum of 8 characters';
+                              if (input != newPassController.text) {
+                                return "Passwords don't match";
+                              }
                             },
-                            controller: passController,
+                            controller: newPassController2,
                             decoration: InputDecoration(
                               contentPadding: EdgeInsets.only(left: 10),
                               errorStyle: TextStyle(
                                 color: Colors.redAccent,
                               ),
-                              labelText: "Password",
+                              labelText: "Confirm new password",
                               labelStyle: TextStyle(
                                 color: Colors.black38,
                                 fontFamily: "Poppins",
@@ -221,7 +212,7 @@ class LoginScreenState extends State<LoginScreen>
                             ),
                             obscureText: true,
                             textAlign: TextAlign.left,
-                            onSaved: (val) => _password = val,
+                            onSaved: (val) => _password2 = val,
                           ),
                         ],
                       ),
@@ -229,13 +220,16 @@ class LoginScreenState extends State<LoginScreen>
                     Padding(
                       padding: EdgeInsets.only(top: 10),
                     ),
-                    _isLoading ? Padding(padding: EdgeInsets.only(left: 5),
-                        child: new CircularProgressIndicator()) : loginBtn,
+                    _isLoading
+                        ? Padding(
+                            padding: EdgeInsets.only(left: 5),
+                            child: new CircularProgressIndicator())
+                        : loginBtn,
                     Padding(
                       padding: EdgeInsets.only(top: 10),
                     ),
                     new Text(
-                      "Forgot your login details?",
+                      "Skip for now",
                       style: new TextStyle(
                         fontSize: 12.0,
                         color: const Color(0xFF000000),
@@ -285,23 +279,18 @@ class LoginScreenState extends State<LoginScreen>
   }
 
   @override
-  void onLoginError(String errorTxt) {
+  void onUpdateError(String errorTxt) {
     _showSnackBar(errorTxt);
     setState(() => _isLoading = false);
   }
 
   @override
-  void onLoginSuccess(User user) async {
+  void onUpdateSuccess(User user) async {
     _showSnackBar(user.toString());
     setState(() => _isLoading = false);
     var db = new DatabaseHelper();
     await db.saveUser(user);
     var authStateProvider = new AuthStateProvider();
     authStateProvider.notify(AuthState.LOGGED_IN);
-  }
-
-  Future<void> resetUsers() async {
-    var db = new DatabaseHelper();
-    await db.deleteUsers();
   }
 }
