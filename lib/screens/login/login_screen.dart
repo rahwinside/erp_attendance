@@ -78,150 +78,184 @@ class LoginScreenState extends State<LoginScreen>
       ),
     );
 
-    var loginForm = new Container(
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage("images/landing.jpg"),
-          fit: BoxFit.cover,
-        ),
-      ),
-      padding: const EdgeInsets.all(20.0),
-      alignment: Alignment.center,
-      child: Container(
-        padding: EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.all(Radius.circular(2)),
-        ),
-        child: SingleChildScrollView(
-          child: new Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              new Row(
-                children: <Widget>[
-                  new Image.asset(
-                    'images/licetlogo.png',
-                    fit: BoxFit.fill,
-                    width: 100.0,
-                    height: 100.0,
-                  ),
-                  new Text(
-                    "Communicator",
-                    style: new TextStyle(
-                        fontSize: 23.0,
-                        color: const Color(0xFF000000),
-                        fontWeight: FontWeight.w400,
-                        fontFamily: "Poppins"),
-                  ),
-                ],
+    var loginForm = new Column(
+      children: <Widget>[
+        Expanded(
+          flex: 97,
+          child: new Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("images/landing.jpg"),
+                fit: BoxFit.cover,
               ),
-
-              new Form(
-                key: formKey,
+            ),
+            padding: const EdgeInsets.all(20.0),
+            alignment: Alignment.center,
+            child: Container(
+              padding: EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(Radius.circular(2)),
+              ),
+              child: SingleChildScrollView(
                 child: new Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(top: 5),
+                    new Row(
+                      children: <Widget>[
+                        new Image.asset(
+                          'images/licetlogo.png',
+                          fit: BoxFit.fill,
+                          width: 100.0,
+                          height: 100.0,
+                        ),
+                        new Text(
+                          " Communicator",
+                          style: new TextStyle(
+                              fontSize: 23.0,
+                              color: const Color(0xFF000000),
+                              fontWeight: FontWeight.w400,
+                              fontFamily: "Poppins"),
+                        ),
+                      ],
                     ),
-                    new TextFormField(
-                      style: TextStyle(
-                        fontFamily: "Poppins",
-                        fontWeight: FontWeight.w400,
-                        color: Colors.black,
-                      ),
-                      validator: (input) {
-                        if (!RegExp(r"^[a-zA-Z0-9._]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                            .hasMatch(input)) return 'Check your email address';
-                      },
-                      onFieldSubmitted: (input) {
-                        FocusScope.of(context).requestFocus(_focusNode);
-                      },
-                      controller: userController,
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.only(left: 10),
-                        labelText: "Email address",
-                        labelStyle: TextStyle(
-                          color: Colors.black38,
-                          fontFamily: "Poppins",
-                          fontWeight: FontWeight.w400,
-                        ),
-                        hintText: "username@licet.ac.in",
-                        hintStyle: TextStyle(
-                          color: Colors.black38,
-                          fontFamily: "Poppins",
-                          fontWeight: FontWeight.w400,
-                        ),
-                        errorStyle: TextStyle(
-                          color: Colors.redAccent,
-                        ),
+
+                    new Form(
+                      key: formKey,
+                      child: new Column(
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.only(top: 5),
+                          ),
+                          new TextFormField(
+                            style: TextStyle(
+                              fontFamily: "Poppins",
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black,
+                            ),
+                            validator: (input) {
+                              if (!RegExp(
+                                  r"^[a-zA-Z0-9._]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                  .hasMatch(input))
+                                return 'Check your email address';
+                            },
+                            onFieldSubmitted: (input) {
+                              FocusScope.of(context).requestFocus(_focusNode);
+                            },
+                            controller: userController,
+                            decoration: InputDecoration(
+                              contentPadding: EdgeInsets.only(left: 10),
+                              labelText: "Email address",
+                              labelStyle: TextStyle(
+                                color: Colors.black38,
+                                fontFamily: "Poppins",
+                                fontWeight: FontWeight.w400,
+                              ),
+                              hintText: "username@licet.ac.in",
+                              hintStyle: TextStyle(
+                                color: Colors.black38,
+                                fontFamily: "Poppins",
+                                fontWeight: FontWeight.w400,
+                              ),
+                              errorStyle: TextStyle(
+                                color: Colors.redAccent,
+                              ),
 //                        border: OutlineInputBorder(
 //                          gapPadding: 1.0,
 //                          borderRadius: BorderRadius.circular(5.0),
 //                        ),
-                      ),
-                      textAlign: TextAlign.left,
-                      onSaved: (val) => _username = val,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 5),
-                    ),
-                    TextFormField(
-                      style: TextStyle(
-                        fontFamily: "Poppins",
-                        fontWeight: FontWeight.w400,
-                        color: Colors.black,
-                      ),
-                      focusNode: _focusNode,
-                      validator: (input) {
-                        if (input.length < 8)
-                          return 'Password must be minimum of 8 characters';
-                      },
-                      controller: passController,
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.only(left: 10),
-                        errorStyle: TextStyle(
-                          color: Colors.redAccent,
-                        ),
-                        labelText: "Password",
-                        labelStyle: TextStyle(
-                          color: Colors.black38,
-                          fontFamily: "Poppins",
-                          fontWeight: FontWeight.w400,
-                        ),
+                            ),
+                            textAlign: TextAlign.left,
+                            onSaved: (val) => _username = val,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 5),
+                          ),
+                          TextFormField(
+                            style: TextStyle(
+                              fontFamily: "Poppins",
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black,
+                            ),
+                            focusNode: _focusNode,
+                            validator: (input) {
+                              if (input.length < 8)
+                                return 'Password must be minimum of 8 characters';
+                            },
+                            controller: passController,
+                            decoration: InputDecoration(
+                              contentPadding: EdgeInsets.only(left: 10),
+                              errorStyle: TextStyle(
+                                color: Colors.redAccent,
+                              ),
+                              labelText: "Password",
+                              labelStyle: TextStyle(
+                                color: Colors.black38,
+                                fontFamily: "Poppins",
+                                fontWeight: FontWeight.w400,
+                              ),
 //                        border: OutlineInputBorder(
 //                          borderRadius: BorderRadius.circular(5.0),
 //                        ),
+                            ),
+                            obscureText: true,
+                            textAlign: TextAlign.left,
+                            onSaved: (val) => _password = val,
+                          ),
+                        ],
                       ),
-                      obscureText: true,
-                      textAlign: TextAlign.left,
-                      onSaved: (val) => _password = val,
                     ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 10),
+                    ),
+                    _isLoading ? Padding(padding: EdgeInsets.only(left: 5),
+                        child: new CircularProgressIndicator()) : loginBtn,
+                    Padding(
+                      padding: EdgeInsets.only(top: 10),
+                    ),
+                    new Text(
+                      "Forgot your login details?",
+                      style: new TextStyle(
+                        fontSize: 12.0,
+                        color: const Color(0xFF000000),
+                        fontWeight: FontWeight.w200,
+                        fontFamily: "Poppins",
+                      ),
+                    )
                   ],
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.only(top: 10),
-              ),
-              _isLoading ? Padding(padding: EdgeInsets.only(left: 5),
-                  child: new CircularProgressIndicator()) : loginBtn,
-              Padding(
-                padding: EdgeInsets.only(top: 10),
-              ),
-              new Text(
-                "Forgot your login details?",
-                style: new TextStyle(
-                  fontSize: 12.0,
-                  color: const Color(0xFF000000),
-                  fontWeight: FontWeight.w200,
-                  fontFamily: "Poppins",
-                ),
-              )
-            ],
+            ),
           ),
         ),
-      ),
+        new Expanded(
+          flex: 3,
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.black87,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(right: 20),
+                  child: Text(
+                    "Mer Community  |  MixSpace Internet Services",
+                    style: TextStyle(
+                      fontSize: 10.0,
+                      fontFamily: "Poppins",
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
 
     return new Scaffold(
