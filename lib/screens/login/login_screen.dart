@@ -4,9 +4,9 @@ import 'package:attendance/auth.dart';
 import 'package:attendance/data/database_helper.dart';
 import 'package:attendance/models/user.dart';
 import 'package:attendance/screens/changepassword/changepassword.dart';
-import 'package:attendance/screens/home/home_page.dart';
 import 'package:attendance/screens/login/login_screen_presenter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 
 FocusNode _focusNode = FocusNode();
 TextEditingController userController = TextEditingController();
@@ -64,12 +64,20 @@ class LoginScreenState extends State<LoginScreen>
             MaterialPageRoute(
               builder: (context) =>
                   ChangePasswordScreen(username: userController.text,),
-            ));
+            )).then((_) => formKey.currentState.reset());
       } else {
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(
-              builder: (context) => HomeScreen(),
-            ));
+//        Navigator.pushReplacement(context,
+//            MaterialPageRoute(
+//              builder: (context) => HomeScreen(),
+//            )
+//        );
+        SchedulerBinding.instance.addPostFrameCallback((_) async {
+          Navigator.of(context).pushNamedAndRemoveUntil(
+              '/home',
+                  (Route<dynamic> route) => false)
+              .then((_) => formKey.currentState.reset());
+          ;
+        });
       }
     }
   }

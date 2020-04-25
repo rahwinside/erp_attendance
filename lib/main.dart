@@ -1,13 +1,39 @@
+import 'package:attendance/routes.dart';
 import 'package:attendance/screens/home/home_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 
 GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
 
-void main() {
-  runApp(new MyApp());
+void main() async {
+  // Set default home.
+//  Widget _defaultHome = new LoginScreen();
+//
+//  // Get result of the login function.
+//  var db = new DatabaseHelper();
+//  bool _result = await db.isLoggedIn();
+//  if (_result) {
+//    _defaultHome = new HomeScreen();
+//  }
+  runApp(
+    Phoenix(
+      child: new MaterialApp(
+        title: 'Communicator',
+        theme: new ThemeData(
+          primarySwatch: Colors.deepPurple,
+          primaryColor: Colors.deepPurple,
+          accentColor: Colors.deepPurpleAccent,
+          canvasColor: const Color(0xFFfafafa),
+        ),
+//        home: _defaultHome,
+        routes: routes,
+//      home: new HomeScreen(),
+      ),
+    ),
+  );
 }
 
-class MyApp extends StatelessWidget {
+class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
@@ -18,8 +44,8 @@ class MyApp extends StatelessWidget {
         accentColor: Colors.deepPurpleAccent,
         canvasColor: const Color(0xFFfafafa),
       ),
-//      routes: routes,
-      home: new HomeScreen(),
+      routes: routes,
+//      home: new HomeScreen(),
     );
   }
 }

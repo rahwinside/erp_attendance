@@ -3,6 +3,7 @@ import 'package:attendance/data/database_helper.dart';
 import 'package:attendance/models/user.dart';
 import 'package:attendance/screens/home/AttendanceFragment.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 
 import 'home_screen_presenter.dart';
 
@@ -16,10 +17,10 @@ class DrawerItem {
 class HomeScreen extends StatefulWidget {
   final drawerItems = [
     new DrawerItem("Attendance", Icons.access_alarms),
-    new DrawerItem("Reports", Icons.report),
+    new DrawerItem("Reports", Icons.find_in_page),
     new DrawerItem("Settings", Icons.settings),
     new DrawerItem("About", Icons.info),
-    new DrawerItem("Log out", Icons.close),
+    new DrawerItem("Log out", Icons.exit_to_app),
   ];
 
   @override
@@ -57,47 +58,47 @@ class HomeScreenState extends State<HomeScreen>
         return new Text("Error");
       case 2:
         return new Text("Error");
-      case 3:
-        _logout();
-        return Center(
-          child: Text(
-            "Logging out...",
-            style: TextStyle(
-              fontFamily: "Poppins",
-              fontWeight: FontWeight.w300,
-              fontSize: 20,
-            ),
-          ),
-        );
-//        return AlertDialog(
-//          title: Text('Log out'),
-//          content: SingleChildScrollView(
-//            child: ListBody(
-//              children: <Widget>[
-//                Text('Do you want to log out of Communicator?'),
-//              ],
+      case 4:
+//        _logout();
+//        return Center(
+//          child: Text(
+//            "Logging out...",
+//            style: TextStyle(
+//              fontFamily: "Poppins",
+//              fontWeight: FontWeight.w300,
+//              fontSize: 20,
 //            ),
 //          ),
-//          actions: <Widget>[
-//            FlatButton(
-//              child: Text(
-//                'No',
-//                style: TextStyle(
-//                  color: Colors.black38,
-//                ),
-//              ),
-//              onPressed: () {
-//                Navigator.of(_ctx).pushReplacementNamed("/home");
-//              },
-//            ),
-//            FlatButton(
-//              child: Text('Yes'),
-//              onPressed: () {
-//                _logout();
-//              },
-//            ),
-//          ],
 //        );
+        return AlertDialog(
+          title: Text('Log out'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('Do you want to log out of Communicator?'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text(
+                'No',
+                style: TextStyle(
+                  color: Colors.black38,
+                ),
+              ),
+              onPressed: () {
+                Navigator.of(_ctx).pushReplacementNamed("/home");
+              },
+            ),
+            FlatButton(
+              child: Text('Yes'),
+              onPressed: () {
+                _logout();
+              },
+            ),
+          ],
+        );
 
       default:
         return new Text("Error");
@@ -110,11 +111,35 @@ class HomeScreenState extends State<HomeScreen>
   }
 
   @override
+  onAuthStateChanged(AuthState state) {
+    if (state == AuthState.LOGGED_OUT) {
+      print(context.toString());
+      print(context.runtimeType);
+      SchedulerBinding.instance.addPostFrameCallback((_) async {
+        Navigator.of(context).pushNamedAndRemoveUntil(
+            '/',
+                (Route<dynamic> route) => false);
+//        Navigator.pop(context);
+//        Phoenix.rebirth(context);
+      }
+      );
+//      Navigator.pop(context);
+//      Phoenix.rebirth(context);
+//      Navigator.of(context).pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     _ctx = context;
     var drawerOptions = <Widget>[];
     for (var i = 0; i < widget.drawerItems.length; i++) {
       var d = widget.drawerItems[i];
+      if (i == 3) {
+        drawerOptions.add(
+          const Divider(height: 1.0, color: Colors.grey),
+        );
+      }
       drawerOptions.add(
           new ListTile(
             leading: new Icon(d.icon),
@@ -179,15 +204,6 @@ class HomeScreenState extends State<HomeScreen>
       _deptText = 'There was an error retrieving your info';
       _picURL = 'There was an error retrieving your info';
     });
-  }
-
-  @override
-  onAuthStateChanged(AuthState state) {
-    if (state == AuthState.LOGGED_OUT) {
-      print(context.toString());
-      print(context.runtimeType);
-      Navigator.pushNamedAndRemoveUntil(context, '/login', (context) => false);
-    }
   }
 
   Future<void> _logout() async {
