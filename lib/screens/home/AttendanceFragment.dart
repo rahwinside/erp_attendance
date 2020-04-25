@@ -2,6 +2,7 @@ import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+final scaffoldKey = new GlobalKey<ScaffoldState>();
 final List<String> department = <String>[
   "Information Technology",
   "Computer Science and Engineering",
@@ -86,6 +87,7 @@ class _AttendanceFragmentState extends State<AttendanceFragment> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
+      key: scaffoldKey,
       body: new SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
         child: new Column(

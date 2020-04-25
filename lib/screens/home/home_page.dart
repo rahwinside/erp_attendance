@@ -2,6 +2,7 @@ import 'package:attendance/auth.dart';
 import 'package:attendance/data/database_helper.dart';
 import 'package:attendance/models/user.dart';
 import 'package:attendance/screens/home/AttendanceFragment.dart';
+import 'package:attendance/screens/home/settings/SettingsFragment.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
@@ -57,6 +58,8 @@ class HomeScreenState extends State<HomeScreen>
       case 1:
         return new Text("Error");
       case 2:
+        return new SettingsFragment();
+      case 3:
         return new Text("Error");
       case 4:
 //        _logout();

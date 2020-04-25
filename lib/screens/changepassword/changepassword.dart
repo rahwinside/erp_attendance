@@ -63,7 +63,7 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen>
   @override
   Widget build(BuildContext context) {
     _ctx = context;
-    var loginBtn = Padding(
+    var updateBtn = Padding(
       padding: EdgeInsets.only(top: 5),
       child: RaisedButton(
         onPressed: _submit,
@@ -224,7 +224,7 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen>
                         ? Padding(
                             padding: EdgeInsets.only(left: 5),
                             child: new CircularProgressIndicator())
-                        : loginBtn,
+                        : updateBtn,
                     Padding(
                       padding: EdgeInsets.only(top: 10),
                     ),
