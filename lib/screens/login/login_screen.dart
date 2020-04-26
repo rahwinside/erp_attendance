@@ -24,6 +24,8 @@ class LoginScreenState extends State<LoginScreen>
     implements LoginScreenContract, AuthStateListener {
 
   BuildContext _ctx;
+  Image licetLogo;
+  AssetImage backgroundImage = new AssetImage("images/landing.jpg");
 
   bool _isLoading = false;
   final formKey = new GlobalKey<FormState>();
@@ -52,6 +54,24 @@ class LoginScreenState extends State<LoginScreen>
   void _showSnackBar(String text) {
     scaffoldKey.currentState
         .showSnackBar(new SnackBar(content: new Text(text)));
+  }
+
+  @override
+  void initState() {
+    licetLogo = Image.asset(
+      "images/licetlogo.png",
+      fit: BoxFit.fill,
+      width: 100.0,
+      height: 100.0,
+    );
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() async {
+    await precacheImage(licetLogo.image, context);
+    await precacheImage(backgroundImage, context);
+    super.didChangeDependencies();
   }
 
   @override
@@ -112,7 +132,7 @@ class LoginScreenState extends State<LoginScreen>
           child: new Container(
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage("images/landing.jpg"),
+                image: backgroundImage,
                 fit: BoxFit.cover,
               ),
             ),
@@ -132,12 +152,7 @@ class LoginScreenState extends State<LoginScreen>
                   children: <Widget>[
                     new Row(
                       children: <Widget>[
-                        new Image.asset(
-                          'images/licetlogo.png',
-                          fit: BoxFit.fill,
-                          width: 100.0,
-                          height: 100.0,
-                        ),
+                        licetLogo,
                         new Text(
                           " Communicator",
                           style: new TextStyle(
@@ -294,7 +309,7 @@ class LoginScreenState extends State<LoginScreen>
 
   @override
   void onLoginError(String errorTxt) {
-    _showSnackBar(errorTxt);
+    _showSnackBar(errorTxt.substring(11));
     setState(() => _isLoading = false);
   }
 

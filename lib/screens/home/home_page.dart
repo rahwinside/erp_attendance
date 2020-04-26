@@ -40,6 +40,7 @@ class HomeScreenState extends State<HomeScreen>
   String _picURL = "https://weareeverywhere.in/images/profile-pictures/default.jpg";
 
   final scaffoldKey = new GlobalKey<ScaffoldState>();
+  final scaffoldKeyLogout = new GlobalKey<ScaffoldState>();
 
 
   HomeScreenState() {
@@ -73,34 +74,37 @@ class HomeScreenState extends State<HomeScreen>
 //            ),
 //          ),
 //        );
-        return AlertDialog(
-          title: Text('Log out'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text('Do you want to log out of Communicator?'),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            FlatButton(
-              child: Text(
-                'No',
-                style: TextStyle(
-                  color: Colors.black38,
-                ),
+        return Scaffold(
+          key: scaffoldKeyLogout,
+          body: AlertDialog(
+            title: Text('Log out'),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  Text('Do you want to log out of Communicator?'),
+                ],
               ),
-              onPressed: () {
-                Navigator.of(_ctx).pushReplacementNamed("/home");
-              },
             ),
-            FlatButton(
-              child: Text('Yes'),
-              onPressed: () {
-                _logout();
-              },
-            ),
-          ],
+            actions: <Widget>[
+              FlatButton(
+                child: Text(
+                  'No',
+                  style: TextStyle(
+                    color: Colors.black38,
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.of(_ctx).pushReplacementNamed("/home");
+                },
+              ),
+              FlatButton(
+                child: Text('Yes'),
+                onPressed: () {
+                  _logout();
+                },
+              ),
+            ],
+          ),
         );
 
       default:
