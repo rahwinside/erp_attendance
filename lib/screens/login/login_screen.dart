@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:attendance/auth.dart';
 import 'package:attendance/data/database_helper.dart';
 import 'package:attendance/models/user.dart';
-import 'package:attendance/screens/changepassword/changepassword.dart';
 import 'package:attendance/screens/login/login_screen_presenter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -80,11 +79,12 @@ class LoginScreenState extends State<LoginScreen>
       print(context.toString());
       print(context.runtimeType);
       if (passController.text == "licet@123") {
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(
-              builder: (context) =>
-                  ChangePasswordScreen(username: userController.text,),
-            )).then((_) => formKey.currentState.reset());
+        SchedulerBinding.instance.addPostFrameCallback((_) async {
+          Navigator.of(context).pushNamedAndRemoveUntil(
+              '/changePassword',
+                  (Route<dynamic> route) => false)
+              .then((_) => formKey.currentState.reset());
+        });
       } else {
 //        Navigator.pushReplacement(context,
 //            MaterialPageRoute(
@@ -315,7 +315,7 @@ class LoginScreenState extends State<LoginScreen>
 
   @override
   void onLoginSuccess(User user) async {
-    _showSnackBar(user.toString());
+    _showSnackBar("Logged in");
     setState(() => _isLoading = false);
     var db = new DatabaseHelper();
     await db.saveUser(user);

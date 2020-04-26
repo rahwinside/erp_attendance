@@ -6,6 +6,7 @@ import 'package:attendance/screens/home/settings/SettingsFragment.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
+import 'about/AboutFragment.dart';
 import 'home_screen_presenter.dart';
 
 class DrawerItem {
@@ -61,7 +62,7 @@ class HomeScreenState extends State<HomeScreen>
       case 2:
         return new SettingsFragment();
       case 3:
-        return new Text("Error");
+        return new AboutFragment();
       case 4:
 //        _logout();
 //        return Center(

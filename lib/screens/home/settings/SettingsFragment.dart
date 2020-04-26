@@ -254,7 +254,7 @@ class _SettingsFragmentState extends State<SettingsFragment>
 
   @override
   Future<void> onUpdateSuccess(User user) async {
-    _showSnackBar(user.toString());
+    _showSnackBar("Password has been updated");
     setState(() => _isLoading = false);
     var db = new DatabaseHelper();
     await db.saveUser(user);
