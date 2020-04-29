@@ -108,6 +108,19 @@ class AboutFragment extends StatelessWidget {
                 ),
               ),
             ),
+            Flexible(
+              child: Text(
+                "version 1.0.0 alpha",
+                style: TextStyle(
+                  color: Colors.black,
+                  fontFamily: 'Poppins',
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 20),
+            ),
             Wrap(
               children: <Widget>[
                 Text(
