@@ -18,8 +18,10 @@ class DrawerItem {
 
 class HomeScreen extends StatefulWidget {
   final drawerItems = [
-    new DrawerItem("Attendance", Icons.access_alarms),
-    new DrawerItem("Reports", Icons.find_in_page),
+    new DrawerItem("Home", Icons.home),
+    new DrawerItem("Attendance", Icons.check),
+    new DrawerItem("Views", Icons.calendar_today),
+    new DrawerItem("Export", Icons.find_in_page),
     new DrawerItem("Settings", Icons.settings),
     new DrawerItem("About", Icons.info),
     new DrawerItem("Log out", Icons.exit_to_app),
@@ -55,15 +57,15 @@ class HomeScreenState extends State<HomeScreen>
 
   _getDrawerItemWidget(int pos) {
     switch (pos) {
-      case 0:
-        return new AttendanceFragment();
       case 1:
-        return new Text("Error");
+        return new AttendanceFragment();
       case 2:
-        return new SettingsFragment();
-      case 3:
-        return new AboutFragment();
+        return new Text("Error");
       case 4:
+        return new SettingsFragment();
+      case 5:
+        return new AboutFragment();
+      case 6:
 //        _logout();
 //        return Center(
 //          child: Text(
@@ -143,7 +145,7 @@ class HomeScreenState extends State<HomeScreen>
     var drawerOptions = <Widget>[];
     for (var i = 0; i < widget.drawerItems.length; i++) {
       var d = widget.drawerItems[i];
-      if (i == 3) {
+      if (i == 5) {
         drawerOptions.add(
           const Divider(height: 1.0, color: Colors.grey),
         );
