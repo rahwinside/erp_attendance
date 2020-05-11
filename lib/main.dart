@@ -6,18 +6,10 @@ import 'package:flutter_phoenix/flutter_phoenix.dart';
 GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
 
 void main() async {
-  // Set default home.
-//  Widget _defaultHome = new LoginScreen();
-//
-//  // Get result of the login function.
-//  var db = new DatabaseHelper();
-//  bool _result = await db.isLoggedIn();
-//  if (_result) {
-//    _defaultHome = new HomeScreen();
-//  }
   runApp(
     Phoenix(
       child: new MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Communicator',
         theme: new ThemeData(
           primarySwatch: Colors.deepPurple,

@@ -85,7 +85,7 @@ class AboutFragment extends StatelessWidget {
                     ),
                   ),
                   TextSpan(
-                    text: '. It was made possible by the closed-source Mer project and the MixSpace project.',
+                    text: '. It was made possible by the open-source Mer project and the closed-source MixSpace project.',
                     style: TextStyle(
                       color: Colors.black,
                       fontFamily: 'Poppins',
@@ -131,6 +131,42 @@ class AboutFragment extends StatelessWidget {
                     fontWeight: FontWeight.w600,
                   ),
                 ),
+//                Text(
+//                  "Mer Community",
+//                  style: TextStyle(
+//                    color: Colors.deepPurple,
+//                    fontFamily: 'Poppins',
+//                    fontWeight: FontWeight.w600,
+//                  ),
+//                ),
+//                Text(
+//                  " | ",
+//                  style: TextStyle(
+//                    color: Colors.black,
+//                    fontFamily: 'Poppins',
+//                    fontWeight: FontWeight.w600,
+//                  ),
+//                ),
+                Text(
+                  "MixSpace Internet Services",
+                  style: TextStyle(
+                    color: Colors.deepPurple,
+                    fontFamily: 'Poppins',
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+            Wrap(
+              children: <Widget>[
+                Text(
+                  "© 2020 ",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontFamily: 'Poppins',
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
                 Text(
                   "Mer Community",
                   style: TextStyle(
@@ -140,19 +176,11 @@ class AboutFragment extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  " | ",
+                  "Under GNU General Public License 2.0",
                   style: TextStyle(
                     color: Colors.black,
                     fontFamily: 'Poppins',
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                Text(
-                  "MixSpace Internet Services",
-                  style: TextStyle(
-                    color: Colors.deepPurple,
-                    fontFamily: 'Poppins',
-                    fontWeight: FontWeight.w600,
+                    fontWeight: FontWeight.w400,
                   ),
                 ),
               ],
