@@ -147,6 +147,8 @@ class _AttendanceFragmentState extends State<AttendanceFragment>
 
   _AttendanceFragmentState() {
 //    resetUsers();
+    messageController.text = "";
+
     _presenter = new AttendanceFragmentPresenter(this);
     var db = new DatabaseHelper();
     db.getFirstUser().then((User user) {
@@ -327,7 +329,7 @@ class _AttendanceFragmentState extends State<AttendanceFragment>
                 children: <Widget>[
                   new Padding(padding: EdgeInsets.only(top: 5.0)),
                   new Text(
-                    messageController.text + ".",
+                    messageController.text,
                     style: TextStyle(
                       fontFamily: "Poppins",
                       fontWeight: FontWeight.w400,
@@ -351,7 +353,7 @@ class _AttendanceFragmentState extends State<AttendanceFragment>
   void onFetchError(String errorTxt) {
     buttonActive = false;
     _showSnackBar(errorTxt.substring(11));
-    messageController.text = errorTxt.substring(11);
+    messageController.text = errorTxt.substring(11) + ".";
     setState(() {});
     // TODO: implement onFetchError
   }
