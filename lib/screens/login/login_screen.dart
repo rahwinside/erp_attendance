@@ -1,11 +1,14 @@
 import 'dart:ui';
 
 import 'package:attendance/auth.dart';
+import 'package:attendance/data/authAPI_rest_ds.dart';
 import 'package:attendance/data/database_helper.dart';
 import 'package:attendance/models/user.dart';
 import 'package:attendance/screens/login/login_screen_presenter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+
+String username, auth_token;
 
 FocusNode _focusNode = FocusNode();
 TextEditingController userController = TextEditingController();
@@ -21,7 +24,6 @@ class LoginScreen extends StatefulWidget {
 
 class LoginScreenState extends State<LoginScreen>
     implements LoginScreenContract, AuthStateListener {
-
   BuildContext _ctx;
   Image licetLogo;
   AssetImage backgroundImage = new AssetImage("images/landing.jpg");
@@ -78,30 +80,53 @@ class LoginScreenState extends State<LoginScreen>
     if (state == AuthState.LOGGED_IN) {
       print(context.toString());
       print(context.runtimeType);
-      if (passController.text == "licet@123") {
-        SchedulerBinding.instance.addPostFrameCallback((_) async {
-          Navigator.of(context).pushNamedAndRemoveUntil(
-              '/changePassword',
-                  (Route<dynamic> route) => false)
-              .then((_) => formKey.currentState.reset());
+//      checkForAuthStatus().then
+
+      AuthRestDataSource api = new AuthRestDataSource();
+      var db = new DatabaseHelper();
+      db.getFirstUser().then((User user) {
+        username = user.username;
+        auth_token = user.auth_token;
+        print(username + auth_token);
+        api.auth(username, auth_token).then((bool res) {
+          print(res.toString());
+          print(res.runtimeType);
+          if (res) {
+            if (passController.text == "licet@123") {
+              SchedulerBinding.instance.addPostFrameCallback((_) async {
+                Navigator.of(context)
+                    .pushNamedAndRemoveUntil(
+                    '/changePassword', (Route<dynamic> route) => false)
+                    .then((_) => formKey.currentState.reset());
+              });
+            } else {
+              SchedulerBinding.instance.addPostFrameCallback((_) async {
+                Navigator.of(context)
+                    .pushNamedAndRemoveUntil(
+                    '/home', (Route<dynamic> route) => false)
+                    .then((_) => formKey.currentState.reset());
+                ;
+              });
+            }
+          } else {
+            var db = new DatabaseHelper();
+            db.deleteUsers().then((dynamic val) {
+              var authStateProvider = new AuthStateProvider();
+              authStateProvider.notify(AuthState.LOGGED_OUT);
+            });
+          }
         });
-      } else {
-//        Navigator.pushReplacement(context,
-//            MaterialPageRoute(
-//              builder: (context) => HomeScreen(),
-//            )
-//        );
-        SchedulerBinding.instance.addPostFrameCallback((_) async {
-          Navigator.of(context).pushNamedAndRemoveUntil(
-              '/home',
-                  (Route<dynamic> route) => false)
-              .then((_) => formKey.currentState.reset());
-          ;
-        });
-      }
+      });
+    }
+    if (state == AuthState.LOGGED_OUT) {
+      print(context.toString());
+      print(context.runtimeType);
+      SchedulerBinding.instance.addPostFrameCallback((_) async {
+        Navigator.of(context)
+            .pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
+      });
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -163,7 +188,6 @@ class LoginScreenState extends State<LoginScreen>
                         ),
                       ],
                     ),
-
                     new Form(
                       key: formKey,
                       child: new Column(
@@ -252,8 +276,11 @@ class LoginScreenState extends State<LoginScreen>
                     Padding(
                       padding: EdgeInsets.only(top: 10),
                     ),
-                    _isLoading ? Padding(padding: EdgeInsets.only(left: 5),
-                        child: new CircularProgressIndicator()) : loginBtn,
+                    _isLoading
+                        ? Padding(
+                        padding: EdgeInsets.only(left: 5),
+                        child: new CircularProgressIndicator())
+                        : loginBtn,
                     Padding(
                       padding: EdgeInsets.only(top: 10),
                     ),
