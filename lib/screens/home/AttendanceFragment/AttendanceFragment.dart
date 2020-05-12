@@ -342,6 +342,5 @@ class _AttendanceFragmentState extends State<AttendanceFragment>
     } else {
       _showSnackBar("Invalid auth token or access level!");
     }
-    // TODO: implement onFetchSuccess
   }
 }

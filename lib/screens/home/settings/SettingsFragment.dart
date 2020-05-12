@@ -42,9 +42,10 @@ class _SettingsFragmentState extends State<SettingsFragment>
       var db = new DatabaseHelper();
       db.getFirstUser().then((User user) {
         username = user.username;
+//      print(username+oldPassController.text+newPassController1.text);
+        _presenter.doUpdate(
+            username, oldPassController.text, newPassController1.text);
       });
-      _presenter.doUpdate(
-          username, oldPassController.text, newPassController1.text);
     }
   }
 

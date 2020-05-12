@@ -6,6 +6,7 @@ import 'package:attendance/models/user.dart';
 import 'package:attendance/screens/changepassword/change_password_presenter.dart';
 import 'package:flutter/material.dart';
 
+var username = "";
 FocusNode _focusNode = FocusNode();
 TextEditingController newPassController = TextEditingController();
 TextEditingController newPassController2 = TextEditingController();
@@ -45,7 +46,13 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen>
     if (form.validate()) {
       setState(() => _isLoading = true);
       form.save();
-      _presenter.doUpdate(widget.username, "licet@123", newPassController.text);
+      var db = new DatabaseHelper();
+      db.getFirstUser().then((User user) {
+        username = user.username;
+        print(username + newPassController.text);
+        _presenter.doUpdate(
+            username, "licet@123", newPassController.text);
+      });
     }
   }
 
