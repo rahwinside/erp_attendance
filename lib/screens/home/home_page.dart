@@ -1,7 +1,7 @@
 import 'package:attendance/auth.dart';
 import 'package:attendance/data/database_helper.dart';
 import 'package:attendance/models/user.dart';
-import 'package:attendance/screens/home/AttendanceFragment.dart';
+import 'package:attendance/screens/home/AttendanceFragment/AttendanceFragment.dart';
 import 'package:attendance/screens/home/settings/SettingsFragment.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
