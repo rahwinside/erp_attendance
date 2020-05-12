@@ -68,6 +68,10 @@ TextEditingController deptController = new TextEditingController();
 TextEditingController yearController = new TextEditingController();
 TextEditingController semesterController = new TextEditingController();
 TextEditingController subjectController = new TextEditingController();
+TextEditingController messageController = new TextEditingController();
+
+//button is deactivated by default
+bool buttonActive = false;
 
 class AttendanceFragment extends StatefulWidget {
   AttendanceFragment({Key key}) : super(key: key);
@@ -135,6 +139,7 @@ class _AttendanceFragmentState extends State<AttendanceFragment>
         " - " +
         res["subject_name"].toString();
     hourSelected[int.parse(res["hour"]) - 1] = true;
+    messageController.text = "";
     setState(() {});
   }
 
@@ -306,7 +311,7 @@ class _AttendanceFragmentState extends State<AttendanceFragment>
               ),
               new RaisedButton(
                   key: null,
-                  onPressed: buttonPressed,
+                  onPressed: !buttonActive ? null : () => buttonPressed,
                   color: Colors.deepPurple,
                   splashColor: Colors.purple,
                   elevation: 5.0,
@@ -316,7 +321,20 @@ class _AttendanceFragmentState extends State<AttendanceFragment>
                       color: Colors.white,
                       fontFamily: 'Poppins',
                     ),
-                  ))
+                  )
+              ),
+              new Wrap(
+                children: <Widget>[
+                  new Padding(padding: EdgeInsets.only(top: 5.0)),
+                  new Text(
+                    messageController.text + ".",
+                    style: TextStyle(
+                      fontFamily: "Poppins",
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ],
+              ),
             ]),
       ),
     );
@@ -331,16 +349,24 @@ class _AttendanceFragmentState extends State<AttendanceFragment>
 
   @override
   void onFetchError(String errorTxt) {
-    _showSnackBar("Error: " + errorTxt);
+    buttonActive = false;
+    _showSnackBar(errorTxt.substring(11));
+    messageController.text = errorTxt.substring(11);
+    setState(() {});
     // TODO: implement onFetchError
   }
 
   @override
   void onFetchSuccess(res) {
+    buttonActive = true;
     if (res != "invalid-auth-or-access") {
       preselect(res);
-    } else {
-      _showSnackBar("Invalid auth token or access level!");
     }
+//    else if (res == "no-class") {
+//      _showSnackBar("No class scheduled for this hour");
+//    } else {
+//      _showSnackBar("Invalid auth token or access level!");
+//    }
+    setState(() {});
   }
 }

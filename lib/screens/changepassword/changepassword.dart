@@ -287,7 +287,7 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen>
 
   @override
   void onUpdateError(String errorTxt) {
-    _showSnackBar(errorTxt);
+    _showSnackBar(errorTxt.substring(12));
     setState(() => _isLoading = false);
   }
 
