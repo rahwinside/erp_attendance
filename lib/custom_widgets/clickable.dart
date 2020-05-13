@@ -19,34 +19,42 @@ class LabeledCheckbox extends StatelessWidget {
       onTap: () {
         onChanged(!value);
       },
-      child: Padding(
-        padding: padding,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Row(
-              children: <Widget>[
-                Expanded(
-                    child: Text(
-                      label,
-                      style: new TextStyle(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Container(
+            color: value ? Colors.green : Colors.red,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                children: <Widget>[
+                  Expanded(
+                      child: Text(
+                        label,
+                        style: new TextStyle(
                           fontFamily: "Poppins",
                           fontWeight: FontWeight.w400,
-                          color: value ? Colors.green : Colors.red
-                      ),
-                    )
-                ),
-                Checkbox(
-                  value: value,
-                  onChanged: (bool newValue) {
-                    onChanged(newValue);
-                  },
-                ),
-              ],
+                          color: Colors.white,
+                        ),
+                      )
+                  ),
+                  Checkbox(
+                    focusColor: Colors.orange,
+                    hoverColor: Colors.white12,
+                    checkColor: Colors.green,
+                    activeColor: Colors.white,
+                    value: value,
+                    onChanged: (bool newValue) {
+                      onChanged(newValue);
+                    },
+                  ),
+                ],
+              ),
             ),
-            new Divider(height: 1.0, color: Colors.grey),
-          ],
-        ),
+          ),
+          new Divider(height: 1.0, color: Colors.grey),
+        ],
       ),
     );
   }
