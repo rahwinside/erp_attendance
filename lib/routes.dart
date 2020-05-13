@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 final routes = {
   '/login': (BuildContext context) => new LoginScreen(),
+//  '/': (BuildContext context) => new NameClickable(),
   '/home': (BuildContext context) => new HomeScreen(),
   '/changePassword': (BuildContext context) => new ChangePasswordScreen(),
   '/': (BuildContext context) => new LoginScreen(),
