@@ -34,7 +34,8 @@ class LabeledCheckbox extends StatelessWidget {
                         label,
                         style: new TextStyle(
                           fontFamily: "Poppins",
-                          fontWeight: FontWeight.w400,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 18,
                           color: Colors.white,
                         ),
                       )
@@ -70,7 +71,7 @@ class NameClickable extends StatefulWidget {
 
 class _NameClickableState extends State<NameClickable> {
   List<Widget> list = new List<Widget>();
-  dynamic names = ["5040 | A", "5041 | B", "5042 | C"];
+  dynamic names = ["5040 | Navin C", "5041 | B", "5042 | C"];
   bool _isSelected = false;
 
   Column loopable() {
