@@ -1,217 +1,112 @@
 import 'package:flutter/material.dart';
 
-class NameClickable extends StatelessWidget {
+class LabeledCheckbox extends StatelessWidget {
+  const LabeledCheckbox({
+    this.label,
+    this.padding,
+    this.value,
+    this.onChanged,
+  });
+
+  final String label;
+  final EdgeInsets padding;
+  final bool value;
+  final Function onChanged;
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-          child: Padding(
-        padding: const EdgeInsets.all(20.0),
+    return InkWell(
+      onTap: () {
+        onChanged(!value);
+      },
+      child: Padding(
+        padding: padding,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Row(
               children: <Widget>[
-                Image.asset(
-                  "images/xstack.png",
-                  fit: BoxFit.fill,
-                  width: 75.0,
-                  height: 75.0,
-                ),
-                Padding(
-                  padding: EdgeInsets.only(right: 10),
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      "Communicator",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 23,
-                        fontFamily: 'Poppins',
-                        fontWeight: FontWeight.w600,
+                Expanded(
+                    child: Text(
+                      label,
+                      style: new TextStyle(
+                          fontFamily: "Poppins",
+                          fontWeight: FontWeight.w400,
+                          color: value ? Colors.green : Colors.red
                       ),
-                    ),
-                    Text(
-                      "for xStack",
-                      style: TextStyle(
-                        color: Colors.deepPurple,
-                        fontSize: 20,
-                        fontFamily: 'Poppins',
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ],
+                    )
+                ),
+                Checkbox(
+                  value: value,
+                  onChanged: (bool newValue) {
+                    onChanged(newValue);
+                  },
                 ),
               ],
             ),
-            Padding(
-              padding: EdgeInsets.only(top: 20),
-            ),
-            RichText(
-              text: TextSpan(
-                text:
-                    'xStack is an Enterprise Resource Planning software designed, built and maintained by ',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontFamily: 'Poppins',
-                  fontWeight: FontWeight.w600,
-                ),
-                children: <TextSpan>[
-                  TextSpan(
-                    text: 'Pon Rahul',
-                    style: TextStyle(
-                      color: Colors.deepPurple,
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  TextSpan(
-                    text: ' and ',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  TextSpan(
-                    text: 'Daniel Mark',
-                    style: TextStyle(
-                      color: Colors.deepPurple,
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  TextSpan(
-                    text:
-                        '. It was made possible by the open-source Mer project and the closed-source MixSpace project.',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: 20),
-            ),
-            Flexible(
-              child: Text(
-                "xStack Client: mer Mobile for Android",
-                style: TextStyle(
-                  color: Colors.black,
-                  fontFamily: 'Poppins',
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-            Flexible(
-              child: Text(
-                "version 1.0.0 alpha",
-                style: TextStyle(
-                  color: Colors.black,
-                  fontFamily: 'Poppins',
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: 20),
-            ),
-            Wrap(
-              children: <Widget>[
-                Text(
-                  "© 2020 ",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontFamily: 'Poppins',
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                Text(
-                  "MixSpace Internet Services",
-                  style: TextStyle(
-                    color: Colors.deepPurple,
-                    fontFamily: 'Poppins',
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ],
-            ),
-            Wrap(
-              children: <Widget>[
-                Text(
-                  "© 2020 ",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontFamily: 'Poppins',
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                Text(
-                  "Mer Community",
-                  style: TextStyle(
-                    color: Colors.deepPurple,
-                    fontFamily: 'Poppins',
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                Text(
-                  "Under GNU General Public License 2.0",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontFamily: 'Poppins',
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-              ],
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: 20),
-            ),
-            Flexible(
-              child: Text(
-                "Terms of use",
-                style: TextStyle(
-                  color: Colors.deepPurple,
-                  fontFamily: 'Poppins',
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: 20),
-            ),
-            Flexible(
-              child: Text(
-                "Privacy statement",
-                style: TextStyle(
-                  color: Colors.deepPurple,
-                  fontFamily: 'Poppins',
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: 20),
-            ),
-            Flexible(
-              child: Text(
-                "xStack services agreement",
-                style: TextStyle(
-                  color: Colors.deepPurple,
-                  fontFamily: 'Poppins',
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-            ),
+            new Divider(height: 1.0, color: Colors.grey),
           ],
         ),
-      )),
+      ),
+    );
+  }
+}
+
+class NameClickable extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return new _NameClickableState();
+  }
+}
+
+class _NameClickableState extends State<NameClickable> {
+  List<Widget> list = new List<Widget>();
+  dynamic names = ["5040 | A", "5041 | B", "5042 | C"];
+  bool _isSelected = false;
+
+  Column loopable() {
+    for (var i = 0; i < names.length; i++) {
+      list.add(
+          LabeledCheckbox(
+            label: names[i],
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            value: _isSelected,
+            onChanged: (bool newValue) {
+              setState(() {
+                _isSelected = newValue;
+              });
+            },
+          )
+      );
+    }
+    return new Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: list
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Clickable"),
+      ),
+      body: Center(
+          child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: LabeledCheckbox(
+                label: names[0],
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                value: _isSelected,
+                onChanged: (bool newValue) {
+                  setState(() {
+                    _isSelected = newValue;
+                  });
+                },
+              )
+          )),
     );
   }
 }
