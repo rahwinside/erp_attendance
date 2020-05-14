@@ -10,48 +10,6 @@ var username = "";
 var auth_token = "";
 
 final scaffoldKey = new GlobalKey<ScaffoldState>();
-final List<String> department = <String>[
-  "Information Technology",
-  "Computer Science and Engineering",
-  "Electrical and Electronics Engineering",
-  "Electronics and Communication Engineering",
-  "Mechanical Engineering",
-];
-
-final List<String> year = <String>[
-  "I",
-  "II",
-  "III",
-  "IV",
-];
-
-final List<String> year1 = <String>[
-  "01",
-  "02",
-];
-final List<String> year2 = <String>[
-  "03",
-  "04",
-];
-final List<String> year3 = <String>[
-  "05",
-  "06",
-];
-final List<String> year4 = <String>[
-  "07",
-  "08",
-];
-
-final List<String> subject = <String>[
-  "Waiting for API Endpoint",
-  "Waiting for API",
-];
-
-var _valueSem = "01";
-var _valueDept = "Information Technology";
-var _valueYear = "I";
-var _valueSubject = "Waiting for API Endpoint";
-var _season = "even";
 
 final dateFormat = DateFormat("EEEE, MMMM d, yyyy");
 final List<bool> hourSelected = [
@@ -72,7 +30,7 @@ TextEditingController semesterController = new TextEditingController();
 TextEditingController subjectController = new TextEditingController();
 TextEditingController messageController = new TextEditingController();
 
-//button is deactivated by default
+// takeAttendance button is deactivated by default
 bool buttonActive = false;
 
 class AttendanceFragment extends StatefulWidget {
@@ -80,7 +38,6 @@ class AttendanceFragment extends StatefulWidget {
 
   @override
   _AttendanceFragmentState createState() {
-//    preselect();
     return new _AttendanceFragmentState();
   }
 }
@@ -191,10 +148,6 @@ class _AttendanceFragmentState extends State<AttendanceFragment>
               ),
               Container(
                   padding: EdgeInsets.only(left: 5, right: 5),
-//                decoration: new BoxDecoration(
-//                  border: new Border.all(color: Colors.black38),
-//                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
-//                ),
                   child: new TextField(
                     enabled: false,
                     controller: deptController,
@@ -346,7 +299,6 @@ class _AttendanceFragmentState extends State<AttendanceFragment>
   }
 
   void buttonPressed() {
-    print("swapping");
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => StudentListFragment()));
   }
@@ -371,11 +323,6 @@ class _AttendanceFragmentState extends State<AttendanceFragment>
     if (res != "invalid-auth-or-access") {
       preselect(res);
     }
-//    else if (res == "no-class") {
-//      _showSnackBar("No class scheduled for this hour");
-//    } else {
-//      _showSnackBar("Invalid auth token or access level!");
-//    }
     setState(() {
       buttonActive = true;
     });
