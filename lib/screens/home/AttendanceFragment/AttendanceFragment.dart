@@ -4,6 +4,8 @@ import 'package:attendance/screens/home/AttendanceFragment/attendance_presenter.
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import 'StudentListFragment.dart';
+
 var username = "";
 var auth_token = "";
 
@@ -313,7 +315,8 @@ class _AttendanceFragmentState extends State<AttendanceFragment>
               ),
               new RaisedButton(
                   key: null,
-                  onPressed: !buttonActive ? null : () => buttonPressed,
+                  onPressed: !buttonActive ? null : buttonPressed,
+//                  onPressed: buttonPressed,
                   color: Colors.deepPurple,
                   splashColor: Colors.purple,
                   elevation: 5.0,
@@ -342,7 +345,11 @@ class _AttendanceFragmentState extends State<AttendanceFragment>
     );
   }
 
-  void buttonPressed() {}
+  void buttonPressed() {
+    print("swapping");
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => StudentListFragment()));
+  }
 
   void _showSnackBar(String text) {
     scaffoldKey.currentState
@@ -351,16 +358,16 @@ class _AttendanceFragmentState extends State<AttendanceFragment>
 
   @override
   void onFetchError(String errorTxt) {
-    buttonActive = false;
     _showSnackBar(errorTxt.substring(11));
     messageController.text = errorTxt.substring(11) + ".";
-    setState(() {});
+    setState(() {
+      buttonActive = false;
+    });
     // TODO: implement onFetchError
   }
 
   @override
   void onFetchSuccess(res) {
-    buttonActive = true;
     if (res != "invalid-auth-or-access") {
       preselect(res);
     }
@@ -369,6 +376,8 @@ class _AttendanceFragmentState extends State<AttendanceFragment>
 //    } else {
 //      _showSnackBar("Invalid auth token or access level!");
 //    }
-    setState(() {});
+    setState(() {
+      buttonActive = true;
+    });
   }
 }
