@@ -1,4 +1,10 @@
+import 'package:attendance/data/database_helper.dart';
+import 'package:attendance/models/user.dart';
+import 'package:attendance/screens/home/AttendanceFragment/student_presenter.dart';
 import 'package:flutter/material.dart';
+
+var username = "";
+var auth_token = "";
 
 class LabeledCheckbox extends StatelessWidget {
   const LabeledCheckbox({
@@ -31,14 +37,14 @@ class LabeledCheckbox extends StatelessWidget {
                 children: <Widget>[
                   Expanded(
                       child: Text(
-                    label,
-                    style: new TextStyle(
-                      fontFamily: "Poppins",
-                      fontWeight: FontWeight.w600,
-                      fontSize: 18,
-                      color: Colors.white,
-                    ),
-                  )),
+                        label,
+                        style: new TextStyle(
+                          fontFamily: "Poppins",
+                          fontWeight: FontWeight.w600,
+                          fontSize: 18,
+                          color: Colors.white,
+                        ),
+                      )),
                   Checkbox(
                     focusColor: Colors.orange,
                     hoverColor: Colors.white12,
@@ -61,6 +67,14 @@ class LabeledCheckbox extends StatelessWidget {
 }
 
 class StudentListFragment extends StatefulWidget {
+  final String timestamp;
+
+  // constructor
+  StudentListFragment({
+    Key key,
+    @required this.timestamp,
+  }) : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
@@ -68,20 +82,37 @@ class StudentListFragment extends StatefulWidget {
   }
 }
 
-class _StudentListFragmentState extends State<StudentListFragment> {
+class _StudentListFragmentState extends State<StudentListFragment>
+    implements StudentListFragmentContract {
   List<Widget> list = new List<Widget>();
-  dynamic names = ["5040 | Navin C", "5041 | B", "5042 | C"];
-  bool _isSelected = false;
+  dynamic names = [];
+  dynamic rolls = [];
+  dynamic _isSelected = [];
+
+
+  StudentListFragmentPresenter _presenter;
+
+  _StudentListFragmentState() {
+    _presenter = new StudentListFragmentPresenter(this);
+    var db = new DatabaseHelper();
+    db.getFirstUser().then((User user) {
+      username = user.username;
+      auth_token = user.auth_token;
+      _presenter.doFetch(username, auth_token, "dummytimestamp");
+    });
+  }
+
 
   Column loopable() {
+    list.clear();
     for (var i = 0; i < names.length; i++) {
       list.add(LabeledCheckbox(
-        label: names[i],
+        label: rolls[i] + " | " + names[i],
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
-        value: _isSelected,
+        value: _isSelected[i],
         onChanged: (bool newValue) {
           setState(() {
-            _isSelected = newValue;
+            _isSelected[i] = newValue;
           });
         },
       ));
@@ -92,25 +123,40 @@ class _StudentListFragmentState extends State<StudentListFragment> {
         children: list);
   }
 
+  list_adapter(dynamic res) {
+    res.forEach((student) {
+      rolls.add(student["register_no"].toString().substring(8));
+      names.add(student["full_name"].toString());
+      _isSelected.add(false);
+    });
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Clickable"),
+        title: Text("Mark Attendance"),
       ),
       body: Center(
           child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: LabeledCheckbox(
-                label: names[0],
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                value: _isSelected,
-                onChanged: (bool newValue) {
-                  setState(() {
-                    _isSelected = newValue;
-                  });
-                },
-              ))),
+            padding: const EdgeInsets.all(20.0),
+            child: SingleChildScrollView(child: loopable()),
+          )
+      ),
     );
+  }
+
+  @override
+  void onFetchError(String errorTxt) {
+    // TODO: implement onFetchError
+    print(errorTxt);
+  }
+
+  @override
+  void onFetchSuccess(dynamic res) {
+//    print(res.toString());
+    print(res.runtimeType);
+    list_adapter(res);
   }
 }
