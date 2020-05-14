@@ -8,13 +8,15 @@ var auth_token = "";
 
 class LabeledCheckbox extends StatelessWidget {
   const LabeledCheckbox({
-    this.label,
+    this.labelname,
+    this.labelroll,
     this.padding,
     this.value,
     this.onChanged,
   });
 
-  final String label;
+  final String labelname;
+  final String labelroll;
   final EdgeInsets padding;
   final bool value;
   final Function onChanged;
@@ -28,34 +30,67 @@ class LabeledCheckbox extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Container(
-            color: value ? Colors.green : Colors.red,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                children: <Widget>[
-                  Expanded(
-                      child: Text(
-                        label,
-                        style: new TextStyle(
-                          fontFamily: "Poppins",
-                          fontWeight: FontWeight.w600,
-                          fontSize: 18,
-                          color: Colors.white,
-                        ),
-                      )),
-                  Checkbox(
-                    focusColor: Colors.orange,
-                    hoverColor: Colors.white12,
-                    checkColor: Colors.green,
-                    activeColor: Colors.white,
-                    value: value,
-                    onChanged: (bool newValue) {
-                      onChanged(newValue);
-                    },
-                  ),
-                ],
+          Padding(
+            padding: EdgeInsets.only(bottom: 2),
+            child: Container(
+              decoration: BoxDecoration(
+                color: value ? Colors.green : Colors.red,
+                borderRadius: BorderRadius.circular(2),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: <Widget>[
+                    Expanded(
+                        child: Row(
+                          children: <Widget>[
+                            Expanded(
+                              flex: 1,
+                              child: Container(
+//                              color: Colors.deepPurple,
+                                child: Text(
+                                  labelroll,
+                                  style: new TextStyle(
+                                    fontFamily: "Poppins",
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 17,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                width: MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width / 8,
+                              ),
+                            ),
+                            Wrap(
+                              children: <Widget>[
+                                Text(
+                                  labelname,
+                                  style: new TextStyle(
+                                    fontFamily: "Poppins",
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 17,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        )),
+                    Checkbox(
+                      focusColor: Colors.orange,
+                      hoverColor: Colors.white12,
+                      checkColor: Colors.green,
+                      activeColor: Colors.white,
+                      value: value,
+                      onChanged: (bool newValue) {
+                        onChanged(newValue);
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -85,9 +120,11 @@ class StudentListFragment extends StatefulWidget {
 class _StudentListFragmentState extends State<StudentListFragment>
     implements StudentListFragmentContract {
   List<Widget> list = new List<Widget>();
-  dynamic names = [];
-  dynamic rolls = [];
-  dynamic _isSelected = [];
+  List upload_list = [];
+  List names = [];
+  List rolls = [];
+  List full_rolls = [];
+  List _isSelected = [];
 
 
   StudentListFragmentPresenter _presenter;
@@ -107,7 +144,8 @@ class _StudentListFragmentState extends State<StudentListFragment>
     list.clear();
     for (var i = 0; i < names.length; i++) {
       list.add(LabeledCheckbox(
-        label: rolls[i] + " | " + names[i],
+        labelroll: rolls[i],
+        labelname: names[i],
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         value: _isSelected[i],
         onChanged: (bool newValue) {
@@ -125,11 +163,24 @@ class _StudentListFragmentState extends State<StudentListFragment>
 
   list_adapter(dynamic res) {
     res.forEach((student) {
+      full_rolls.add(student["register_no"].toString());
       rolls.add(student["register_no"].toString().substring(8));
       names.add(student["full_name"].toString());
       _isSelected.add(false);
     });
     setState(() {});
+  }
+
+  void upload() {
+    upload_list.clear();
+    print(rolls.length);
+    for (var i = 0; i < rolls.length; i++) {
+      String x = '{register_no: "' + full_rolls[i].toString() +
+          '", full_name: "' + names[i] + '", status: ' +
+          (_isSelected[i] ? "1" : "0") + "}";
+      upload_list.add(x.toString());
+    }
+    print(upload_list.toString());
   }
 
   @override
@@ -138,11 +189,34 @@ class _StudentListFragmentState extends State<StudentListFragment>
       appBar: AppBar(
         title: Text("Mark Attendance"),
       ),
-      body: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: SingleChildScrollView(child: loopable()),
-          )
+      body: Padding(
+        padding: const EdgeInsets.only(
+            top: 10.0, left: 15, right: 15, bottom: 10),
+        child: Column(
+          children: <Widget>[
+            Expanded(
+              flex: 9,
+              child: SingleChildScrollView(
+                  child: loopable()
+              ),
+            ),
+            new RaisedButton(
+                key: null,
+                onPressed: upload,
+//                  onPressed: buttonPressed,
+                color: Colors.deepPurple,
+                splashColor: Colors.purple,
+                elevation: 5.0,
+                child: new Text(
+                  "Upload",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: 'Poppins',
+                  ),
+                )
+            ),
+          ],
+        ),
       ),
     );
   }
