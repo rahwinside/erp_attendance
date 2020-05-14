@@ -125,7 +125,7 @@ class _StudentListFragmentState extends State<StudentListFragment>
   List rolls = [];
   List full_rolls = [];
   List _isSelected = [];
-
+  bool uploadActive = false;
 
   StudentListFragmentPresenter _presenter;
 
@@ -168,6 +168,7 @@ class _StudentListFragmentState extends State<StudentListFragment>
       names.add(student["full_name"].toString());
       _isSelected.add(false);
     });
+    uploadActive = true;
     setState(() {});
   }
 
@@ -193,6 +194,7 @@ class _StudentListFragmentState extends State<StudentListFragment>
         padding: const EdgeInsets.only(
             top: 10.0, left: 15, right: 15, bottom: 10),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Expanded(
               flex: 9,
@@ -200,20 +202,22 @@ class _StudentListFragmentState extends State<StudentListFragment>
                   child: loopable()
               ),
             ),
-            new RaisedButton(
-                key: null,
-                onPressed: upload,
+            Center(
+              child: new RaisedButton(
+                  key: null,
+                  onPressed: uploadActive ? upload : null,
 //                  onPressed: buttonPressed,
-                color: Colors.deepPurple,
-                splashColor: Colors.purple,
-                elevation: 5.0,
-                child: new Text(
-                  "Upload",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontFamily: 'Poppins',
-                  ),
-                )
+                  color: Colors.deepPurple,
+                  splashColor: Colors.purple,
+                  elevation: 5.0,
+                  child: new Text(
+                    "Upload",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: 'Poppins',
+                    ),
+                  )
+              ),
             ),
           ],
         ),
