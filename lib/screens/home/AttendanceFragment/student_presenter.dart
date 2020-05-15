@@ -12,9 +12,9 @@ class StudentListFragmentPresenter {
 
   StudentListFragmentPresenter(this._view);
 
-  doFetch(String username, String auth_token, String timestamp) {
+  doFetch(String username, String auth_token, String pk_table) {
     print(username + " " + auth_token);
-    api.fetch(username, auth_token, timestamp).then((dynamic res) {
+    api.fetch(username, auth_token, pk_table).then((dynamic res) {
       _view.onFetchSuccess(res);
     }).catchError((Object error) => _view.onFetchError(error.toString()));
   }

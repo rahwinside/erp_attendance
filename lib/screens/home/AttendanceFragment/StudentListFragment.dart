@@ -34,9 +34,21 @@ class LabeledCheckbox extends StatelessWidget {
             padding: EdgeInsets.only(bottom: 2),
             child: Container(
               decoration: BoxDecoration(
-                color: value ? Colors.green : Colors.red,
-                borderRadius: BorderRadius.circular(2),
+                gradient: value ? LinearGradient(
+                  begin: Alignment(-0.97, 0.24),
+                  end: Alignment(-0.35, 0.21),
+                  colors: [const Color(0xff38837b), const Color(0xff2ac0b1)],
+                  stops: [0.0, 1.0],
+                ) : LinearGradient(
+                  begin: Alignment(-0.97, 0.24),
+                  end: Alignment(-0.35, 0.21),
+                  colors: [const Color(0xffa8193d), const Color(0xffff3366)],
+                  stops: [0.0, 1.0],
+                ),
+                borderRadius: BorderRadius.circular(5),
               ),
+
+
               child: Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: Row(
@@ -102,18 +114,18 @@ class LabeledCheckbox extends StatelessWidget {
 }
 
 class StudentListFragment extends StatefulWidget {
-  final String timestamp;
+  final String pk_table;
 
   // constructor
   StudentListFragment({
     Key key,
-    @required this.timestamp,
+    @required this.pk_table,
   }) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return new _StudentListFragmentState();
+    return new _StudentListFragmentState(pk_table);
   }
 }
 
@@ -126,16 +138,18 @@ class _StudentListFragmentState extends State<StudentListFragment>
   List full_rolls = [];
   List _isSelected = [];
   bool uploadActive = false;
+  String pk_table;
 
   StudentListFragmentPresenter _presenter;
 
-  _StudentListFragmentState() {
+  _StudentListFragmentState(String pk_table) {
+    this.pk_table = pk_table;
     _presenter = new StudentListFragmentPresenter(this);
     var db = new DatabaseHelper();
     db.getFirstUser().then((User user) {
       username = user.username;
       auth_token = user.auth_token;
-      _presenter.doFetch(username, auth_token, "dummytimestamp");
+      _presenter.doFetch(username, auth_token, pk_table);
     });
   }
 
@@ -176,8 +190,8 @@ class _StudentListFragmentState extends State<StudentListFragment>
     upload_list.clear();
     print(rolls.length);
     for (var i = 0; i < rolls.length; i++) {
-      String x = '{register_no: "' + full_rolls[i].toString() +
-          '", full_name: "' + names[i] + '", status: ' +
+      String x = '{"register_no": "' + full_rolls[i].toString() +
+          '", "full_name": "' + names[i] + '", "status": ' +
           (_isSelected[i] ? "1" : "0") + "}";
       upload_list.add(x.toString());
     }

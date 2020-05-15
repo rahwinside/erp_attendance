@@ -12,10 +12,6 @@ TextEditingController newPassController = TextEditingController();
 TextEditingController newPassController2 = TextEditingController();
 
 class ChangePasswordScreen extends StatefulWidget {
-  final String username;
-
-  ChangePasswordScreen({Key key, @required this.username}) : super(key: key);
-
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState

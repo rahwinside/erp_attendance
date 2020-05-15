@@ -30,6 +30,8 @@ TextEditingController semesterController = new TextEditingController();
 TextEditingController subjectController = new TextEditingController();
 TextEditingController messageController = new TextEditingController();
 
+String pk_table;
+
 // takeAttendance button is deactivated by default
 bool buttonActive = false;
 
@@ -99,6 +101,7 @@ class _AttendanceFragmentState extends State<AttendanceFragment>
         res["subject_name"].toString();
     hourSelected[int.parse(res["hour"]) - 1] = true;
     messageController.text = "";
+    pk_table = res["subCode_dept_sem"];
     setState(() {});
   }
 
@@ -300,7 +303,8 @@ class _AttendanceFragmentState extends State<AttendanceFragment>
 
   void buttonPressed() {
     Navigator.push(context,
-        MaterialPageRoute(builder: (context) => StudentListFragment()));
+        MaterialPageRoute(
+            builder: (context) => StudentListFragment(pk_table: pk_table)));
   }
 
   void _showSnackBar(String text) {
