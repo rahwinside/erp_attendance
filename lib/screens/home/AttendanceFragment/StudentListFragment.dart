@@ -283,7 +283,6 @@ class _StudentListFragmentState extends State<StudentListFragment>
                     child: new RaisedButton(
                         key: null,
                         onPressed: uploadActive ? upload : null,
-//                  onPressed: buttonPressed,
                         color: Colors.white,
                         splashColor: Colors.deepPurpleAccent,
                         elevation: 5.0,

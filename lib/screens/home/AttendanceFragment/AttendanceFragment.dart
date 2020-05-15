@@ -12,7 +12,7 @@ var auth_token = "";
 final scaffoldKey = new GlobalKey<ScaffoldState>();
 
 final dateFormat = DateFormat("EEEE, MMMM d, yyyy");
-final List<bool> hourSelected = [
+List<bool> hourSelected = [
   false,
   false,
   false,
@@ -109,8 +109,23 @@ class _AttendanceFragmentState extends State<AttendanceFragment>
 
   _AttendanceFragmentState() {
 //    resetUsers();
+    dateController.text = "";
+    deptController.text = "";
+    yearController.text = "";
+    semesterController.text = "";
+    subjectController.text = "";
     messageController.text = "";
-
+    hourSelected = [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ];
+    buttonActive = false;
     _presenter = new AttendanceFragmentPresenter(this);
     var db = new DatabaseHelper();
     db.getFirstUser().then((User user) {
@@ -120,184 +135,387 @@ class _AttendanceFragmentState extends State<AttendanceFragment>
     });
   }
 
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
       key: scaffoldKey,
-      body: new SingleChildScrollView(
-        padding: const EdgeInsets.all(20.0),
-        child: new Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              Padding(
-                  padding: const EdgeInsets.only(left: 5, right: 5),
-                  child: new TextField(
-                    enabled: false,
-                    controller: dateController,
-                    decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.all(0),
-                      labelText: "Date of class",
-                      labelStyle: TextStyle(
-                        fontFamily: "Poppins",
-                        fontWeight: FontWeight.w200,
-                        color: Colors.black,
-                      ),
-                    ),
-                  )),
-              Padding(
-                padding: EdgeInsets.only(top: 10),
-              ),
-              Container(
-                  padding: EdgeInsets.only(left: 5, right: 5),
-                  child: new TextField(
-                    enabled: false,
-                    controller: deptController,
-                    decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.all(0),
-                      labelText: "Department",
-                      labelStyle: TextStyle(
-                        fontFamily: "Poppins",
-                        fontWeight: FontWeight.w200,
-                        color: Colors.black,
-                      ),
-                    ),
-                  )),
-              new Padding(
-                padding: EdgeInsets.only(top: 10),
-              ),
-              new Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      body: Column(
+        children: <Widget>[
+          new Expanded(
+            flex: 9,
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(20.0),
+              child: new Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   mainAxisSize: MainAxisSize.max,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
-                    new Padding(padding: EdgeInsets.only(left: 5)),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          new TextField(
-                            enabled: false,
-                            controller: yearController,
-                            decoration: InputDecoration(
-                              contentPadding: const EdgeInsets.all(0),
-                              labelText: "Year",
-                              labelStyle: TextStyle(
-                                fontFamily: "Poppins",
-                                fontWeight: FontWeight.w200,
-                                color: Colors.black,
-                              ),
+                    Padding(
+                        padding: const EdgeInsets.only(left: 5, right: 5),
+                        child: new TextField(
+                          enabled: false,
+                          controller: dateController,
+                          decoration: InputDecoration(
+                            contentPadding: const EdgeInsets.all(0),
+                            labelText: "Date of class",
+                            labelStyle: TextStyle(
+                              fontFamily: "Poppins",
+                              fontWeight: FontWeight.w200,
+                              color: Colors.black,
                             ),
-                          )
-                        ],
-                      ),
+                          ),
+                        )),
+                    Padding(
+                      padding: EdgeInsets.only(top: 10),
                     ),
-                    new Padding(padding: EdgeInsets.only(right: 5)),
-                    new Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          TextField(
-                            enabled: false,
-                            controller: semesterController,
-                            decoration: InputDecoration(
-                              contentPadding: const EdgeInsets.all(0),
-                              labelText: "Semester",
-                              labelStyle: TextStyle(
-                                fontFamily: "Poppins",
-                                fontWeight: FontWeight.w200,
-                                color: Colors.black,
-                              ),
+                    Container(
+                        padding: EdgeInsets.only(left: 5, right: 5),
+                        child: new TextField(
+                          enabled: false,
+                          controller: deptController,
+                          decoration: InputDecoration(
+                            contentPadding: const EdgeInsets.all(0),
+                            labelText: "Department",
+                            labelStyle: TextStyle(
+                              fontFamily: "Poppins",
+                              fontWeight: FontWeight.w200,
+                              color: Colors.black,
                             ),
-                          )
+                          ),
+                        )),
+                    new Padding(
+                      padding: EdgeInsets.only(top: 10),
+                    ),
+                    new Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisSize: MainAxisSize.max,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          new Padding(padding: EdgeInsets.only(left: 5)),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                new TextField(
+                                  enabled: false,
+                                  controller: yearController,
+                                  decoration: InputDecoration(
+                                    contentPadding: const EdgeInsets.all(0),
+                                    labelText: "Year",
+                                    labelStyle: TextStyle(
+                                      fontFamily: "Poppins",
+                                      fontWeight: FontWeight.w200,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                          new Padding(padding: EdgeInsets.only(right: 5)),
+                          new Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                TextField(
+                                  enabled: false,
+                                  controller: semesterController,
+                                  decoration: InputDecoration(
+                                    contentPadding: const EdgeInsets.all(0),
+                                    labelText: "Semester",
+                                    labelStyle: TextStyle(
+                                      fontFamily: "Poppins",
+                                      fontWeight: FontWeight.w200,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ]),
+                    new Padding(
+                      padding: EdgeInsets.only(top: 10),
+                    ),
+                    Container(
+                        padding: EdgeInsets.only(left: 5, right: 5),
+                        child: TextField(
+                          enabled: false,
+                          controller: subjectController,
+                          decoration: InputDecoration(
+                            contentPadding: const EdgeInsets.all(0),
+                            labelText: "Subject",
+                            labelStyle: TextStyle(
+                              fontFamily: "Poppins",
+                              fontWeight: FontWeight.w200,
+                              color: Colors.black,
+                            ),
+                          ),
+                        )),
+                    new Padding(
+                      padding: EdgeInsets.only(top: 10),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 5, right: 5),
+                      child: new Text(
+                        "Hour",
+                        style: new TextStyle(
+                            fontSize: 12.0,
+                            color: const Color(0xFF000000),
+                            fontWeight: FontWeight.w200,
+                            fontFamily: "Poppins"),
+                      ),
+                    ),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: ToggleButtons(
+                        children: <Widget>[
+                          Text("1"),
+                          Text("2"),
+                          Text("3"),
+                          Text("4"),
+                          Text("5"),
+                          Text("6"),
+                          Text("7"),
+                          Text("8"),
                         ],
+                        isSelected: hourSelected,
+                        onPressed: (int index) {
+                          setState(() {});
+                        },
                       ),
                     ),
-                  ]),
-              new Padding(
-                padding: EdgeInsets.only(top: 10),
-              ),
-              Container(
-                  padding: EdgeInsets.only(left: 5, right: 5),
-                  child: TextField(
-                    enabled: false,
-                    controller: subjectController,
-                    decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.all(0),
-                      labelText: "Subject",
-                      labelStyle: TextStyle(
-                        fontFamily: "Poppins",
-                        fontWeight: FontWeight.w200,
-                        color: Colors.black,
-                      ),
+                    new Padding(
+                      padding: EdgeInsets.only(top: 10),
                     ),
-                  )),
-              new Padding(
-                padding: EdgeInsets.only(top: 10),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 5, right: 5),
-                child: new Text(
-                  "Hour",
-                  style: new TextStyle(
-                      fontSize: 12.0,
-                      color: const Color(0xFF000000),
-                      fontWeight: FontWeight.w200,
-                      fontFamily: "Poppins"),
-                ),
-              ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: ToggleButtons(
-                  children: <Widget>[
-                    Text("1"),
-                    Text("2"),
-                    Text("3"),
-                    Text("4"),
-                    Text("5"),
-                    Text("6"),
-                    Text("7"),
-                    Text("8"),
-                  ],
-                  isSelected: hourSelected,
-                  onPressed: (int index) {
-                    setState(() {});
-                  },
-                ),
-              ),
-              new Padding(
-                padding: EdgeInsets.only(top: 10),
-              ),
-              new RaisedButton(
-                  key: null,
-                  onPressed: !buttonActive ? null : buttonPressed,
-//                  onPressed: buttonPressed,
-                  color: Colors.deepPurple,
-                  splashColor: Colors.purple,
-                  elevation: 5.0,
-                  child: new Text(
-                    "Take Attendance",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontFamily: 'Poppins',
+                    new Wrap(
+                      children: <Widget>[
+                        new Padding(padding: EdgeInsets.only(top: 5.0)),
+                        new Text(
+                          messageController.text,
+                          style: TextStyle(
+                            fontFamily: "Poppins",
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ],
                     ),
-                  )
+                  ]
               ),
-              new Wrap(
+            ),
+          ),
+          new Expanded(
+            flex: 1,
+            child: Container(
+              padding: const EdgeInsets.only(
+                  left: 15, right: 15),
+              decoration: new BoxDecoration(
+                color: Colors.deepPurple,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  new Padding(padding: EdgeInsets.only(top: 5.0)),
-                  new Text(
-                    messageController.text,
-                    style: TextStyle(
-                      fontFamily: "Poppins",
-                      fontWeight: FontWeight.w400,
-                    ),
+                  new RaisedButton(
+                      key: null,
+                      onPressed: !buttonActive ? null : buttonPressed,
+//                  onPressed: buttonPressed,
+                      color: Colors.white,
+                      splashColor: Colors.purple,
+                      elevation: 5.0,
+                      child: new Text(
+                        "Take Attendance",
+                        style: TextStyle(
+                          color: Colors.deepPurple,
+                          fontFamily: 'Poppins',
+                          fontWeight: FontWeight.w600,
+                        ),
+                      )
                   ),
                 ],
               ),
-            ]),
+            ),
+          ),
+        ],
       ),
+
+
+//
+//      body: new SingleChildScrollView(
+//        padding: const EdgeInsets.all(20.0),
+//        child: new Column(
+//            mainAxisAlignment: MainAxisAlignment.start,
+//            mainAxisSize: MainAxisSize.max,
+//            crossAxisAlignment: CrossAxisAlignment.stretch,
+//            children: <Widget>[
+//              Padding(
+//                  padding: const EdgeInsets.only(left: 5, right: 5),
+//                  child: new TextField(
+//                    enabled: false,
+//                    controller: dateController,
+//                    decoration: InputDecoration(
+//                      contentPadding: const EdgeInsets.all(0),
+//                      labelText: "Date of class",
+//                      labelStyle: TextStyle(
+//                        fontFamily: "Poppins",
+//                        fontWeight: FontWeight.w200,
+//                        color: Colors.black,
+//                      ),
+//                    ),
+//                  )),
+//              Padding(
+//                padding: EdgeInsets.only(top: 10),
+//              ),
+//              Container(
+//                  padding: EdgeInsets.only(left: 5, right: 5),
+//                  child: new TextField(
+//                    enabled: false,
+//                    controller: deptController,
+//                    decoration: InputDecoration(
+//                      contentPadding: const EdgeInsets.all(0),
+//                      labelText: "Department",
+//                      labelStyle: TextStyle(
+//                        fontFamily: "Poppins",
+//                        fontWeight: FontWeight.w200,
+//                        color: Colors.black,
+//                      ),
+//                    ),
+//                  )),
+//              new Padding(
+//                padding: EdgeInsets.only(top: 10),
+//              ),
+//              new Row(
+//                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                  mainAxisSize: MainAxisSize.max,
+//                  crossAxisAlignment: CrossAxisAlignment.center,
+//                  children: <Widget>[
+//                    new Padding(padding: EdgeInsets.only(left: 5)),
+//                    Expanded(
+//                      child: Column(
+//                        crossAxisAlignment: CrossAxisAlignment.start,
+//                        children: <Widget>[
+//                          new TextField(
+//                            enabled: false,
+//                            controller: yearController,
+//                            decoration: InputDecoration(
+//                              contentPadding: const EdgeInsets.all(0),
+//                              labelText: "Year",
+//                              labelStyle: TextStyle(
+//                                fontFamily: "Poppins",
+//                                fontWeight: FontWeight.w200,
+//                                color: Colors.black,
+//                              ),
+//                            ),
+//                          )
+//                        ],
+//                      ),
+//                    ),
+//                    new Padding(padding: EdgeInsets.only(right: 5)),
+//                    new Expanded(
+//                      child: Column(
+//                        crossAxisAlignment: CrossAxisAlignment.start,
+//                        children: <Widget>[
+//                          TextField(
+//                            enabled: false,
+//                            controller: semesterController,
+//                            decoration: InputDecoration(
+//                              contentPadding: const EdgeInsets.all(0),
+//                              labelText: "Semester",
+//                              labelStyle: TextStyle(
+//                                fontFamily: "Poppins",
+//                                fontWeight: FontWeight.w200,
+//                                color: Colors.black,
+//                              ),
+//                            ),
+//                          )
+//                        ],
+//                      ),
+//                    ),
+//                  ]),
+//              new Padding(
+//                padding: EdgeInsets.only(top: 10),
+//              ),
+//              Container(
+//                  padding: EdgeInsets.only(left: 5, right: 5),
+//                  child: TextField(
+//                    enabled: false,
+//                    controller: subjectController,
+//                    decoration: InputDecoration(
+//                      contentPadding: const EdgeInsets.all(0),
+//                      labelText: "Subject",
+//                      labelStyle: TextStyle(
+//                        fontFamily: "Poppins",
+//                        fontWeight: FontWeight.w200,
+//                        color: Colors.black,
+//                      ),
+//                    ),
+//                  )),
+//              new Padding(
+//                padding: EdgeInsets.only(top: 10),
+//              ),
+//              Padding(
+//                padding: const EdgeInsets.only(left: 5, right: 5),
+//                child: new Text(
+//                  "Hour",
+//                  style: new TextStyle(
+//                      fontSize: 12.0,
+//                      color: const Color(0xFF000000),
+//                      fontWeight: FontWeight.w200,
+//                      fontFamily: "Poppins"),
+//                ),
+//              ),
+//              SingleChildScrollView(
+//                scrollDirection: Axis.horizontal,
+//                child: ToggleButtons(
+//                  children: <Widget>[
+//                    Text("1"),
+//                    Text("2"),
+//                    Text("3"),
+//                    Text("4"),
+//                    Text("5"),
+//                    Text("6"),
+//                    Text("7"),
+//                    Text("8"),
+//                  ],
+//                  isSelected: hourSelected,
+//                  onPressed: (int index) {
+//                    setState(() {});
+//                  },
+//                ),
+//              ),
+//              new Padding(
+//                padding: EdgeInsets.only(top: 10),
+//              ),
+//              new RaisedButton(
+//                  key: null,
+//                  onPressed: !buttonActive ? null : buttonPressed,
+////                  onPressed: buttonPressed,
+//                  color: Colors.deepPurple,
+//                  splashColor: Colors.purple,
+//                  elevation: 5.0,
+//                  child: new Text(
+//                    "Take Attendance",
+//                    style: TextStyle(
+//                      color: Colors.white,
+//                      fontFamily: 'Poppins',
+//                    ),
+//                  )
+//              ),
+//              new Wrap(
+//                children: <Widget>[
+//                  new Padding(padding: EdgeInsets.only(top: 5.0)),
+//                  new Text(
+//                    messageController.text,
+//                    style: TextStyle(
+//                      fontFamily: "Poppins",
+//                      fontWeight: FontWeight.w400,
+//                    ),
+//                  ),
+//                ],
+//              ),
+//            ]
+//        ),
+//      ),
     );
   }
 
