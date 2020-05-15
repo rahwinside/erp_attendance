@@ -34,21 +34,27 @@ class LabeledCheckbox extends StatelessWidget {
             padding: EdgeInsets.only(bottom: 4),
             child: Container(
               decoration: BoxDecoration(
-                gradient: value ? LinearGradient(
+                gradient: value
+                    ? LinearGradient(
                   begin: Alignment(-0.97, 0.24),
                   end: Alignment(-0.35, 0.21),
-                  colors: [const Color(0xff38837b), const Color(0xff2ac0b1)],
+                  colors: [
+                    const Color(0xff38837b),
+                    const Color(0xff2ac0b1)
+                  ],
                   stops: [0.0, 1.0],
-                ) : LinearGradient(
+                )
+                    : LinearGradient(
                   begin: Alignment(-0.97, 0.24),
                   end: Alignment(-0.35, 0.21),
-                  colors: [const Color(0xffa8193d), const Color(0xffff3366)],
+                  colors: [
+                    const Color(0xffa8193d),
+                    const Color(0xffff3366)
+                  ],
                   stops: [0.0, 1.0],
                 ),
                 borderRadius: BorderRadius.circular(5),
               ),
-
-
               child: Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: Row(
@@ -138,10 +144,13 @@ class _StudentListFragmentState extends State<StudentListFragment>
   List _isSelected = [];
   bool uploadActive = false;
   String pk_table;
+  int presentCounter, absentCounter;
 
   StudentListFragmentPresenter _presenter;
 
   _StudentListFragmentState(String pk_table) {
+    presentCounter = 0;
+    absentCounter = 0;
     this.pk_table = pk_table;
     _presenter = new StudentListFragmentPresenter(this);
     var db = new DatabaseHelper();
@@ -151,7 +160,6 @@ class _StudentListFragmentState extends State<StudentListFragment>
       _presenter.doFetch(username, auth_token, pk_table);
     });
   }
-
 
   Column loopable() {
     list.clear();
@@ -164,6 +172,16 @@ class _StudentListFragmentState extends State<StudentListFragment>
         onChanged: (bool newValue) {
           setState(() {
             _isSelected[i] = newValue;
+            presentCounter = 0;
+            absentCounter = 0;
+            _isSelected.forEach((status) {
+              if (status) {
+                presentCounter += 1;
+              }
+              else {
+                absentCounter += 1;
+              }
+            });
           });
         },
       ));
@@ -182,6 +200,7 @@ class _StudentListFragmentState extends State<StudentListFragment>
       _isSelected.add(false);
     });
     uploadActive = true;
+    absentCounter = res.length;
     setState(() {});
   }
 
@@ -189,9 +208,13 @@ class _StudentListFragmentState extends State<StudentListFragment>
     upload_list.clear();
     print(rolls.length);
     for (var i = 0; i < rolls.length; i++) {
-      String x = '{"register_no": "' + full_rolls[i].toString() +
-          '", "full_name": "' + names[i] + '", "status": ' +
-          (_isSelected[i] ? "1" : "0") + "}";
+      String x = '{"register_no": "' +
+          full_rolls[i].toString() +
+          '", "full_name": "' +
+          names[i] +
+          '", "status": ' +
+          (_isSelected[i] ? "1" : "0") +
+          "}";
       upload_list.add(x.toString());
     }
     print(upload_list.toString());
@@ -203,37 +226,81 @@ class _StudentListFragmentState extends State<StudentListFragment>
       appBar: AppBar(
         title: Text("Mark Attendance"),
       ),
-      body: Padding(
-        padding: const EdgeInsets.only(
-            top: 10.0, left: 15, right: 15, bottom: 10),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Expanded(
-              flex: 9,
-              child: SingleChildScrollView(
-                  child: loopable()
-              ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Expanded(
+            flex: 9,
+            child: Padding(
+              padding: const EdgeInsets.only(
+                  top: 10.0, left: 15, right: 15, bottom: 10),
+              child: SingleChildScrollView(child: loopable()),
             ),
-            Center(
-              child: new RaisedButton(
-                  key: null,
-                  onPressed: uploadActive ? upload : null,
-//                  onPressed: buttonPressed,
-                  color: Colors.deepPurple,
-                  splashColor: Colors.purple,
-                  elevation: 5.0,
-                  child: new Text(
-                    "Upload",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontFamily: 'Poppins',
+          ),
+          Expanded(
+            flex: 1,
+            child: Container(
+              padding: const EdgeInsets.only(
+                  left: 15, right: 15),
+              decoration: new BoxDecoration(
+                color: Colors.deepPurple,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Expanded(
+                    flex: 5,
+                    child: new Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        new Text(
+                          uploadActive
+                              ? "Present: " + presentCounter.toString()
+                              : "",
+                          style: new TextStyle(
+                            fontFamily: "Poppins",
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        new Text(
+                          uploadActive
+                              ? "Absent: " + absentCounter.toString()
+                              : "",
+                          style: new TextStyle(
+                            fontFamily: "Poppins",
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
                     ),
-                  )
+                  ),
+                  Expanded(
+                    flex: 5,
+                    child: new RaisedButton(
+                        key: null,
+                        onPressed: uploadActive ? upload : null,
+//                  onPressed: buttonPressed,
+                        color: Colors.white,
+                        splashColor: Colors.deepPurpleAccent,
+                        elevation: 5.0,
+                        child: new Text(
+                          "Upload",
+                          style: TextStyle(
+                            color: Colors.deepPurple,
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.w600,
+                          ),
+                        )),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
