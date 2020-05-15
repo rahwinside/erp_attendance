@@ -13,15 +13,6 @@ class StudentListRestDataSource {
       "auth_token": auth_token,
       "subCode_dept_sem": pk_table,
     }).then((dynamic res) {
-      print(res.toString());
-      print(res.runtimeType);
-//      if (res == "no-class")
-//        throw new Exception(
-//            "You do not have any class scheduled for this hour");
-//      else if (res == "invalid-auth-or-access")
-//        throw new Exception(
-//            "You do not have the privileges to access this content");
-//        return null;
       return res;
     });
   }

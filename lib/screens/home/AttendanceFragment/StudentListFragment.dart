@@ -31,7 +31,7 @@ class LabeledCheckbox extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Padding(
-            padding: EdgeInsets.only(bottom: 2),
+            padding: EdgeInsets.only(bottom: 4),
             child: Container(
               decoration: BoxDecoration(
                 gradient: value ? LinearGradient(
@@ -106,7 +106,6 @@ class LabeledCheckbox extends StatelessWidget {
               ),
             ),
           ),
-          new Divider(height: 1.0, color: Colors.grey),
         ],
       ),
     );
