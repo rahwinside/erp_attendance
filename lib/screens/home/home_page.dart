@@ -70,17 +70,6 @@ class HomeScreenState extends State<HomeScreen>
       case 7:
         return new AboutFragment();
       case 8:
-//        _logout();
-//        return Center(
-//          child: Text(
-//            "Logging out...",
-//            style: TextStyle(
-//              fontFamily: "Poppins",
-//              fontWeight: FontWeight.w300,
-//              fontSize: 20,
-//            ),
-//          ),
-//        );
         return Scaffold(
           key: scaffoldKeyLogout,
           body: AlertDialog(
@@ -137,13 +126,8 @@ class HomeScreenState extends State<HomeScreen>
             context,
             MaterialPageRoute(
                 builder: (BuildContext context) => LoginScreen()));
-//        Navigator.pop(context);
-//        Phoenix.rebirth(context);
       }
       );
-//      Navigator.pop(context);
-//      Phoenix.rebirth(context);
-//      Navigator.of(context).pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
     }
   }
 

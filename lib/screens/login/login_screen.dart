@@ -154,33 +154,11 @@ class LoginScreenState extends State<LoginScreen>
                           ChangePasswordScreen())).then((value) {
                 formKey.currentState.reset();
               });
-
-//              Navigator.of(context)
-//                  .pushNamedAndRemoveUntil(
-//                      '/changePassword', (Route<dynamic> route) => false)
-//                  .then((_) => formKey.currentState.reset());
-//              SchedulerBinding.instance.addPostFrameCallback((_) async {
-//                Navigator.of(context)
-//                    .pushNamedAndRemoveUntil(
-//                    '/changePassword', (Route<dynamic> route) => false)
-//                    .then((_) => formKey.currentState.reset());
-//              });
             } else {
               Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                       builder: (BuildContext context) => HomeScreen()));
-
-//              Navigator.of(context)
-//                  .pushNamedAndRemoveUntil(
-//                      '/home', (Route<dynamic> route) => false)
-//                  .then((_) => formKey.currentState.reset());
-//              SchedulerBinding.instance.addPostFrameCallback((_) async {
-//                Navigator.of(context)
-//                    .pushNamedAndRemoveUntil(
-//                    '/home', (Route<dynamic> route) => false)
-//                    .then((_) => formKey.currentState.reset());
-//              });
             }
           } else {
             var db = new DatabaseHelper();
