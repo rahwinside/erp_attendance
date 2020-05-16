@@ -25,7 +25,7 @@ class LoginScreen extends StatefulWidget {
 class LoginScreenState extends State<LoginScreen>
     implements LoginScreenContract, AuthStateListener {
   BuildContext _ctx;
-  Image licetLogo;
+  Image licetLogo, loader;
   AssetImage backgroundImage = new AssetImage("images/landing.jpg");
 
   bool _isLoading = false;
@@ -57,6 +57,58 @@ class LoginScreenState extends State<LoginScreen>
         .showSnackBar(new SnackBar(content: new Text(text)));
   }
 
+  showProgressModal() {
+    AlertDialog alert = AlertDialog(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(2.0))
+      ),
+      contentPadding: EdgeInsets.all(0.0),
+      content: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(2.0)),
+          ),
+          child: Wrap(
+            alignment: WrapAlignment.center,
+            children: <Widget>[
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(top: 10, bottom: 10),
+                    child: loader,
+                  ),
+                  Wrap(
+                    alignment: WrapAlignment.center,
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: Text(
+                          "Please wait...",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontFamily: "Poppins",
+                              color: Colors.grey
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          )
+      ),
+    );
+    showDialog(barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+
   @override
   void initState() {
     licetLogo = Image.asset(
@@ -65,6 +117,9 @@ class LoginScreenState extends State<LoginScreen>
       width: 100.0,
       height: 100.0,
     );
+    loader = Image.asset(
+      "images/loader.gif",
+    );
     super.initState();
   }
 
@@ -72,6 +127,7 @@ class LoginScreenState extends State<LoginScreen>
   void didChangeDependencies() async {
     await precacheImage(licetLogo.image, context);
     await precacheImage(backgroundImage, context);
+    await precacheImage(loader.image, context);
     super.didChangeDependencies();
   }
 
@@ -80,8 +136,8 @@ class LoginScreenState extends State<LoginScreen>
     if (state == AuthState.LOGGED_IN) {
       print(context.toString());
       print(context.runtimeType);
-//      checkForAuthStatus().then
 
+//      showProgressModal();
       AuthRestDataSource api = new AuthRestDataSource();
       var db = new DatabaseHelper();
       db.getFirstUser().then((User user) {
@@ -91,6 +147,7 @@ class LoginScreenState extends State<LoginScreen>
         api.auth(username, auth_token).then((bool res) {
           print(res.toString());
           print(res.runtimeType);
+//          Navigator.pop(context);
           if (res) {
             if (passController.text == "licet@123") {
               Navigator.of(context)
@@ -349,12 +406,12 @@ class LoginScreenState extends State<LoginScreen>
 
   @override
   void onLoginSuccess(User user) async {
-    _showSnackBar("Logged in");
     setState(() => _isLoading = false);
     var db = new DatabaseHelper();
     await db.saveUser(user);
     var authStateProvider = new AuthStateProvider();
     authStateProvider.notify(AuthState.LOGGED_IN);
+    _showSnackBar("Logged in");
   }
 
   Future<void> resetUsers() async {
