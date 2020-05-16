@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:attendance/data/database_helper.dart';
 import 'package:attendance/models/user.dart';
 import 'package:attendance/screens/home/AttendanceFragment/student_presenter.dart';
@@ -6,6 +8,7 @@ import 'package:flutter/material.dart';
 
 var username = "";
 var auth_token = "";
+final scaffoldKey = new GlobalKey<ScaffoldState>();
 
 class LabeledCheckbox extends StatelessWidget {
   const LabeledCheckbox({
@@ -205,6 +208,11 @@ class _StudentListFragmentState extends State<StudentListFragment>
     setState(() {});
   }
 
+  void _showSnackBar(String text) {
+    scaffoldKey.currentState
+        .showSnackBar(new SnackBar(content: new Text(text)));
+  }
+
   void upload() {
     upload_list.clear();
     print(rolls.length);
@@ -224,12 +232,15 @@ class _StudentListFragmentState extends State<StudentListFragment>
         res) {
       print(res.toString());
       print("UPLOAD OK");
+      _showSnackBar("Attendance has been successfully uploaded");
+      new Timer(const Duration(seconds: 1), () => Navigator.pop(context));
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldKey,
       appBar: AppBar(
         title: Text("Mark Attendance"),
       ),
