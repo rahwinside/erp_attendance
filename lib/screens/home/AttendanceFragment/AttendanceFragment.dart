@@ -135,6 +135,72 @@ class _AttendanceFragmentState extends State<AttendanceFragment>
     });
   }
 
+  Image loader;
+
+  @override
+  void initState() {
+    loader = Image.asset(
+      "images/loader.gif",
+    );
+    super.initState();
+    new Future.delayed(Duration.zero, () {
+      showProgressModal(context);
+    });
+  }
+
+  @override
+  void didChangeDependencies() async {
+    await precacheImage(loader.image, context);
+    super.didChangeDependencies();
+  }
+
+  showProgressModal(context) {
+    AlertDialog alert = AlertDialog(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(2.0))),
+      contentPadding: EdgeInsets.all(0.0),
+      content: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(2.0)),
+          ),
+          child: Wrap(
+            alignment: WrapAlignment.center,
+            children: <Widget>[
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(top: 10, bottom: 10),
+                    child: loader,
+                  ),
+                  Wrap(
+                    alignment: WrapAlignment.center,
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: Text(
+                          "Please wait...",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontFamily: "Poppins", color: Colors.grey),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          )),
+    );
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -338,184 +404,6 @@ class _AttendanceFragmentState extends State<AttendanceFragment>
           ),
         ],
       ),
-
-
-//
-//      body: new SingleChildScrollView(
-//        padding: const EdgeInsets.all(20.0),
-//        child: new Column(
-//            mainAxisAlignment: MainAxisAlignment.start,
-//            mainAxisSize: MainAxisSize.max,
-//            crossAxisAlignment: CrossAxisAlignment.stretch,
-//            children: <Widget>[
-//              Padding(
-//                  padding: const EdgeInsets.only(left: 5, right: 5),
-//                  child: new TextField(
-//                    enabled: false,
-//                    controller: dateController,
-//                    decoration: InputDecoration(
-//                      contentPadding: const EdgeInsets.all(0),
-//                      labelText: "Date of class",
-//                      labelStyle: TextStyle(
-//                        fontFamily: "Poppins",
-//                        fontWeight: FontWeight.w200,
-//                        color: Colors.black,
-//                      ),
-//                    ),
-//                  )),
-//              Padding(
-//                padding: EdgeInsets.only(top: 10),
-//              ),
-//              Container(
-//                  padding: EdgeInsets.only(left: 5, right: 5),
-//                  child: new TextField(
-//                    enabled: false,
-//                    controller: deptController,
-//                    decoration: InputDecoration(
-//                      contentPadding: const EdgeInsets.all(0),
-//                      labelText: "Department",
-//                      labelStyle: TextStyle(
-//                        fontFamily: "Poppins",
-//                        fontWeight: FontWeight.w200,
-//                        color: Colors.black,
-//                      ),
-//                    ),
-//                  )),
-//              new Padding(
-//                padding: EdgeInsets.only(top: 10),
-//              ),
-//              new Row(
-//                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                  mainAxisSize: MainAxisSize.max,
-//                  crossAxisAlignment: CrossAxisAlignment.center,
-//                  children: <Widget>[
-//                    new Padding(padding: EdgeInsets.only(left: 5)),
-//                    Expanded(
-//                      child: Column(
-//                        crossAxisAlignment: CrossAxisAlignment.start,
-//                        children: <Widget>[
-//                          new TextField(
-//                            enabled: false,
-//                            controller: yearController,
-//                            decoration: InputDecoration(
-//                              contentPadding: const EdgeInsets.all(0),
-//                              labelText: "Year",
-//                              labelStyle: TextStyle(
-//                                fontFamily: "Poppins",
-//                                fontWeight: FontWeight.w200,
-//                                color: Colors.black,
-//                              ),
-//                            ),
-//                          )
-//                        ],
-//                      ),
-//                    ),
-//                    new Padding(padding: EdgeInsets.only(right: 5)),
-//                    new Expanded(
-//                      child: Column(
-//                        crossAxisAlignment: CrossAxisAlignment.start,
-//                        children: <Widget>[
-//                          TextField(
-//                            enabled: false,
-//                            controller: semesterController,
-//                            decoration: InputDecoration(
-//                              contentPadding: const EdgeInsets.all(0),
-//                              labelText: "Semester",
-//                              labelStyle: TextStyle(
-//                                fontFamily: "Poppins",
-//                                fontWeight: FontWeight.w200,
-//                                color: Colors.black,
-//                              ),
-//                            ),
-//                          )
-//                        ],
-//                      ),
-//                    ),
-//                  ]),
-//              new Padding(
-//                padding: EdgeInsets.only(top: 10),
-//              ),
-//              Container(
-//                  padding: EdgeInsets.only(left: 5, right: 5),
-//                  child: TextField(
-//                    enabled: false,
-//                    controller: subjectController,
-//                    decoration: InputDecoration(
-//                      contentPadding: const EdgeInsets.all(0),
-//                      labelText: "Subject",
-//                      labelStyle: TextStyle(
-//                        fontFamily: "Poppins",
-//                        fontWeight: FontWeight.w200,
-//                        color: Colors.black,
-//                      ),
-//                    ),
-//                  )),
-//              new Padding(
-//                padding: EdgeInsets.only(top: 10),
-//              ),
-//              Padding(
-//                padding: const EdgeInsets.only(left: 5, right: 5),
-//                child: new Text(
-//                  "Hour",
-//                  style: new TextStyle(
-//                      fontSize: 12.0,
-//                      color: const Color(0xFF000000),
-//                      fontWeight: FontWeight.w200,
-//                      fontFamily: "Poppins"),
-//                ),
-//              ),
-//              SingleChildScrollView(
-//                scrollDirection: Axis.horizontal,
-//                child: ToggleButtons(
-//                  children: <Widget>[
-//                    Text("1"),
-//                    Text("2"),
-//                    Text("3"),
-//                    Text("4"),
-//                    Text("5"),
-//                    Text("6"),
-//                    Text("7"),
-//                    Text("8"),
-//                  ],
-//                  isSelected: hourSelected,
-//                  onPressed: (int index) {
-//                    setState(() {});
-//                  },
-//                ),
-//              ),
-//              new Padding(
-//                padding: EdgeInsets.only(top: 10),
-//              ),
-//              new RaisedButton(
-//                  key: null,
-//                  onPressed: !buttonActive ? null : buttonPressed,
-////                  onPressed: buttonPressed,
-//                  color: Colors.deepPurple,
-//                  splashColor: Colors.purple,
-//                  elevation: 5.0,
-//                  child: new Text(
-//                    "Take Attendance",
-//                    style: TextStyle(
-//                      color: Colors.white,
-//                      fontFamily: 'Poppins',
-//                    ),
-//                  )
-//              ),
-//              new Wrap(
-//                children: <Widget>[
-//                  new Padding(padding: EdgeInsets.only(top: 5.0)),
-//                  new Text(
-//                    messageController.text,
-//                    style: TextStyle(
-//                      fontFamily: "Poppins",
-//                      fontWeight: FontWeight.w400,
-//                    ),
-//                  ),
-//                ],
-//              ),
-//            ]
-//        ),
-//      ),
     );
   }
 
@@ -532,6 +420,7 @@ class _AttendanceFragmentState extends State<AttendanceFragment>
 
   @override
   void onFetchError(String errorTxt) {
+    Navigator.pop(context);
     _showSnackBar(errorTxt.substring(11));
     messageController.text = errorTxt.substring(11) + ".";
     setState(() {
@@ -542,6 +431,7 @@ class _AttendanceFragmentState extends State<AttendanceFragment>
 
   @override
   void onFetchSuccess(res) {
+    Navigator.pop(context);
     if (res != "invalid-auth-or-access") {
       preselect(res);
     }

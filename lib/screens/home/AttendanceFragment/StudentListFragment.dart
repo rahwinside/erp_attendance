@@ -165,6 +165,74 @@ class _StudentListFragmentState extends State<StudentListFragment>
     });
   }
 
+  Image loader;
+
+  @override
+  void initState() {
+    loader = Image.asset(
+      "images/loader.gif",
+    );
+    super.initState();
+    new Future.delayed(Duration.zero, () {
+      showProgressModal(context);
+    });
+  }
+
+  @override
+  void didChangeDependencies() async {
+    await precacheImage(loader.image, context);
+    super.didChangeDependencies();
+  }
+
+  showProgressModal(context) {
+    AlertDialog alert = AlertDialog(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(2.0))),
+      contentPadding: EdgeInsets.all(0.0),
+      content: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(2.0)),
+          ),
+          child: Wrap(
+            alignment: WrapAlignment.center,
+            children: <Widget>[
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(top: 10, bottom: 10),
+                    child: loader,
+                  ),
+                  Wrap(
+                    alignment: WrapAlignment.center,
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: Text(
+                          "Please wait...",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontFamily: "Poppins", color: Colors.grey),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          )),
+    );
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+
   Column loopable() {
     list.clear();
     for (var i = 0; i < names.length; i++) {
@@ -329,13 +397,14 @@ class _StudentListFragmentState extends State<StudentListFragment>
 
   @override
   void onFetchError(String errorTxt) {
-    // TODO: implement onFetchError
+    Navigator.pop(context);
     print(errorTxt);
   }
 
   @override
   void onFetchSuccess(dynamic res) {
 //    print(res.toString());
+    Navigator.pop(context);
     print(res.runtimeType);
     list_adapter(res);
   }

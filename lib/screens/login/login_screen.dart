@@ -58,7 +58,7 @@ class LoginScreenState extends State<LoginScreen>
         .showSnackBar(new SnackBar(content: new Text(text)));
   }
 
-  showProgressModal() {
+  showProgressModal(context) {
     AlertDialog alert = AlertDialog(
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(2.0))),
@@ -134,7 +134,7 @@ class LoginScreenState extends State<LoginScreen>
       print(context.toString());
       print(context.runtimeType);
 
-      showProgressModal();
+      showProgressModal(context);
       AuthRestDataSource api = new AuthRestDataSource();
       var db = new DatabaseHelper();
       db.getFirstUser().then((User user) {
