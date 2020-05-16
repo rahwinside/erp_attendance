@@ -3,6 +3,7 @@ import 'package:attendance/data/database_helper.dart';
 import 'package:attendance/models/user.dart';
 import 'package:attendance/screens/home/AttendanceFragment/AttendanceFragment.dart';
 import 'package:attendance/screens/home/settings/SettingsFragment.dart';
+import 'package:attendance/screens/login/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
@@ -100,7 +101,10 @@ class HomeScreenState extends State<HomeScreen>
                   ),
                 ),
                 onPressed: () {
-                  Navigator.of(_ctx).pushReplacementNamed("/home");
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => HomeScreen()));
                 },
               ),
               FlatButton(
@@ -129,9 +133,10 @@ class HomeScreenState extends State<HomeScreen>
       print(context.toString());
       print(context.runtimeType);
       SchedulerBinding.instance.addPostFrameCallback((_) async {
-        Navigator.of(context).pushNamedAndRemoveUntil(
-            '/',
-                (Route<dynamic> route) => false);
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (BuildContext context) => LoginScreen()));
 //        Navigator.pop(context);
 //        Phoenix.rebirth(context);
       }

@@ -4,6 +4,8 @@ import 'package:attendance/auth.dart';
 import 'package:attendance/data/authAPI_rest_ds.dart';
 import 'package:attendance/data/database_helper.dart';
 import 'package:attendance/models/user.dart';
+import 'package:attendance/screens/changepassword/changepassword.dart';
+import 'package:attendance/screens/home/home_page.dart';
 import 'package:attendance/screens/login/login_screen_presenter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -60,8 +62,7 @@ class LoginScreenState extends State<LoginScreen>
   showProgressModal() {
     AlertDialog alert = AlertDialog(
       shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(2.0))
-      ),
+          borderRadius: BorderRadius.all(Radius.circular(2.0))),
       contentPadding: EdgeInsets.all(0.0),
       content: Container(
           decoration: BoxDecoration(
@@ -87,9 +88,7 @@ class LoginScreenState extends State<LoginScreen>
                           "Please wait...",
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                              fontFamily: "Poppins",
-                              color: Colors.grey
-                          ),
+                              fontFamily: "Poppins", color: Colors.grey),
                         ),
                       ),
                     ],
@@ -97,17 +96,16 @@ class LoginScreenState extends State<LoginScreen>
                 ],
               ),
             ],
-          )
-      ),
+          )),
     );
-    showDialog(barrierDismissible: false,
+    showDialog(
+      barrierDismissible: false,
       context: context,
       builder: (BuildContext context) {
         return alert;
       },
     );
   }
-
 
   @override
   void initState() {
@@ -150,10 +148,18 @@ class LoginScreenState extends State<LoginScreen>
 //          Navigator.pop(context);
           if (res) {
             if (passController.text == "licet@123") {
-              Navigator.of(context)
-                  .pushNamedAndRemoveUntil(
-                  '/changePassword', (Route<dynamic> route) => false)
-                  .then((_) => formKey.currentState.reset());
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext context) =>
+                          ChangePasswordScreen())).then((value) {
+                formKey.currentState.reset();
+              });
+
+//              Navigator.of(context)
+//                  .pushNamedAndRemoveUntil(
+//                      '/changePassword', (Route<dynamic> route) => false)
+//                  .then((_) => formKey.currentState.reset());
 //              SchedulerBinding.instance.addPostFrameCallback((_) async {
 //                Navigator.of(context)
 //                    .pushNamedAndRemoveUntil(
@@ -161,10 +167,15 @@ class LoginScreenState extends State<LoginScreen>
 //                    .then((_) => formKey.currentState.reset());
 //              });
             } else {
-              Navigator.of(context)
-                  .pushNamedAndRemoveUntil(
-                  '/home', (Route<dynamic> route) => false)
-                  .then((_) => formKey.currentState.reset());
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => HomeScreen()));
+
+//              Navigator.of(context)
+//                  .pushNamedAndRemoveUntil(
+//                      '/home', (Route<dynamic> route) => false)
+//                  .then((_) => formKey.currentState.reset());
 //              SchedulerBinding.instance.addPostFrameCallback((_) async {
 //                Navigator.of(context)
 //                    .pushNamedAndRemoveUntil(
@@ -186,8 +197,10 @@ class LoginScreenState extends State<LoginScreen>
       print(context.toString());
       print(context.runtimeType);
       SchedulerBinding.instance.addPostFrameCallback((_) async {
-        Navigator.of(context)
-            .pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (BuildContext context) => LoginScreen()));
       });
     }
   }

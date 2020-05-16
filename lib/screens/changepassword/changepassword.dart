@@ -4,6 +4,7 @@ import 'package:attendance/auth.dart';
 import 'package:attendance/data/database_helper.dart';
 import 'package:attendance/models/user.dart';
 import 'package:attendance/screens/changepassword/change_password_presenter.dart';
+import 'package:attendance/screens/home/home_page.dart';
 import 'package:flutter/material.dart';
 
 var username = "";
@@ -60,7 +61,10 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen>
   @override
   onAuthStateChanged(AuthState state) {
     if (state == AuthState.LOGGED_IN)
-      Navigator.of(_ctx).pushReplacementNamed("/home");
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (BuildContext context) => HomeScreen()));
   }
 
   @override
