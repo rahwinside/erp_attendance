@@ -22,8 +22,8 @@ class HomeScreen extends StatefulWidget {
   final drawerItems = [
     new DrawerItem("Home", Icons.home),
     new DrawerItem("Take Attendance", Icons.check),
-    new DrawerItem("Modify Attendance", Icons.check),
-    new DrawerItem("On Duty Entry", Icons.check),
+    new DrawerItem("Modify Attendance", Icons.change_history),
+    new DrawerItem("On Duty Entry", Icons.work),
     new DrawerItem("Views", Icons.calendar_today),
     new DrawerItem("Export", Icons.find_in_page),
     new DrawerItem("Settings", Icons.settings),
