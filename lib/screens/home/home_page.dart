@@ -6,6 +6,7 @@ import 'package:attendance/screens/home/settings/SettingsFragment.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
+import 'AttendanceFragment/ModifyAttendanceFragment.dart';
 import 'about/AboutFragment.dart';
 import 'home_screen_presenter.dart';
 
@@ -19,7 +20,9 @@ class DrawerItem {
 class HomeScreen extends StatefulWidget {
   final drawerItems = [
     new DrawerItem("Home", Icons.home),
-    new DrawerItem("Attendance", Icons.check),
+    new DrawerItem("Take Attendance", Icons.check),
+    new DrawerItem("Modify Attendance", Icons.check),
+    new DrawerItem("On Duty Entry", Icons.check),
     new DrawerItem("Views", Icons.calendar_today),
     new DrawerItem("Export", Icons.find_in_page),
     new DrawerItem("Settings", Icons.settings),
@@ -60,12 +63,12 @@ class HomeScreenState extends State<HomeScreen>
       case 1:
         return new AttendanceFragment();
       case 2:
-        return new Text("Error");
-      case 4:
-        return new SettingsFragment();
-      case 5:
-        return new AboutFragment();
+        return new ModifyAttendanceFragment();
       case 6:
+        return new SettingsFragment();
+      case 7:
+        return new AboutFragment();
+      case 8:
 //        _logout();
 //        return Center(
 //          child: Text(
@@ -145,7 +148,7 @@ class HomeScreenState extends State<HomeScreen>
     var drawerOptions = <Widget>[];
     for (var i = 0; i < widget.drawerItems.length; i++) {
       var d = widget.drawerItems[i];
-      if (i == 5) {
+      if (i == 7) {
         drawerOptions.add(
           const Divider(height: 1.0, color: Colors.grey),
         );
