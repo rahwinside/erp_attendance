@@ -1,6 +1,7 @@
 import 'package:attendance/data/database_helper.dart';
 import 'package:attendance/models/user.dart';
 import 'package:attendance/screens/home/AttendanceFragment/student_presenter.dart';
+import 'package:attendance/screens/home/AttendanceFragment/upload_rest_dest.dart';
 import 'package:flutter/material.dart';
 
 var username = "";
@@ -218,6 +219,12 @@ class _StudentListFragmentState extends State<StudentListFragment>
       upload_list.add(x.toString());
     }
     print(upload_list.toString());
+    UploadAttendanceRest API = new UploadAttendanceRest();
+    API.upload(username, auth_token, "timestamp", upload_list.toString()).then((
+        res) {
+      print(res.toString());
+      print("UPLOAD OK");
+    });
   }
 
   @override
