@@ -14,8 +14,6 @@ void main() async {
         accentColor: Colors.deepPurpleAccent,
         canvasColor: const Color(0xFFfafafa),
       ),
-//        home: _defaultHome,
-//        routes: routes,
       home: new LoginScreen(),
     ),
   );

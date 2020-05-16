@@ -8,7 +8,6 @@ import 'package:attendance/screens/changepassword/changepassword.dart';
 import 'package:attendance/screens/home/home_page.dart';
 import 'package:attendance/screens/login/login_screen_presenter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 
 String username, auth_token;
 
@@ -135,7 +134,7 @@ class LoginScreenState extends State<LoginScreen>
       print(context.toString());
       print(context.runtimeType);
 
-//      showProgressModal();
+      showProgressModal();
       AuthRestDataSource api = new AuthRestDataSource();
       var db = new DatabaseHelper();
       db.getFirstUser().then((User user) {
@@ -145,7 +144,7 @@ class LoginScreenState extends State<LoginScreen>
         api.auth(username, auth_token).then((bool res) {
           print(res.toString());
           print(res.runtimeType);
-//          Navigator.pop(context);
+          Navigator.pop(context);
           if (res) {
             if (passController.text == "licet@123") {
               Navigator.pushReplacement(
@@ -196,12 +195,8 @@ class LoginScreenState extends State<LoginScreen>
     if (state == AuthState.LOGGED_OUT) {
       print(context.toString());
       print(context.runtimeType);
-      SchedulerBinding.instance.addPostFrameCallback((_) async {
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (BuildContext context) => LoginScreen()));
-      });
+//      Navigator.pushReplacement(context,
+//          MaterialPageRoute(builder: (BuildContext context) => LoginScreen()));
     }
   }
 
