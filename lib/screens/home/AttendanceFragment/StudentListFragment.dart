@@ -242,7 +242,12 @@ class _StudentListFragmentState extends State<StudentListFragment>
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
-        title: Text("Mark Attendance"),
+        title: Text(
+          "Mark Attendance",
+          style: TextStyle(
+            fontFamily: "Poppins",
+          ),
+        ),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
