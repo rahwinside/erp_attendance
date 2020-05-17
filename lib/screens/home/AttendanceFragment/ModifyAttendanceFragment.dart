@@ -48,7 +48,7 @@ class ModifyAttendanceFragment extends StatefulWidget {
 class _ModifyAttendanceFragmentState extends State<ModifyAttendanceFragment>
     implements ModifyAttendanceFragmentContract {
   void preselect(dynamic res) {
-    dateController.text = res["datetime"].toString();
+    dateController.text = res["displaydate"].toString();
     switch (res["department"].toString().toLowerCase()) {
       case "dit":
         deptController.text = "Information Technology";
@@ -327,7 +327,7 @@ class _ModifyAttendanceFragmentState extends State<ModifyAttendanceFragment>
 
   @override
   void onFetchError(String errorTxt) {
-    _showSnackBar(errorTxt.substring(11));
+//    _showSnackBar(errorTxt.substring(11));
     messageController.text = errorTxt.substring(11) + ".";
     dateController.text = "";
     deptController.text = "";
