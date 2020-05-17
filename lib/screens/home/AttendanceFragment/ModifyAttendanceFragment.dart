@@ -99,6 +99,73 @@ class _ModifyAttendanceFragmentState extends State<ModifyAttendanceFragment>
     });
   }
 
+  Image loader;
+
+  @override
+  void initState() {
+    loader = Image.asset(
+      "images/loader.gif",
+    );
+    super.initState();
+    new Future.delayed(Duration.zero, () {
+      showProgressModal(context);
+    });
+  }
+
+  @override
+  void didChangeDependencies() async {
+    await precacheImage(loader.image, context);
+    super.didChangeDependencies();
+  }
+
+  showProgressModal(context) {
+    AlertDialog alert = AlertDialog(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(2.0))),
+      contentPadding: EdgeInsets.all(0.0),
+      content: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(2.0)),
+          ),
+          child: Wrap(
+            alignment: WrapAlignment.center,
+            children: <Widget>[
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(top: 10, bottom: 10),
+                    child: loader,
+                  ),
+                  Wrap(
+                    alignment: WrapAlignment.center,
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: Text(
+                          "Please wait...",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontFamily: "Poppins", color: Colors.grey),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          )),
+    );
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -166,6 +233,7 @@ class _ModifyAttendanceFragmentState extends State<ModifyAttendanceFragment>
                             false
                           ];
                           hourSelected[index] = true;
+                          showProgressModal(context);
                           _presenter.doFetch(username, auth_token, (index + 1)
                               .toString());
                         },
@@ -327,7 +395,7 @@ class _ModifyAttendanceFragmentState extends State<ModifyAttendanceFragment>
 
   @override
   void onFetchError(String errorTxt) {
-//    _showSnackBar(errorTxt.substring(11));
+    Navigator.pop(context);
     messageController.text = errorTxt.substring(11) + ".";
     dateController.text = "";
     deptController.text = "";
@@ -343,6 +411,7 @@ class _ModifyAttendanceFragmentState extends State<ModifyAttendanceFragment>
 
   @override
   void onFetchSuccess(res) {
+    Navigator.pop(context);
     if (res != "invalid-auth-or-access") {
       preselect(res);
     }
