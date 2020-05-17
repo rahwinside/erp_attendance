@@ -1,4 +1,4 @@
-import 'package:attendance/screens/login/login_screen.dart';
+import 'package:attendance/screens/home/AttendanceFragment/ModifyAttendanceFragment.dart';
 import 'package:flutter/material.dart';
 
 GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
@@ -14,7 +14,7 @@ void main() async {
         accentColor: Colors.deepPurpleAccent,
         canvasColor: const Color(0xFFfafafa),
       ),
-      home: new LoginScreen(),
+      home: new ModifyAttendanceFragment(),
     ),
   );
 }
