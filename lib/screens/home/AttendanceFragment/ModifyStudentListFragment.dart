@@ -1,11 +1,12 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:attendance/data/database_helper.dart';
 import 'package:attendance/models/user.dart';
-import 'package:attendance/screens/home/AttendanceFragment/upload_rest_dest.dart';
 import 'package:flutter/material.dart';
 
 import 'modify_student_presenter.dart';
+import 'modify_upload_rest_dest.dart';
 
 var username = "";
 var auth_token = "";
@@ -17,6 +18,7 @@ class LabeledCheckbox extends StatelessWidget {
     this.labelroll,
     this.padding,
     this.value,
+    this.tristate,
     this.onChanged,
   });
 
@@ -24,13 +26,38 @@ class LabeledCheckbox extends StatelessWidget {
   final String labelroll;
   final EdgeInsets padding;
   final bool value;
+  final bool tristate;
   final Function onChanged;
+
+  dynamic getGradient() {
+    if (value == null)
+      return LinearGradient(
+        begin: Alignment(-0.97, 0.24),
+        end: Alignment(-0.35, 0.21),
+        colors: [const Color(0xff2f1f86), const Color(0xff674ef2)],
+        stops: [0.0, 1.0],
+      );
+    else
+      return value
+          ? LinearGradient(
+        begin: Alignment(-0.97, 0.24),
+        end: Alignment(-0.35, 0.21),
+        colors: [const Color(0xff38837b), const Color(0xff2ac0b1)],
+        stops: [0.0, 1.0],
+      )
+          : LinearGradient(
+        begin: Alignment(-0.97, 0.24),
+        end: Alignment(-0.35, 0.21),
+        colors: [const Color(0xffa8193d), const Color(0xffff3366)],
+        stops: [0.0, 1.0],
+      );
+  }
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        onChanged(!value);
+        if (value != null) onChanged(!value);
       },
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -39,25 +66,7 @@ class LabeledCheckbox extends StatelessWidget {
             padding: EdgeInsets.only(bottom: 4),
             child: Container(
               decoration: BoxDecoration(
-                gradient: value
-                    ? LinearGradient(
-                        begin: Alignment(-0.97, 0.24),
-                        end: Alignment(-0.35, 0.21),
-                        colors: [
-                          const Color(0xff38837b),
-                          const Color(0xff2ac0b1)
-                        ],
-                        stops: [0.0, 1.0],
-                      )
-                    : LinearGradient(
-                        begin: Alignment(-0.97, 0.24),
-                        end: Alignment(-0.35, 0.21),
-                        colors: [
-                          const Color(0xffa8193d),
-                          const Color(0xffff3366)
-                        ],
-                        stops: [0.0, 1.0],
-                      ),
+                gradient: getGradient(),
                 borderRadius: BorderRadius.circular(5),
               ),
               child: Padding(
@@ -100,12 +109,15 @@ class LabeledCheckbox extends StatelessWidget {
                       ],
                     )),
                     Checkbox(
+                      tristate: tristate ? true : false,
                       focusColor: Colors.orange,
                       hoverColor: Colors.white12,
                       checkColor: Colors.green,
                       activeColor: Colors.white,
                       value: value,
-                      onChanged: (bool newValue) {
+                      onChanged: tristate
+                          ? null
+                          : (bool newValue) {
                         onChanged(newValue);
                       },
                     ),
@@ -141,13 +153,15 @@ class ModifyStudentListFragment extends StatefulWidget {
 class _ModifyStudentListFragmentState extends State<ModifyStudentListFragment>
     implements ModifyStudentListFragmentContract {
   List<Widget> list = new List<Widget>();
-  List upload_list = [];
+
+//  List upload_list = [];
   List names = [];
   List rolls = [];
   List full_rolls = [];
   List _isSelected = [];
+  List _tristate = [];
   bool uploadActive = false;
-  String pk_table;
+  String pk_table, required_timestamp;
   int presentCounter, absentCounter, onDutyCounter;
 
   ModifyStudentListFragmentPresenter _presenter;
@@ -157,6 +171,7 @@ class _ModifyStudentListFragmentState extends State<ModifyStudentListFragment>
     absentCounter = 0;
     onDutyCounter = 0;
     this.pk_table = pk_table;
+    this.required_timestamp = required_timestamp;
     _presenter = new ModifyStudentListFragmentPresenter(this);
     var db = new DatabaseHelper();
     db.getFirstUser().then((User user) {
@@ -240,17 +255,21 @@ class _ModifyStudentListFragmentState extends State<ModifyStudentListFragment>
         labelroll: rolls[i],
         labelname: names[i],
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
+        tristate: _tristate[i],
         value: _isSelected[i],
         onChanged: (bool newValue) {
           setState(() {
             _isSelected[i] = newValue;
             presentCounter = 0;
             absentCounter = 0;
+            onDutyCounter = 0;
             _isSelected.forEach((status) {
-              if (status) {
+              if (status == true) {
                 presentCounter += 1;
-              } else {
+              } else if (status == false) {
                 absentCounter += 1;
+              } else {
+                onDutyCounter += 1;
               }
             });
           });
@@ -270,14 +289,15 @@ class _ModifyStudentListFragmentState extends State<ModifyStudentListFragment>
       names.add(student["full_name"].toString());
       if (student["status"] == "1") {
         _isSelected.add(true);
+        _tristate.add(false);
         presentCounter++;
-      }
-      else if (student["status"] == "0") {
+      } else if (student["status"] == "0") {
         _isSelected.add(false);
+        _tristate.add(false);
         absentCounter++;
-      }
-      else if (student["status"] == "2") {
-        _isSelected.add(true);
+      } else if (student["status"] == "2") {
+        _isSelected.add(null);
+        _tristate.add(true);
         onDutyCounter++;
       }
     });
@@ -291,23 +311,36 @@ class _ModifyStudentListFragmentState extends State<ModifyStudentListFragment>
         .showSnackBar(new SnackBar(content: new Text(text)));
   }
 
+  String getStatusFromSelected(int i) {
+    if (_isSelected[i] == null)
+      return "2";
+    else
+      return _isSelected[i] ? "1" : "0";
+  }
+
   void upload() {
-    upload_list.clear();
-    print(rolls.length);
+//    upload_list.clear();
+//    for (var i = 0; i < rolls.length; i++) {
+//      String x = '{"register_no": "' +
+//          full_rolls[i].toString() +
+//          '", "full_name": "' +
+//          names[i] +
+//          '", "status": ' +
+//          getStatusFromSelected(i) +
+//          "}";
+//      upload_list.add(x.toString());
+//    }
+//    print(upload_list.toString());
+
+    Map<String, String> upload_json = {};
     for (var i = 0; i < rolls.length; i++) {
-      String x = '{"register_no": "' +
-          full_rolls[i].toString() +
-          '", "full_name": "' +
-          names[i] +
-          '", "status": ' +
-          (_isSelected[i] ? "1" : "0") +
-          "}";
-      upload_list.add(x.toString());
+      upload_json[full_rolls[i].toString()] =
+          getStatusFromSelected(i).toString();
     }
-    print(upload_list.toString());
-    UploadAttendanceRest API = new UploadAttendanceRest();
+    ModifyUploadAttendanceRest API = new ModifyUploadAttendanceRest();
     API
-        .upload(username, auth_token, "timestamp", upload_list.toString())
+        .upload(username, auth_token, pk_table, required_timestamp,
+        json.encode(upload_json).toString())
         .then((res) {
       print(res.toString());
       print("UPLOAD OK");
@@ -322,7 +355,7 @@ class _ModifyStudentListFragmentState extends State<ModifyStudentListFragment>
       key: scaffoldKey,
       appBar: AppBar(
         title: Text(
-          "Mark Attendance",
+          "Modify Attendance",
           style: TextStyle(
             fontFamily: "Poppins",
           ),
@@ -398,7 +431,7 @@ class _ModifyStudentListFragmentState extends State<ModifyStudentListFragment>
                         splashColor: Colors.deepPurpleAccent,
                         elevation: 5.0,
                         child: new Text(
-                          "Upload",
+                          "Modify",
                           style: TextStyle(
                             color: Colors.deepPurple,
                             fontFamily: 'Poppins',
