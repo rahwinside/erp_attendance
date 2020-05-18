@@ -4,7 +4,7 @@ import 'package:attendance/screens/home/AttendanceFragment/modify_attendance_pre
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import 'StudentListFragment.dart';
+import 'ModifyStudentListFragment.dart';
 
 var username = "";
 var auth_token = "";
@@ -385,7 +385,8 @@ class _ModifyAttendanceFragmentState extends State<ModifyAttendanceFragment>
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => StudentListFragment(pk_table: pk_table)));
+            builder: (context) =>
+                ModifyStudentListFragment(pk_table: pk_table)));
   }
 
   void _showSnackBar(String text) {
