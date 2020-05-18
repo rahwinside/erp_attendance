@@ -250,6 +250,9 @@ class _ModifyStudentListFragmentState extends State<ModifyStudentListFragment>
 
   Column loopable() {
     list.clear();
+    list.add(
+        new Padding(padding: EdgeInsets.only(top: 15))
+    );
     for (var i = 0; i < names.length; i++) {
       list.add(LabeledCheckbox(
         labelroll: rolls[i],
@@ -355,8 +358,7 @@ class _ModifyStudentListFragmentState extends State<ModifyStudentListFragment>
           Expanded(
             flex: 87,
             child: Padding(
-              padding: const EdgeInsets.only(
-                  top: 15.0, left: 15, right: 15, bottom: 0),
+              padding: const EdgeInsets.only(left: 15, right: 15),
               child: SingleChildScrollView(child: loopable()),
             ),
           ),

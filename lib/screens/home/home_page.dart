@@ -7,7 +7,7 @@ import 'package:attendance/screens/login/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
-import 'AttendanceFragment/ModifyAttendanceFragment.dart';
+import 'ModifyAttendanceFragment/ModifyAttendanceFragment.dart';
 import 'about/AboutFragment.dart';
 import 'home_screen_presenter.dart';
 

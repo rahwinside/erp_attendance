@@ -232,9 +232,11 @@ class _StudentListFragmentState extends State<StudentListFragment>
     );
   }
 
-
   Column loopable() {
     list.clear();
+    list.add(
+        new Padding(padding: EdgeInsets.only(top: 15))
+    );
     for (var i = 0; i < names.length; i++) {
       list.add(LabeledCheckbox(
         labelroll: rolls[i],
@@ -249,8 +251,7 @@ class _StudentListFragmentState extends State<StudentListFragment>
             _isSelected.forEach((status) {
               if (status) {
                 presentCounter += 1;
-              }
-              else {
+              } else {
                 absentCounter += 1;
               }
             });
@@ -286,13 +287,13 @@ class _StudentListFragmentState extends State<StudentListFragment>
     upload_list.clear();
     print(rolls.length);
     for (var i = 0; i < rolls.length; i++) {
-      if (_isSelected[i] == true)
-        upload_list.add(full_rolls[i].toString());
+      if (_isSelected[i] == true) upload_list.add(full_rolls[i].toString());
     }
     print(upload_list.toString());
     UploadAttendanceRest API = new UploadAttendanceRest();
-    API.upload(username, auth_token, "timestamp", upload_list.toString()).then((
-        res) {
+    API
+        .upload(username, auth_token, "timestamp", upload_list.toString())
+        .then((res) {
       print(res.toString());
       print("UPLOAD OK");
       Navigator.pop(context);
@@ -319,16 +320,14 @@ class _StudentListFragmentState extends State<StudentListFragment>
           Expanded(
             flex: 9,
             child: Padding(
-              padding: const EdgeInsets.only(
-                  top: 15.0, left: 15, right: 15, bottom: 0),
+              padding: const EdgeInsets.only(left: 15, right: 15),
               child: SingleChildScrollView(child: loopable()),
             ),
           ),
           Expanded(
             flex: 1,
             child: Container(
-              padding: const EdgeInsets.only(
-                  left: 15, right: 15),
+              padding: const EdgeInsets.only(left: 15, right: 15),
               decoration: new BoxDecoration(
                 color: Colors.deepPurple,
               ),

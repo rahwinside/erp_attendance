@@ -1,6 +1,6 @@
 import 'package:attendance/data/database_helper.dart';
 import 'package:attendance/models/user.dart';
-import 'package:attendance/screens/home/AttendanceFragment/modify_attendance_presenter.dart';
+import 'package:attendance/screens/home/ModifyAttendanceFragment/modify_attendance_presenter.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
