@@ -320,7 +320,7 @@ class _StudentListFragmentState extends State<StudentListFragment>
             flex: 9,
             child: Padding(
               padding: const EdgeInsets.only(
-                  top: 10.0, left: 15, right: 15, bottom: 10),
+                  top: 15.0, left: 15, right: 15, bottom: 0),
               child: SingleChildScrollView(child: loopable()),
             ),
           ),

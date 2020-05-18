@@ -353,15 +353,15 @@ class _ModifyStudentListFragmentState extends State<ModifyStudentListFragment>
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Expanded(
-            flex: 85,
+            flex: 87,
             child: Padding(
               padding: const EdgeInsets.only(
-                  top: 10.0, left: 15, right: 15, bottom: 10),
+                  top: 15.0, left: 15, right: 15, bottom: 0),
               child: SingleChildScrollView(child: loopable()),
             ),
           ),
           Expanded(
-            flex: 15,
+            flex: 13,
             child: Container(
               padding: const EdgeInsets.only(left: 15, right: 15),
               decoration: new BoxDecoration(
