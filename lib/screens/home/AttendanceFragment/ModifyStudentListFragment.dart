@@ -319,19 +319,7 @@ class _ModifyStudentListFragmentState extends State<ModifyStudentListFragment>
   }
 
   void upload() {
-//    upload_list.clear();
-//    for (var i = 0; i < rolls.length; i++) {
-//      String x = '{"register_no": "' +
-//          full_rolls[i].toString() +
-//          '", "full_name": "' +
-//          names[i] +
-//          '", "status": ' +
-//          getStatusFromSelected(i) +
-//          "}";
-//      upload_list.add(x.toString());
-//    }
-//    print(upload_list.toString());
-
+    showProgressModal(context);
     Map<String, String> upload_json = {};
     for (var i = 0; i < rolls.length; i++) {
       upload_json[full_rolls[i].toString()] =
@@ -343,7 +331,7 @@ class _ModifyStudentListFragmentState extends State<ModifyStudentListFragment>
         json.encode(upload_json).toString())
         .then((res) {
       print(res.toString());
-      print("UPLOAD OK");
+      Navigator.pop(context);
       _showSnackBar("Attendance has been successfully uploaded");
       new Timer(const Duration(seconds: 1), () => Navigator.pop(context));
     });
