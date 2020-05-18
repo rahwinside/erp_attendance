@@ -31,7 +31,8 @@ TextEditingController semesterController = new TextEditingController();
 TextEditingController subjectController = new TextEditingController();
 TextEditingController messageController = new TextEditingController();
 
-String pk_table;
+String pk_table = "";
+String required_timestamp = "";
 
 // takeAttendance button is deactivated by default
 bool buttonActive = false;
@@ -75,6 +76,8 @@ class _ModifyAttendanceFragmentState extends State<ModifyAttendanceFragment>
         " - " +
         res["subject_name"].toString();
     messageController.text = "";
+    required_timestamp = res["required_timestamp"].toString();
+    pk_table = res["subCode_dept_sem"].toString().toLowerCase();
     setState(() {});
   }
 
@@ -386,7 +389,9 @@ class _ModifyAttendanceFragmentState extends State<ModifyAttendanceFragment>
         context,
         MaterialPageRoute(
             builder: (context) =>
-                ModifyStudentListFragment(pk_table: pk_table)));
+                ModifyStudentListFragment(
+                  pk_table: pk_table,
+                  required_timestamp: required_timestamp,)));
   }
 
   void _showSnackBar(String text) {

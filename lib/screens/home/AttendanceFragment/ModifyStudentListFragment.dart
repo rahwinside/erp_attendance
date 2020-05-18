@@ -128,7 +128,7 @@ class ModifyStudentListFragment extends StatefulWidget {
   ModifyStudentListFragment({
     Key key,
     @required this.pk_table,
-    this.required_timestamp,
+    @required this.required_timestamp,
   }) : super(key: key);
 
   @override
@@ -148,13 +148,14 @@ class _ModifyStudentListFragmentState extends State<ModifyStudentListFragment>
   List _isSelected = [];
   bool uploadActive = false;
   String pk_table;
-  int presentCounter, absentCounter;
+  int presentCounter, absentCounter, onDutyCounter;
 
   ModifyStudentListFragmentPresenter _presenter;
 
   _ModifyStudentListFragmentState(String pk_table, String required_timestamp) {
     presentCounter = 0;
     absentCounter = 0;
+    onDutyCounter = 0;
     this.pk_table = pk_table;
     _presenter = new ModifyStudentListFragmentPresenter(this);
     var db = new DatabaseHelper();
@@ -267,14 +268,21 @@ class _ModifyStudentListFragmentState extends State<ModifyStudentListFragment>
       full_rolls.add(student["register_no"].toString());
       rolls.add(student["register_no"].toString().substring(8));
       names.add(student["full_name"].toString());
-      if (res["status"] == 1)
+      if (student["status"] == "1") {
         _isSelected.add(true);
-      else if (res["status"] == 0)
+        presentCounter++;
+      }
+      else if (student["status"] == "0") {
         _isSelected.add(false);
-      else if (res["status"] == 2) _isSelected.add(null);
+        absentCounter++;
+      }
+      else if (student["status"] == "2") {
+        _isSelected.add(true);
+        onDutyCounter++;
+      }
     });
+
     uploadActive = true;
-    absentCounter = res.length;
     setState(() {});
   }
 
@@ -368,6 +376,16 @@ class _ModifyStudentListFragmentState extends State<ModifyStudentListFragment>
                             fontWeight: FontWeight.w600,
                           ),
                         ),
+                        new Text(
+                          uploadActive
+                              ? "On Duty: " + onDutyCounter.toString()
+                              : "",
+                          style: new TextStyle(
+                            fontFamily: "Poppins",
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -407,7 +425,6 @@ class _ModifyStudentListFragmentState extends State<ModifyStudentListFragment>
   void onFetchSuccess(dynamic res) {
 //    print(res.toString());
     Navigator.pop(context);
-    print(res.runtimeType);
     list_adapter(res);
   }
 }
