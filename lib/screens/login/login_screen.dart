@@ -191,7 +191,7 @@ class LoginScreenState extends State<LoginScreen>
             color: Colors.white,
             fontSize: 15,
             fontFamily: 'Poppins',
-            fontWeight: FontWeight.normal,
+            fontWeight: FontWeight.w600,
           ),
         ),
         color: Colors.deepPurple,
