@@ -282,17 +282,12 @@ class _StudentListFragmentState extends State<StudentListFragment>
   }
 
   void upload() {
+    showProgressModal(context);
     upload_list.clear();
     print(rolls.length);
     for (var i = 0; i < rolls.length; i++) {
-      String x = '{"register_no": "' +
-          full_rolls[i].toString() +
-          '", "full_name": "' +
-          names[i] +
-          '", "status": ' +
-          (_isSelected[i] ? "1" : "0") +
-          "}";
-      upload_list.add(x.toString());
+      if (_isSelected[i] == true)
+        upload_list.add(full_rolls[i].toString());
     }
     print(upload_list.toString());
     UploadAttendanceRest API = new UploadAttendanceRest();
@@ -300,6 +295,7 @@ class _StudentListFragmentState extends State<StudentListFragment>
         res) {
       print(res.toString());
       print("UPLOAD OK");
+      Navigator.pop(context);
       _showSnackBar("Attendance has been successfully uploaded");
       new Timer(const Duration(seconds: 1), () => Navigator.pop(context));
     });
