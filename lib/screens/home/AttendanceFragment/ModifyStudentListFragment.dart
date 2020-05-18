@@ -353,7 +353,7 @@ class _ModifyStudentListFragmentState extends State<ModifyStudentListFragment>
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Expanded(
-            flex: 9,
+            flex: 85,
             child: Padding(
               padding: const EdgeInsets.only(
                   top: 10.0, left: 15, right: 15, bottom: 10),
@@ -361,7 +361,7 @@ class _ModifyStudentListFragmentState extends State<ModifyStudentListFragment>
             ),
           ),
           Expanded(
-            flex: 1,
+            flex: 15,
             child: Container(
               padding: const EdgeInsets.only(left: 15, right: 15),
               decoration: new BoxDecoration(
@@ -373,41 +373,43 @@ class _ModifyStudentListFragmentState extends State<ModifyStudentListFragment>
                 children: <Widget>[
                   Expanded(
                     flex: 5,
-                    child: new Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        new Text(
-                          uploadActive
-                              ? "Present: " + presentCounter.toString()
-                              : "",
-                          style: new TextStyle(
-                            fontFamily: "Poppins",
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
+                    child: SingleChildScrollView(
+                      child: new Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          new Text(
+                            uploadActive
+                                ? "Present: " + presentCounter.toString()
+                                : "",
+                            style: new TextStyle(
+                              fontFamily: "Poppins",
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
-                        ),
-                        new Text(
-                          uploadActive
-                              ? "Absent: " + absentCounter.toString()
-                              : "",
-                          style: new TextStyle(
-                            fontFamily: "Poppins",
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
+                          new Text(
+                            uploadActive
+                                ? "Absent: " + absentCounter.toString()
+                                : "",
+                            style: new TextStyle(
+                              fontFamily: "Poppins",
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
-                        ),
-                        new Text(
-                          uploadActive
-                              ? "On Duty: " + onDutyCounter.toString()
-                              : "",
-                          style: new TextStyle(
-                            fontFamily: "Poppins",
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
+                          new Text(
+                            uploadActive
+                                ? "On Duty: " + onDutyCounter.toString()
+                                : "",
+                            style: new TextStyle(
+                              fontFamily: "Poppins",
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                   Expanded(

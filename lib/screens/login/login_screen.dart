@@ -225,7 +225,8 @@ class LoginScreenState extends State<LoginScreen>
                   mainAxisSize: MainAxisSize.max,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    new Row(
+                    Wrap(
+                      crossAxisAlignment: WrapCrossAlignment.center,
                       children: <Widget>[
                         licetLogo,
                         new Text(
