@@ -23,7 +23,7 @@ class OnDutySelectionRestDataSource {
             "You do not have the privileges to access this content");
       else if (res == "not-taken")
         throw new Exception(
-            "You haven't taken attendance for this hour. Please use the 'Take Attendance' option from the menu");
+            "Attendance is not yet taken for this hour. Please try again after the attendance is taken");
 //        return null;
       return res;
     });
