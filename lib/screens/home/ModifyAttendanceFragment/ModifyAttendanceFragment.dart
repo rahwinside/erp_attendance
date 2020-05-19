@@ -193,6 +193,11 @@ class _ModifyAttendanceFragmentState extends State<ModifyAttendanceFragment>
                         padding: const EdgeInsets.only(left: 5, right: 5),
                         child: new TextField(
                           enabled: false,
+                          style: new TextStyle(
+                            fontFamily: "Poppins",
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black,
+                          ),
                           controller: dateController,
                           decoration: InputDecoration(
                             contentPadding: const EdgeInsets.all(0),
@@ -254,6 +259,11 @@ class _ModifyAttendanceFragmentState extends State<ModifyAttendanceFragment>
                         padding: EdgeInsets.only(left: 5, right: 5),
                         child: new TextField(
                           enabled: false,
+                          style: new TextStyle(
+                            fontFamily: "Poppins",
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black,
+                          ),
                           controller: deptController,
                           decoration: InputDecoration(
                             contentPadding: const EdgeInsets.all(0),
@@ -280,6 +290,11 @@ class _ModifyAttendanceFragmentState extends State<ModifyAttendanceFragment>
                               children: <Widget>[
                                 new TextField(
                                   enabled: false,
+                                  style: new TextStyle(
+                                    fontFamily: "Poppins",
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.black,
+                                  ),
                                   controller: yearController,
                                   decoration: InputDecoration(
                                     contentPadding: const EdgeInsets.all(0),
@@ -301,6 +316,11 @@ class _ModifyAttendanceFragmentState extends State<ModifyAttendanceFragment>
                               children: <Widget>[
                                 TextField(
                                   enabled: false,
+                                  style: new TextStyle(
+                                    fontFamily: "Poppins",
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.black,
+                                  ),
                                   controller: semesterController,
                                   decoration: InputDecoration(
                                     contentPadding: const EdgeInsets.all(0),
@@ -323,6 +343,11 @@ class _ModifyAttendanceFragmentState extends State<ModifyAttendanceFragment>
                         padding: EdgeInsets.only(left: 5, right: 5),
                         child: TextField(
                           enabled: false,
+                          style: new TextStyle(
+                            fontFamily: "Poppins",
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black,
+                          ),
                           controller: subjectController,
                           decoration: InputDecoration(
                             contentPadding: const EdgeInsets.all(0),
