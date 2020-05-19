@@ -357,14 +357,70 @@ class _AttendanceFragmentState extends State<AttendanceFragment>
                       scrollDirection: Axis.horizontal,
                       child: ToggleButtons(
                         children: <Widget>[
-                          Text("1"),
-                          Text("2"),
-                          Text("3"),
-                          Text("4"),
-                          Text("5"),
-                          Text("6"),
-                          Text("7"),
-                          Text("8"),
+                          Text(
+                            "1",
+                            style: new TextStyle(
+                              fontFamily: "Poppins",
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black,
+                            ),
+                          ),
+                          Text(
+                            "2",
+                            style: new TextStyle(
+                              fontFamily: "Poppins",
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black,
+                            ),
+                          ),
+                          Text(
+                            "3",
+                            style: new TextStyle(
+                              fontFamily: "Poppins",
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black,
+                            ),
+                          ),
+                          Text(
+                            "4",
+                            style: new TextStyle(
+                              fontFamily: "Poppins",
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black,
+                            ),
+                          ),
+                          Text(
+                            "5",
+                            style: new TextStyle(
+                              fontFamily: "Poppins",
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black,
+                            ),
+                          ),
+                          Text(
+                            "6",
+                            style: new TextStyle(
+                              fontFamily: "Poppins",
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black,
+                            ),
+                          ),
+                          Text(
+                            "7",
+                            style: new TextStyle(
+                              fontFamily: "Poppins",
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black,
+                            ),
+                          ),
+                          Text(
+                            "8",
+                            style: new TextStyle(
+                              fontFamily: "Poppins",
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black,
+                            ),
+                          ),
                         ],
                         isSelected: hourSelected,
                         onPressed: (int index) {

@@ -194,6 +194,29 @@ class _OnDutyFragmentState extends State<OnDutyFragment>
                   mainAxisSize: MainAxisSize.max,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
+                    Container(
+                        padding: EdgeInsets.only(left: 5, right: 5),
+                        child: new TextField(
+                          enabled: false,
+                          controller: deptController,
+                          style: TextStyle(
+                            fontFamily: "Poppins",
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black,
+                          ),
+                          decoration: InputDecoration(
+                            contentPadding: const EdgeInsets.all(0),
+                            labelText: "Department",
+                            labelStyle: TextStyle(
+                              fontFamily: "Poppins",
+                              fontWeight: FontWeight.w200,
+                              color: Colors.black,
+                            ),
+                          ),
+                        )),
+                    Padding(
+                      padding: EdgeInsets.only(top: 10),
+                    ),
                     Padding(
                       padding: const EdgeInsets.only(left: 5, right: 5),
                       child: new DateTimeField(
@@ -225,75 +248,48 @@ class _OnDutyFragmentState extends State<OnDutyFragment>
                       padding: EdgeInsets.only(top: 10),
                     ),
                     Container(
-                        padding: EdgeInsets.only(left: 5, right: 5),
-                        child: new TextField(
-                          enabled: false,
-                          controller: deptController,
-                          style: TextStyle(
+                      padding: EdgeInsets.only(left: 5, right: 5),
+                      child: new DropdownButtonFormField<String>(
+                        isExpanded: true,
+                        style: new TextStyle(
+                          fontFamily: "Poppins",
+                          fontWeight: FontWeight.w400,
+                          color: Colors.black,
+                        ),
+                        decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.all(0),
+                          labelText: "Year",
+                          labelStyle: TextStyle(
                             fontFamily: "Poppins",
-                            fontWeight: FontWeight.w400,
+                            fontWeight: FontWeight.w200,
                             color: Colors.black,
                           ),
-                          decoration: InputDecoration(
-                            contentPadding: const EdgeInsets.all(0),
-                            labelText: "Department",
-                            labelStyle: TextStyle(
-                              fontFamily: "Poppins",
-                              fontWeight: FontWeight.w200,
-                              color: Colors.black,
-                            ),
-                          ),
-                        )),
-                    new Padding(
-                      padding: EdgeInsets.only(top: 10),
-                    ),
-                    Container(
-                      padding: EdgeInsets.only(left: 5, right: 5),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          new Text(
-                            "Year",
-                            style: new TextStyle(
-                                fontSize: 12.0,
-                                color: const Color(0xFF000000),
-                                fontWeight: FontWeight.w200,
-                                fontFamily: "Poppins"),
-                          ),
-                          new DropdownButton<String>(
-                            isExpanded: true,
-                            style: new TextStyle(
-                              fontFamily: "Poppins",
-                              fontWeight: FontWeight.w400,
-                              color: Colors.black,
-                            ),
-                            value: yearController.text,
-                            onChanged: (value) {
-                              setState(() {
-                                yearController.text = value;
-                              });
-                            },
-                            items: year.map(
+                        ),
+                        value: yearController.text,
+                        onChanged: (value) {
+                          setState(() {
+                            yearController.text = value;
+                          });
+                        },
+                        items: year.map(
                               (item) {
-                                return DropdownMenuItem(
-                                  value: item.toString(),
-                                  child: new Text(
-                                    item.toString(),
-                                    style: new TextStyle(
-                                      fontFamily: "Poppins",
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                );
-                              },
-                            ).toList(),
-                          ),
-                        ],
+                            return DropdownMenuItem(
+                              value: item.toString(),
+                              child: new Text(
+                                item.toString(),
+                                style: new TextStyle(
+                                  fontFamily: "Poppins",
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            );
+                          },
+                        ).toList(),
                       ),
                     ),
                     new Padding(
-                      padding: EdgeInsets.only(top: 5),
+                      padding: EdgeInsets.only(top: 10),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 5, right: 5),
@@ -310,14 +306,70 @@ class _OnDutyFragmentState extends State<OnDutyFragment>
                       scrollDirection: Axis.horizontal,
                       child: ToggleButtons(
                         children: <Widget>[
-                          Text("1"),
-                          Text("2"),
-                          Text("3"),
-                          Text("4"),
-                          Text("5"),
-                          Text("6"),
-                          Text("7"),
-                          Text("8"),
+                          Text(
+                            "1",
+                            style: new TextStyle(
+                              fontFamily: "Poppins",
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black,
+                            ),
+                          ),
+                          Text(
+                            "2",
+                            style: new TextStyle(
+                              fontFamily: "Poppins",
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black,
+                            ),
+                          ),
+                          Text(
+                            "3",
+                            style: new TextStyle(
+                              fontFamily: "Poppins",
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black,
+                            ),
+                          ),
+                          Text(
+                            "4",
+                            style: new TextStyle(
+                              fontFamily: "Poppins",
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black,
+                            ),
+                          ),
+                          Text(
+                            "5",
+                            style: new TextStyle(
+                              fontFamily: "Poppins",
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black,
+                            ),
+                          ),
+                          Text(
+                            "6",
+                            style: new TextStyle(
+                              fontFamily: "Poppins",
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black,
+                            ),
+                          ),
+                          Text(
+                            "7",
+                            style: new TextStyle(
+                              fontFamily: "Poppins",
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black,
+                            ),
+                          ),
+                          Text(
+                            "8",
+                            style: new TextStyle(
+                              fontFamily: "Poppins",
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black,
+                            ),
+                          ),
                         ],
                         isSelected: hourSelected,
                         onPressed: (int index) {
