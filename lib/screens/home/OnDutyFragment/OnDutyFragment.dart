@@ -452,7 +452,7 @@ class _OnDutyFragmentState extends State<OnDutyFragment>
                       splashColor: Colors.purple,
                       elevation: 5.0,
                       child: new Text(
-                        "Modify Attendance",
+                        "Update Attendance",
                         style: TextStyle(
                           color: Colors.deepPurple,
                           fontFamily: 'Poppins',
