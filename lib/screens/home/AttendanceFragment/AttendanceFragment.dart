@@ -30,7 +30,7 @@ TextEditingController semesterController = new TextEditingController();
 TextEditingController subjectController = new TextEditingController();
 TextEditingController messageController = new TextEditingController();
 
-String pk_table;
+String pk_table, datetime_column;
 
 // takeAttendance button is deactivated by default
 bool buttonActive = false;
@@ -47,6 +47,7 @@ class AttendanceFragment extends StatefulWidget {
 class _AttendanceFragmentState extends State<AttendanceFragment>
     implements AttendanceFragmentContract {
   void preselect(dynamic res) {
+    datetime_column = res["datetime_column"].toString();
     dateController.text = res["datetime"].toString();
     switch (res["department"]) {
       case "dit":
@@ -486,7 +487,9 @@ class _AttendanceFragmentState extends State<AttendanceFragment>
   void buttonPressed() {
     Navigator.push(context,
         MaterialPageRoute(
-            builder: (context) => StudentListFragment(pk_table: pk_table)));
+            builder: (context) =>
+                StudentListFragment(
+                    pk_table: pk_table, datetime_column: datetime_column)));
   }
 
   void _showSnackBar(String text) {
@@ -498,6 +501,7 @@ class _AttendanceFragmentState extends State<AttendanceFragment>
   void onFetchError(String errorTxt) {
     Navigator.pop(context);
     _showSnackBar(errorTxt.substring(11));
+    print(errorTxt.toString());
     messageController.text = errorTxt.substring(11) + ".";
     setState(() {
       buttonActive = false;

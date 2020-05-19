@@ -12,6 +12,7 @@ class RestDataSource {
       "username": username,
       "auth_token": auth_token,
     }).then((dynamic res) {
+      print("response: ");
       print(res.toString());
       print(res.runtimeType);
       if (res == "no-class")

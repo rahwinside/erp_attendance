@@ -124,17 +124,19 @@ class LabeledCheckbox extends StatelessWidget {
 
 class StudentListFragment extends StatefulWidget {
   final String pk_table;
+  final String datetime_column;
 
   // constructor
   StudentListFragment({
     Key key,
     @required this.pk_table,
+    @required this.datetime_column,
   }) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return new _StudentListFragmentState(pk_table);
+    return new _StudentListFragmentState(pk_table, datetime_column);
   }
 }
 
@@ -148,14 +150,16 @@ class _StudentListFragmentState extends State<StudentListFragment>
   List _isSelected = [];
   bool uploadActive = false;
   String pk_table;
+  String datetime_column;
   int presentCounter, absentCounter;
 
   StudentListFragmentPresenter _presenter;
 
-  _StudentListFragmentState(String pk_table) {
+  _StudentListFragmentState(String pk_table, String datetime_column) {
     presentCounter = 0;
     absentCounter = 0;
     this.pk_table = pk_table;
+    this.datetime_column = datetime_column;
     _presenter = new StudentListFragmentPresenter(this);
     var db = new DatabaseHelper();
     db.getFirstUser().then((User user) {
@@ -289,12 +293,13 @@ class _StudentListFragmentState extends State<StudentListFragment>
     for (var i = 0; i < rolls.length; i++) {
       if (_isSelected[i] == true) upload_list.add(full_rolls[i].toString());
     }
-    print(upload_list.toString());
+//    print(upload_list.toString());
     UploadAttendanceRest API = new UploadAttendanceRest();
     API
-        .upload(username, auth_token, "timestamp", upload_list.toString())
+        .upload(
+        username, auth_token, pk_table, datetime_column, upload_list.toString())
         .then((res) {
-      print(res.toString());
+//      print(res.toString());
       print("UPLOAD OK");
       Navigator.pop(context);
       _showSnackBar("Attendance has been successfully uploaded");
