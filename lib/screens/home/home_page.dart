@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
 import 'ModifyAttendanceFragment/ModifyAttendanceFragment.dart';
+import 'OnDutyFragment/OnDutyFragment.dart';
 import 'about/AboutFragment.dart';
 import 'home_screen_presenter.dart';
 
@@ -63,12 +64,19 @@ class HomeScreenState extends State<HomeScreen>
     switch (pos) {
       case 1:
         return new AttendanceFragment();
+        break;
       case 2:
         return new ModifyAttendanceFragment();
+        break;
+      case 3:
+        return new OnDutyFragment();
+        break;
       case 6:
         return new SettingsFragment();
+        break;
       case 7:
         return new AboutFragment();
+        break;
       case 8:
         return Scaffold(
           key: scaffoldKeyLogout,
@@ -105,9 +113,11 @@ class HomeScreenState extends State<HomeScreen>
             ],
           ),
         );
+        break;
 
       default:
         return new Text("Error");
+        break;
     }
   }
 

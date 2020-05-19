@@ -203,11 +203,6 @@ class _AttendanceFragmentState extends State<AttendanceFragment> {
                           ),
                           Container(
                             padding: EdgeInsets.only(left: 5, right: 5),
-//                            decoration: new BoxDecoration(
-//                              border: new Border.all(color: Colors.black38),
-//                              borderRadius: BorderRadius.all(Radius.circular(
-//                                  5.0)),
-//                            ),
                             child: new DropdownButton<String>(
                               isExpanded: true,
                               style: new TextStyle(
