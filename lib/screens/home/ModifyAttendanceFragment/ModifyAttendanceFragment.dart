@@ -1,3 +1,4 @@
+import 'package:attendance/api/datetime_API.dart';
 import 'package:attendance/data/database_helper.dart';
 import 'package:attendance/models/user.dart';
 import 'package:attendance/screens/home/ModifyAttendanceFragment/modify_attendance_presenter.dart';
@@ -49,7 +50,7 @@ class ModifyAttendanceFragment extends StatefulWidget {
 class _ModifyAttendanceFragmentState extends State<ModifyAttendanceFragment>
     implements ModifyAttendanceFragmentContract {
   void preselect(dynamic res) {
-    dateController.text = res["displaydate"].toString();
+//    dateController.text = res["displaydate"].toString();
     switch (res["department"].toString().toLowerCase()) {
       case "dit":
         deptController.text = "Information Technology";
@@ -98,7 +99,11 @@ class _ModifyAttendanceFragmentState extends State<ModifyAttendanceFragment>
     db.getFirstUser().then((User user) {
       username = user.username;
       auth_token = user.auth_token;
-      _presenter.doFetch(username, auth_token, hour);
+      DateTimeRestDataSource api = new DateTimeRestDataSource();
+      api.getServerClock().then((date_json) {
+        dateController.text = date_json["displaydate"];
+        _presenter.doFetch(username, auth_token, hour);
+      });
     });
   }
 
@@ -403,7 +408,7 @@ class _ModifyAttendanceFragmentState extends State<ModifyAttendanceFragment>
   void onFetchError(String errorTxt) {
     Navigator.pop(context);
     messageController.text = errorTxt.substring(11) + ".";
-    dateController.text = "";
+//    dateController.text = "";
     deptController.text = "";
     yearController.text = "";
     semesterController.text = "";
