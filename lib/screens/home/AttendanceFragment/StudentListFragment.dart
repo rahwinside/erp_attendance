@@ -299,10 +299,15 @@ class _StudentListFragmentState extends State<StudentListFragment>
         .upload(
         username, auth_token, pk_table, datetime_column, upload_list.toString())
         .then((res) {
-//      print(res.toString());
-      print("UPLOAD OK");
       Navigator.pop(context);
-      _showSnackBar("Attendance has been successfully uploaded");
+      if (res == "row-already-exists")
+        _showSnackBar("Attendance was already taken");
+      else if (res == "insert-failed")
+        _showSnackBar("Upload failed");
+      else if (res == "success")
+        _showSnackBar("Attendance has been successfully uploaded");
+      else
+        _showSnackBar("Unknown error");
       new Timer(const Duration(seconds: 1), () => Navigator.pop(context));
     });
   }
