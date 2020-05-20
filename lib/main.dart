@@ -1,8 +1,6 @@
 import 'package:attendance/screens/login/login_screen.dart';
 import 'package:flutter/material.dart';
 
-GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
-
 void main() async {
   runApp(
     new MaterialApp(
