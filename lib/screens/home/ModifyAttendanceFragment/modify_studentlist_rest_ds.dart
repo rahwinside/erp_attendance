@@ -9,10 +9,6 @@ class ModifyStudentListRestDataSource {
 
   Future<dynamic> fetch(String username, String auth_token, String pk_table,
       String required_timestamp) {
-    print(username.toString() +
-        auth_token.toString() +
-        pk_table.toString() +
-        required_timestamp.toString());
     return _netUtil.post(LOGIN_URL, body: {
       "username": username,
       "auth_token": auth_token,

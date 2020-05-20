@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:attendance/data/database_helper.dart';
 import 'package:attendance/models/user.dart';
@@ -17,7 +16,6 @@ class LabeledCheckbox extends StatelessWidget {
     this.labelroll,
     this.padding,
     this.value,
-    this.tristate,
     this.onChanged,
   });
 
@@ -25,38 +23,13 @@ class LabeledCheckbox extends StatelessWidget {
   final String labelroll;
   final EdgeInsets padding;
   final bool value;
-  final bool tristate;
   final Function onChanged;
-
-  dynamic getGradient() {
-    if (value == null)
-      return LinearGradient(
-        begin: Alignment(-0.97, 0.24),
-        end: Alignment(-0.35, 0.21),
-        colors: [const Color(0xff2f1f86), const Color(0xff674ef2)],
-        stops: [0.0, 1.0],
-      );
-    else
-      return value
-          ? LinearGradient(
-        begin: Alignment(-0.97, 0.24),
-        end: Alignment(-0.35, 0.21),
-        colors: [const Color(0xff38837b), const Color(0xff2ac0b1)],
-        stops: [0.0, 1.0],
-      )
-          : LinearGradient(
-        begin: Alignment(-0.97, 0.24),
-        end: Alignment(-0.35, 0.21),
-        colors: [const Color(0xffa8193d), const Color(0xffff3366)],
-        stops: [0.0, 1.0],
-      );
-  }
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        if (value != null) onChanged(!value);
+        onChanged(!value);
       },
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -65,7 +38,25 @@ class LabeledCheckbox extends StatelessWidget {
             padding: EdgeInsets.only(bottom: 4),
             child: Container(
               decoration: BoxDecoration(
-                gradient: getGradient(),
+                gradient: value
+                    ? LinearGradient(
+                  begin: Alignment(-0.97, 0.24),
+                  end: Alignment(-0.35, 0.21),
+                  colors: [
+                    const Color(0xff38837b),
+                    const Color(0xff2ac0b1)
+                  ],
+                  stops: [0.0, 1.0],
+                )
+                    : LinearGradient(
+                  begin: Alignment(-0.97, 0.24),
+                  end: Alignment(-0.35, 0.21),
+                  colors: [
+                    const Color(0xffa8193d),
+                    const Color(0xffff3366)
+                  ],
+                  stops: [0.0, 1.0],
+                ),
                 borderRadius: BorderRadius.circular(5),
               ),
               child: Padding(
@@ -111,15 +102,12 @@ class LabeledCheckbox extends StatelessWidget {
                           ],
                         )),
                     Checkbox(
-                      tristate: tristate ? true : false,
                       focusColor: Colors.orange,
                       hoverColor: Colors.white12,
                       checkColor: Colors.green,
                       activeColor: Colors.white,
                       value: value,
-                      onChanged: tristate
-                          ? null
-                          : (bool newValue) {
+                      onChanged: (bool newValue) {
                         onChanged(newValue);
                       },
                     ),
@@ -136,50 +124,48 @@ class LabeledCheckbox extends StatelessWidget {
 
 class StudentListFragment extends StatefulWidget {
   final String pk_table;
-  final String required_timestamp;
+  final String datetime_column;
 
   // constructor
   StudentListFragment({
     Key key,
     @required this.pk_table,
-    @required this.required_timestamp,
+    @required this.datetime_column,
   }) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return new _StudentListFragmentState(pk_table, required_timestamp);
+    return new _StudentListFragmentState(pk_table, datetime_column);
   }
 }
 
 class _StudentListFragmentState extends State<StudentListFragment>
     implements StudentListFragmentContract {
   List<Widget> list = new List<Widget>();
-
-//  List upload_list = [];
+  List upload_list = [];
   List names = [];
   List rolls = [];
   List full_rolls = [];
   List _isSelected = [];
-  List _tristate = [];
   bool uploadActive = false;
-  String pk_table, required_timestamp;
-  int presentCounter, absentCounter, onDutyCounter;
+  String pk_table;
+  String datetime_column;
+  int presentCounter, absentCounter;
 
   StudentListFragmentPresenter _presenter;
 
-  _StudentListFragmentState(String pk_table, String required_timestamp) {
+  _StudentListFragmentState(String pk_table, String datetime_column) {
     presentCounter = 0;
     absentCounter = 0;
-    onDutyCounter = 0;
     this.pk_table = pk_table;
-    this.required_timestamp = required_timestamp;
+    this.datetime_column = datetime_column;
     _presenter = new StudentListFragmentPresenter(this);
     var db = new DatabaseHelper();
     db.getFirstUser().then((User user) {
       username = user.username;
       auth_token = user.auth_token;
-      _presenter.doFetch(username, auth_token, pk_table, required_timestamp);
+      _presenter.doFetch(username, auth_token, pk_table);
     });
   }
 
@@ -260,21 +246,17 @@ class _StudentListFragmentState extends State<StudentListFragment>
         labelroll: rolls[i],
         labelname: names[i],
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
-        tristate: _tristate[i],
         value: _isSelected[i],
         onChanged: (bool newValue) {
           setState(() {
             _isSelected[i] = newValue;
             presentCounter = 0;
             absentCounter = 0;
-            onDutyCounter = 0;
             _isSelected.forEach((status) {
-              if (status == true) {
+              if (status) {
                 presentCounter += 1;
-              } else if (status == false) {
-                absentCounter += 1;
               } else {
-                onDutyCounter += 1;
+                absentCounter += 1;
               }
             });
           });
@@ -292,22 +274,10 @@ class _StudentListFragmentState extends State<StudentListFragment>
       full_rolls.add(student["register_no"].toString());
       rolls.add(student["register_no"].toString().substring(8));
       names.add(student["full_name"].toString());
-      if (student["status"] == "1") {
-        _isSelected.add(true);
-        _tristate.add(false);
-        presentCounter++;
-      } else if (student["status"] == "0") {
-        _isSelected.add(false);
-        _tristate.add(false);
-        absentCounter++;
-      } else if (student["status"] == "2") {
-        _isSelected.add(null);
-        _tristate.add(true);
-        onDutyCounter++;
-      }
+      _isSelected.add(false);
     });
-
     uploadActive = true;
+    absentCounter = res.length;
     setState(() {});
   }
 
@@ -316,28 +286,28 @@ class _StudentListFragmentState extends State<StudentListFragment>
         .showSnackBar(new SnackBar(content: new Text(text)));
   }
 
-  String getStatusFromSelected(int i) {
-    if (_isSelected[i] == null)
-      return "2";
-    else
-      return _isSelected[i] ? "1" : "0";
-  }
-
   void upload() {
     showProgressModal(context);
-    Map<String, String> upload_json = {};
+    upload_list.clear();
+    print(rolls.length);
     for (var i = 0; i < rolls.length; i++) {
-      upload_json[full_rolls[i].toString()] =
-          getStatusFromSelected(i).toString();
+      if (_isSelected[i] == true) upload_list.add(full_rolls[i].toString());
     }
+//    print(upload_list.toString());
     UploadAttendanceRest API = new UploadAttendanceRest();
     API
-        .upload(username, auth_token, pk_table, required_timestamp,
-        json.encode(upload_json).toString())
+        .upload(
+        username, auth_token, pk_table, datetime_column, upload_list.toString())
         .then((res) {
-      print(res.toString());
       Navigator.pop(context);
-      _showSnackBar("Attendance has been successfully uploaded");
+      if (res == "row-already-exists")
+        _showSnackBar("Attendance was already taken");
+      else if (res == "insert-failed")
+        _showSnackBar("Upload failed");
+      else if (res == "success")
+        _showSnackBar("Attendance has been successfully uploaded");
+      else
+        _showSnackBar("Unknown error");
       new Timer(const Duration(seconds: 1), () => Navigator.pop(context));
     });
   }
@@ -348,7 +318,7 @@ class _StudentListFragmentState extends State<StudentListFragment>
       key: scaffoldKey,
       appBar: AppBar(
         title: Text(
-          "Take Attendance",
+          "Mark Attendance",
           style: TextStyle(
             fontFamily: "Poppins",
           ),
@@ -358,14 +328,14 @@ class _StudentListFragmentState extends State<StudentListFragment>
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Expanded(
-            flex: 87,
+            flex: 9,
             child: Padding(
               padding: const EdgeInsets.only(left: 15, right: 15),
               child: SingleChildScrollView(child: loopable()),
             ),
           ),
           Expanded(
-            flex: 13,
+            flex: 1,
             child: Container(
               padding: const EdgeInsets.only(left: 15, right: 15),
               decoration: new BoxDecoration(
@@ -377,43 +347,31 @@ class _StudentListFragmentState extends State<StudentListFragment>
                 children: <Widget>[
                   Expanded(
                     flex: 5,
-                    child: SingleChildScrollView(
-                      child: new Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          new Text(
-                            uploadActive
-                                ? "Present: " + presentCounter.toString()
-                                : "",
-                            style: new TextStyle(
-                              fontFamily: "Poppins",
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                            ),
+                    child: new Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        new Text(
+                          uploadActive
+                              ? "Present: " + presentCounter.toString()
+                              : "",
+                          style: new TextStyle(
+                            fontFamily: "Poppins",
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
                           ),
-                          new Text(
-                            uploadActive
-                                ? "Absent: " + absentCounter.toString()
-                                : "",
-                            style: new TextStyle(
-                              fontFamily: "Poppins",
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                            ),
+                        ),
+                        new Text(
+                          uploadActive
+                              ? "Absent: " + absentCounter.toString()
+                              : "",
+                          style: new TextStyle(
+                            fontFamily: "Poppins",
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
                           ),
-                          new Text(
-                            uploadActive
-                                ? "On Duty: " + onDutyCounter.toString()
-                                : "",
-                            style: new TextStyle(
-                              fontFamily: "Poppins",
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                   Expanded(
@@ -452,6 +410,7 @@ class _StudentListFragmentState extends State<StudentListFragment>
   void onFetchSuccess(dynamic res) {
 //    print(res.toString());
     Navigator.pop(context);
+    print(res.runtimeType);
     list_adapter(res);
   }
 }

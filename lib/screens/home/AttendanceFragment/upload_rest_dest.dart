@@ -13,7 +13,7 @@ class UploadAttendanceRest {
       "username": username,
       "auth_token": auth_token,
       "subCode_dept_sem": pk_table,
-      "datetime_column": datetime_column,
+      "required_timestamp": datetime_column,
       "attendance_list": response,
     }).then((dynamic res) {
       print(res.toString());

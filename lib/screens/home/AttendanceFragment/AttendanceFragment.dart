@@ -222,6 +222,11 @@ class _AttendanceFragmentState extends State<AttendanceFragment>
                         padding: const EdgeInsets.only(left: 5, right: 5),
                         child: new TextField(
                           enabled: false,
+                          style: new TextStyle(
+                            fontFamily: "Poppins",
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black,
+                          ),
                           controller: dateController,
                           decoration: InputDecoration(
                             contentPadding: const EdgeInsets.all(0),
@@ -489,7 +494,7 @@ class _AttendanceFragmentState extends State<AttendanceFragment>
         MaterialPageRoute(
             builder: (context) =>
                 StudentListFragment(
-                    pk_table: pk_table, datetime_column: datetime_column)));
+                    pk_table: pk_table, required_timestamp: datetime_column)));
   }
 
   void _showSnackBar(String text) {
