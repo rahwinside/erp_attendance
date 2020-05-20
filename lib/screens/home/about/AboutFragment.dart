@@ -110,7 +110,7 @@ class AboutFragment extends StatelessWidget {
             ),
             Flexible(
               child: Text(
-                "version 1.0.0 alpha",
+                "version 1.1.2 alpha",
                 style: TextStyle(
                   color: Colors.black,
                   fontFamily: 'Poppins',
@@ -121,42 +121,26 @@ class AboutFragment extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(top: 20),
             ),
-            Wrap(
-              children: <Widget>[
-                Text(
-                  "© 2020 ",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontFamily: 'Poppins',
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
+//            Wrap(
+//              children: <Widget>[
 //                Text(
-//                  "Mer Community",
-//                  style: TextStyle(
-//                    color: Colors.deepPurple,
-//                    fontFamily: 'Poppins',
-//                    fontWeight: FontWeight.w600,
-//                  ),
-//                ),
-//                Text(
-//                  " | ",
+//                  "© 2020 ",
 //                  style: TextStyle(
 //                    color: Colors.black,
 //                    fontFamily: 'Poppins',
 //                    fontWeight: FontWeight.w600,
 //                  ),
 //                ),
-                Text(
-                  "MixSpace Internet Services",
-                  style: TextStyle(
-                    color: Colors.deepPurple,
-                    fontFamily: 'Poppins',
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ],
-            ),
+//                Text(
+//                  "MixSpace Internet Services",
+//                  style: TextStyle(
+//                    color: Colors.deepPurple,
+//                    fontFamily: 'Poppins',
+//                    fontWeight: FontWeight.w600,
+//                  ),
+//                ),
+//              ],
+//            ),
             Wrap(
               children: <Widget>[
                 Text(
