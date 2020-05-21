@@ -54,7 +54,7 @@ class OnDutyFragment extends StatefulWidget {
 }
 
 class _OnDutyFragmentState extends State<OnDutyFragment>
-    implements OnDutyFragmentContract {
+    implements SuperUserFragmentContract {
   void preselect(dynamic res) {
 //    dateController.text = res["displaydate"].toString();
 //    switch (res["department"].toString().toLowerCase()) {
@@ -86,7 +86,7 @@ class _OnDutyFragmentState extends State<OnDutyFragment>
     setState(() {});
   }
 
-  OnDutyFragmentPresenter _presenter;
+  SuperUserFragmentPresenter _presenter;
 
   _OnDutyFragmentState() {
 //    resetUsers();
@@ -98,7 +98,7 @@ class _OnDutyFragmentState extends State<OnDutyFragment>
     messageController.text = "";
     hourSelected = [true, false, false, false, false, false, false, false];
     buttonActive = false;
-    _presenter = new OnDutyFragmentPresenter(this);
+    _presenter = new SuperUserFragmentPresenter(this);
     var db = new DatabaseHelper();
     db.getFirstUser().then((User user) {
       username = user.username;

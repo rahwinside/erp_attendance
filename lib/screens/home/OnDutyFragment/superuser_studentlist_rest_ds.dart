@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:attendance/utils/network_util.dart';
 
-class ModifyStudentListRestDataSource {
+class SuperUserStudentListRestDataSource {
   NetworkUtil _netUtil = new NetworkUtil();
   static final BASE_URL = "https://weareeverywhere.in";
   static final LOGIN_URL = BASE_URL + "/get-names-modify-attendance.php";

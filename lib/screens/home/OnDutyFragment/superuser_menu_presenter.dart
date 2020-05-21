@@ -1,16 +1,16 @@
 import 'superuser_rest_ds.dart';
 
-abstract class OnDutyFragmentContract {
+abstract class SuperUserFragmentContract {
   void onFetchSuccess(dynamic res);
 
   void onFetchError(String errorTxt);
 }
 
-class OnDutyFragmentPresenter {
-  OnDutyFragmentContract _view;
-  OnDutySelectionRestDataSource api = new OnDutySelectionRestDataSource();
+class SuperUserFragmentPresenter {
+  SuperUserFragmentContract _view;
+  SuperUserSelectionRestDataSource api = new SuperUserSelectionRestDataSource();
 
-  OnDutyFragmentPresenter(this._view);
+  SuperUserFragmentPresenter(this._view);
 
   doFetch(String username, String auth_token, String department, String year,
       String date, String hour) {

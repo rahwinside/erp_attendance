@@ -1,16 +1,16 @@
 import 'superuser_studentlist_rest_ds.dart';
 
-abstract class ModifyStudentListFragmentContract {
+abstract class SuperUserStudentListFragmentContract {
   void onFetchSuccess(dynamic res);
 
   void onFetchError(String errorTxt);
 }
 
-class ModifyStudentListFragmentPresenter {
-  ModifyStudentListFragmentContract _view;
-  ModifyStudentListRestDataSource api = new ModifyStudentListRestDataSource();
+class SuperUserStudentListFragmentPresenter {
+  SuperUserStudentListFragmentContract _view;
+  SuperUserStudentListRestDataSource api = new SuperUserStudentListRestDataSource();
 
-  ModifyStudentListFragmentPresenter(this._view);
+  SuperUserStudentListFragmentPresenter(this._view);
 
   doFetch(String username, String auth_token, String pk_table,
       String required_timestamp) {

@@ -132,12 +132,12 @@ class LabeledCheckbox extends StatelessWidget {
   }
 }
 
-class ModifyStudentListFragment extends StatefulWidget {
+class SuperUserStudentListFragment extends StatefulWidget {
   final String pk_table;
   final String required_timestamp;
 
   // constructor
-  ModifyStudentListFragment({
+  SuperUserStudentListFragment({
     Key key,
     @required this.pk_table,
     @required this.required_timestamp,
@@ -146,12 +146,13 @@ class ModifyStudentListFragment extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return new _ModifyStudentListFragmentState(pk_table, required_timestamp);
+    return new _SuperUserStudentListFragmentState(pk_table, required_timestamp);
   }
 }
 
-class _ModifyStudentListFragmentState extends State<ModifyStudentListFragment>
-    implements ModifyStudentListFragmentContract {
+class _SuperUserStudentListFragmentState
+    extends State<SuperUserStudentListFragment>
+    implements SuperUserStudentListFragmentContract {
   List<Widget> list = new List<Widget>();
 
 //  List upload_list = [];
@@ -164,15 +165,16 @@ class _ModifyStudentListFragmentState extends State<ModifyStudentListFragment>
   String pk_table, required_timestamp;
   int presentCounter, absentCounter, onDutyCounter;
 
-  ModifyStudentListFragmentPresenter _presenter;
+  SuperUserStudentListFragmentPresenter _presenter;
 
-  _ModifyStudentListFragmentState(String pk_table, String required_timestamp) {
+  _SuperUserStudentListFragmentState(String pk_table,
+      String required_timestamp) {
     presentCounter = 0;
     absentCounter = 0;
     onDutyCounter = 0;
     this.pk_table = pk_table;
     this.required_timestamp = required_timestamp;
-    _presenter = new ModifyStudentListFragmentPresenter(this);
+    _presenter = new SuperUserStudentListFragmentPresenter(this);
     var db = new DatabaseHelper();
     db.getFirstUser().then((User user) {
       username = user.username;
