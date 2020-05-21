@@ -328,14 +328,14 @@ class _SuperUserStudentListFragmentState
       upload_json[full_rolls[i].toString()] =
           getStatusFromSelected(i).toString();
     }
-    ModifyUploadAttendanceRest API = new ModifyUploadAttendanceRest();
+    SuperUserUploadAttendanceRest API = new SuperUserUploadAttendanceRest();
     API
         .upload(username, auth_token, pk_table, required_timestamp,
             json.encode(upload_json).toString())
         .then((res) {
       print(res.toString());
       Navigator.pop(context);
-      _showSnackBar("Attendance has been successfully uploaded");
+      _showSnackBar("Changes committed.");
       new Timer(const Duration(seconds: 1), () => Navigator.pop(context));
     });
   }
@@ -346,7 +346,7 @@ class _SuperUserStudentListFragmentState
       key: scaffoldKey,
       appBar: AppBar(
         title: Text(
-          "Modify Attendance",
+          "Superuser Attendance",
           style: TextStyle(
             fontFamily: "Poppins",
           ),
@@ -423,7 +423,7 @@ class _SuperUserStudentListFragmentState
                         splashColor: Colors.deepPurpleAccent,
                         elevation: 5.0,
                         child: new Text(
-                          "Modify",
+                          "Commit",
                           style: TextStyle(
                             color: Colors.deepPurple,
                             fontFamily: 'Poppins',

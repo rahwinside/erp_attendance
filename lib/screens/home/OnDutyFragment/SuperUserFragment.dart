@@ -472,15 +472,6 @@ class _OnDutyFragmentState extends State<OnDutyFragment>
   }
 
   void buttonPressed() {
-//    Navigator.push(
-//        context,
-//        MaterialPageRoute(
-//            builder: (context) =>
-//                ModifyStudentListFragment(
-//                  pk_table: pk_table,
-//                  required_timestamp: required_timestamp,)
-//        )
-//    );
   }
 
   void _showSnackBar(String text) {

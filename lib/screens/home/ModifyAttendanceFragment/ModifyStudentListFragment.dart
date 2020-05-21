@@ -335,7 +335,7 @@ class _ModifyStudentListFragmentState extends State<ModifyStudentListFragment>
         .then((res) {
       print(res.toString());
       Navigator.pop(context);
-      _showSnackBar("Attendance has been successfully uploaded");
+      _showSnackBar("Attendance has been successfully uploaded.");
       new Timer(const Duration(seconds: 1), () => Navigator.pop(context));
     });
   }
