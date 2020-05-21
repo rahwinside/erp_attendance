@@ -48,6 +48,7 @@ class _AttendanceFragmentState extends State<AttendanceFragment>
     implements AttendanceFragmentContract {
   void preselect(dynamic res) {
     datetime_column = res["datetime_column"].toString();
+    print(datetime_column);
     dateController.text = res["datetime"].toString();
     switch (res["department"]) {
       case "dit":

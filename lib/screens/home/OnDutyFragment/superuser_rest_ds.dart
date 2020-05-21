@@ -5,10 +5,11 @@ import 'package:attendance/utils/network_util.dart';
 class SuperUserSelectionRestDataSource {
   NetworkUtil _netUtil = new NetworkUtil();
   static final BASE_URL = "https://weareeverywhere.in";
-  static final LOGIN_URL = BASE_URL + "/modify-attendance.php";
+  static final LOGIN_URL = BASE_URL + "/od-superuser.php";
 
   Future<dynamic> fetch(String username, String auth_token, String department,
       String year, String date, String hour) {
+    print(username + auth_token + department + year + date + hour);
     return _netUtil.post(LOGIN_URL, body: {
       "username": username,
       "auth_token": auth_token,

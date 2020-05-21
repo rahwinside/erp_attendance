@@ -34,12 +34,12 @@ List<bool> hourSelected = [
 TextEditingController dateController = new TextEditingController();
 TextEditingController deptController = new TextEditingController();
 TextEditingController yearController = new TextEditingController();
-TextEditingController semesterController = new TextEditingController();
 TextEditingController subjectController = new TextEditingController();
 TextEditingController messageController = new TextEditingController();
 
 String pk_table = "";
 String required_timestamp = "";
+String department_abbrev = "";
 
 // takeAttendance button is deactivated by default
 bool buttonActive = false;
@@ -91,9 +91,13 @@ class _OnDutyFragmentState extends State<OnDutyFragment>
   _OnDutyFragmentState() {
 //    resetUsers();
     yearController.text = "I";
+
+    var now = new DateTime.now();
+    var formatter = new DateFormat('yyyy-MM-dd');
+    String formattedDate = formatter.format(now);
+
     dateController.text = "";
     deptController.text = "";
-    semesterController.text = "";
     subjectController.text = "";
     messageController.text = "";
     hourSelected = [true, false, false, false, false, false, false, false];
@@ -105,8 +109,11 @@ class _OnDutyFragmentState extends State<OnDutyFragment>
       auth_token = user.auth_token;
       department = user.department;
       deptController.text = department;
-      _presenter.doFetch(username, auth_token, department,
-          yearController.text.toString(), yearController.text.toString(), hour);
+      if (department == "Information Technology") {
+        department_abbrev = "dit";
+      }
+      _presenter.doFetch(username, auth_token, department_abbrev,
+          yearController.text.toString(), formattedDate, hour);
     });
   }
 
@@ -386,7 +393,7 @@ class _OnDutyFragmentState extends State<OnDutyFragment>
                           _presenter.doFetch(
                               username,
                               auth_token,
-                              department,
+                              department_abbrev,
                               yearController.text.toString(),
                               dateController.text.toString(),
                               (index + 1).toString());
@@ -484,7 +491,6 @@ class _OnDutyFragmentState extends State<OnDutyFragment>
     Navigator.pop(context);
     messageController.text = errorTxt.replaceFirst("Exception: ", '');
 //    dateController.text = "";
-    semesterController.text = "";
     subjectController.text = "";
     print(errorTxt);
     setState(() {
