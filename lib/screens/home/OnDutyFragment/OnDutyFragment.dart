@@ -1,4 +1,3 @@
-import 'package:attendance/api/datetime_API.dart';
 import 'package:attendance/data/database_helper.dart';
 import 'package:attendance/models/user.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
@@ -9,6 +8,7 @@ import 'onduty_presenter.dart';
 
 var username = "";
 var auth_token = "";
+var department = "";
 var hour = "1";
 
 final List<String> year = <String>[
@@ -57,27 +57,26 @@ class _OnDutyFragmentState extends State<OnDutyFragment>
     implements OnDutyFragmentContract {
   void preselect(dynamic res) {
 //    dateController.text = res["displaydate"].toString();
-    switch (res["department"].toString().toLowerCase()) {
-      case "dit":
-        deptController.text = "Information Technology";
-        break;
-      case "dcse":
-        deptController.text = "Computer Science and Engineering";
-        break;
-      case "dmea":
-        deptController.text = "Mechanical Engineering A";
-        break;
-      case "dmeb":
-        deptController.text = "Mechanical Engineering B";
-        break;
-      case "deee":
-        deptController.text = "Electrical and Electronics Engineering";
-        break;
-      case "dece":
-        deptController.text = "Electronics and Communication Engineering";
-        break;
-    }
-    semesterController.text = res["semester"].toString();
+//    switch (res["department"].toString().toLowerCase()) {
+//      case "dit":
+//        deptController.text = "Information Technology";
+//        break;
+//      case "dcse":
+//        deptController.text = "Computer Science and Engineering";
+//        break;
+//      case "dmea":
+//        deptController.text = "Mechanical Engineering A";
+//        break;
+//      case "dmeb":
+//        deptController.text = "Mechanical Engineering B";
+//        break;
+//      case "deee":
+//        deptController.text = "Electrical and Electronics Engineering";
+//        break;
+//      case "dece":
+//        deptController.text = "Electronics and Communication Engineering";
+//        break;
+//    }
     subjectController.text = res["subject_code"].toString().toUpperCase() +
         " - " +
         res["subject_name"].toString();
@@ -104,11 +103,10 @@ class _OnDutyFragmentState extends State<OnDutyFragment>
     db.getFirstUser().then((User user) {
       username = user.username;
       auth_token = user.auth_token;
-      DateTimeRestDataSource api = new DateTimeRestDataSource();
-      api.getServerClock().then((date_json) {
-        dateController.text = date_json["displaydate"];
-        _presenter.doFetch(username, auth_token, hour);
-      });
+      department = user.department;
+      deptController.text = department;
+      _presenter.doFetch(username, auth_token, department,
+          yearController.text.toString(), yearController.text.toString(), hour);
     });
   }
 
@@ -386,7 +384,12 @@ class _OnDutyFragmentState extends State<OnDutyFragment>
                           hourSelected[index] = true;
                           showProgressModal(context);
                           _presenter.doFetch(
-                              username, auth_token, (index + 1).toString());
+                              username,
+                              auth_token,
+                              department,
+                              yearController.text.toString(),
+                              dateController.text.toString(),
+                              (index + 1).toString());
                         },
                       ),
                     ),
@@ -490,7 +493,6 @@ class _OnDutyFragmentState extends State<OnDutyFragment>
     Navigator.pop(context);
     messageController.text = errorTxt.substring(11) + ".";
 //    dateController.text = "";
-    deptController.text = "";
     semesterController.text = "";
     subjectController.text = "";
     print(errorTxt);
