@@ -15,7 +15,6 @@ class StudentListRestDataSource {
       "subCode_dept_sem": pk_table,
       "required_timestamp": required_timestamp,
     }).then((dynamic res) {
-//      print(res.toString());
       return res;
     });
   }

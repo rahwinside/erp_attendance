@@ -1,4 +1,4 @@
-import 'onduty_rest_ds.dart';
+import 'superuser_rest_ds.dart';
 
 abstract class OnDutyFragmentContract {
   void onFetchSuccess(dynamic res);

@@ -4,7 +4,7 @@ import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import 'onduty_presenter.dart';
+import 'superuser_menu_presenter.dart';
 
 var username = "";
 var auth_token = "";
@@ -491,7 +491,7 @@ class _OnDutyFragmentState extends State<OnDutyFragment>
   @override
   void onFetchError(String errorTxt) {
     Navigator.pop(context);
-    messageController.text = errorTxt.substring(11) + ".";
+    messageController.text = errorTxt.replaceFirst("Exception: ", '');
 //    dateController.text = "";
     semesterController.text = "";
     subjectController.text = "";

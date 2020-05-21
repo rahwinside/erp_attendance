@@ -488,7 +488,7 @@ class _ModifyAttendanceFragmentState extends State<ModifyAttendanceFragment>
   @override
   void onFetchError(String errorTxt) {
     Navigator.pop(context);
-    messageController.text = errorTxt.substring(11) + ".";
+    messageController.text = errorTxt.replaceFirst("Exception: ", '');
 //    dateController.text = "";
     deptController.text = "";
     yearController.text = "";

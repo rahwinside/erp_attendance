@@ -17,13 +17,13 @@ class ModifyAttRestDataSource {
       print(res.runtimeType);
       if (res == "no-class")
         throw new Exception(
-            "You do not have any class scheduled for this hour");
+            "You do not have any class scheduled for this hour.");
       else if (res == "invalid-auth-or-access")
         throw new Exception(
-            "You do not have the privileges to access this content");
+            "You do not have the privileges to access this content.");
       else if (res == "not-taken")
         throw new Exception(
-            "You haven't taken attendance for this hour. Please use the 'Take Attendance' option from the menu");
+            "You haven't taken attendance for this hour. Please contact the administrator if you didn't take the attendance.");
 //        return null;
       return res;
     });

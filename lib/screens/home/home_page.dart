@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
 import 'ModifyAttendanceFragment/ModifyAttendanceFragment.dart';
-import 'OnDutyFragment/OnDutyFragment.dart';
+import 'OnDutyFragment/SuperUserFragment.dart';
 import 'about/AboutFragment.dart';
 import 'home_screen_presenter.dart';
 

@@ -507,7 +507,7 @@ class _AttendanceFragmentState extends State<AttendanceFragment>
     Navigator.pop(context);
     _showSnackBar(errorTxt.substring(11));
     print(errorTxt.toString());
-    messageController.text = errorTxt.substring(11) + ".";
+    messageController.text = errorTxt.replaceFirst("Exception: ", '');
     setState(() {
       buttonActive = false;
     });
