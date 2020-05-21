@@ -18,7 +18,6 @@ class LabeledCheckbox extends StatelessWidget {
     this.labelroll,
     this.padding,
     this.value,
-    this.tristate,
     this.onChanged,
   });
 
@@ -26,7 +25,6 @@ class LabeledCheckbox extends StatelessWidget {
   final String labelroll;
   final EdgeInsets padding;
   final bool value;
-  final bool tristate;
   final Function onChanged;
 
   dynamic getGradient() {
@@ -109,17 +107,15 @@ class LabeledCheckbox extends StatelessWidget {
                       ],
                     )),
                     Checkbox(
-                      tristate: tristate ? true : false,
+                      tristate: true,
                       focusColor: Colors.orange,
                       hoverColor: Colors.white12,
                       checkColor: Colors.green,
                       activeColor: Colors.white,
                       value: value,
-                      onChanged: tristate
-                          ? null
-                          : (bool newValue) {
-                              onChanged(newValue);
-                            },
+                      onChanged: (bool newValue) {
+                        onChanged(newValue);
+                      },
                     ),
                   ],
                 ),
@@ -160,7 +156,6 @@ class _SuperUserStudentListFragmentState
   List rolls = [];
   List full_rolls = [];
   List _isSelected = [];
-  List _tristate = [];
   bool uploadActive = false;
   String pk_table, required_timestamp;
   int presentCounter, absentCounter, onDutyCounter;
@@ -258,7 +253,6 @@ class _SuperUserStudentListFragmentState
         labelroll: rolls[i],
         labelname: names[i],
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
-        tristate: _tristate[i],
         value: _isSelected[i],
         onChanged: (bool newValue) {
           setState(() {
@@ -292,15 +286,12 @@ class _SuperUserStudentListFragmentState
       names.add(student["full_name"].toString());
       if (student["status"] == "1") {
         _isSelected.add(true);
-        _tristate.add(false);
         presentCounter++;
       } else if (student["status"] == "0") {
         _isSelected.add(false);
-        _tristate.add(false);
         absentCounter++;
       } else if (student["status"] == "2") {
         _isSelected.add(null);
-        _tristate.add(true);
         onDutyCounter++;
       }
     });
