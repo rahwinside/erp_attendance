@@ -11,7 +11,9 @@ var auth_token = "";
 var department = "";
 var hour = "1";
 
-List final_json_array = [], super_json_array = [], regular_json_array = [];
+List<dynamic> final_json_array = new List<dynamic>();
+List<dynamic> super_json_array = new List<dynamic>();
+List<dynamic> regular_json_array = new List<dynamic>();
 
 // super_json is true if the hour was substituted with a regular hour.
 bool super_json = true;
@@ -451,7 +453,9 @@ class _OnDutyFragmentState extends State<OnDutyFragment>
                             pk_table =
                             pk_table_array[subject_array.indexOf(value)];
                             print("selected: " + pk_table);
+                            print("option old: " + subjectController.text);
                             subjectController.text = value;
+                            print("option: " + subjectController.text);
                           });
                         },
                         items: subject_array.isEmpty ? null : subject_array.map(
