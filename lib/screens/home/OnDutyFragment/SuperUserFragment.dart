@@ -456,6 +456,7 @@ class _OnDutyFragmentState extends State<OnDutyFragment>
                             print("option old: " + subjectController.text);
                             subjectController.text = value;
                             print("option: " + subjectController.text);
+                            buttonActive = true;
                           });
                         },
                         items: subject_array.isEmpty ? null : subject_array.map(
