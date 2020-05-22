@@ -18,6 +18,7 @@ class SuperUserSelectionRestDataSource {
       "date": date,
       "hour": hour,
     }).then((dynamic res) {
+      print("here");
       print(res.toString());
       print(res.runtimeType);
       if (res == "no-class")
@@ -26,10 +27,6 @@ class SuperUserSelectionRestDataSource {
       else if (res == "invalid-auth-or-access")
         throw new Exception(
             "You do not have the privileges to access this content.");
-      else if (res == "not-taken")
-        throw new Exception(
-            "Will be removed in next revision.");
-//        return null;
       return res;
     });
   }

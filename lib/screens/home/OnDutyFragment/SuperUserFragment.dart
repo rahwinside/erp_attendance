@@ -55,34 +55,15 @@ class OnDutyFragment extends StatefulWidget {
 
 class _OnDutyFragmentState extends State<OnDutyFragment>
     implements SuperUserFragmentContract {
+
   void preselect(dynamic res) {
-//    dateController.text = res["displaydate"].toString();
-//    switch (res["department"].toString().toLowerCase()) {
-//      case "dit":
-//        deptController.text = "Information Technology";
-//        break;
-//      case "dcse":
-//        deptController.text = "Computer Science and Engineering";
-//        break;
-//      case "dmea":
-//        deptController.text = "Mechanical Engineering A";
-//        break;
-//      case "dmeb":
-//        deptController.text = "Mechanical Engineering B";
-//        break;
-//      case "deee":
-//        deptController.text = "Electrical and Electronics Engineering";
-//        break;
-//      case "dece":
-//        deptController.text = "Electronics and Communication Engineering";
-//        break;
-//    }
-    subjectController.text = res["subject_code"].toString().toUpperCase() +
-        " - " +
-        res["subject_name"].toString();
-    messageController.text = "";
-    required_timestamp = res["required_timestamp"].toString();
-    pk_table = res["subCode_dept_sem"].toString().toLowerCase();
+    List json_array = res;
+    json_array.forEach((element) {
+
+    });
+
+    print(res);
+    print(res.runtimeType);
     setState(() {});
   }
 
@@ -90,7 +71,7 @@ class _OnDutyFragmentState extends State<OnDutyFragment>
 
   _OnDutyFragmentState() {
 //    resetUsers();
-    yearController.text = "I";
+    yearController.text = "III";
 
     var now = new DateTime.now();
     var formatter = new DateFormat('yyyy-MM-dd');
@@ -113,7 +94,7 @@ class _OnDutyFragmentState extends State<OnDutyFragment>
         department_abbrev = "dit";
       }
       _presenter.doFetch(username, auth_token, department_abbrev,
-          yearController.text.toString(), formattedDate, hour);
+          yearController.text.toString(), formattedDate, "5");
     });
   }
 
@@ -231,7 +212,7 @@ class _OnDutyFragmentState extends State<OnDutyFragment>
                         ),
                         decoration: InputDecoration(
                           contentPadding: const EdgeInsets.all(0),
-                          labelText: "Date of class",
+                          labelText: "Select date",
                           labelStyle: TextStyle(
                             fontFamily: "Poppins",
                             fontWeight: FontWeight.w200,
@@ -263,7 +244,7 @@ class _OnDutyFragmentState extends State<OnDutyFragment>
                         ),
                         decoration: InputDecoration(
                           contentPadding: const EdgeInsets.all(0),
-                          labelText: "Year",
+                          labelText: "Select year",
                           labelStyle: TextStyle(
                             fontFamily: "Poppins",
                             fontWeight: FontWeight.w200,
@@ -299,7 +280,7 @@ class _OnDutyFragmentState extends State<OnDutyFragment>
                     Padding(
                       padding: const EdgeInsets.only(left: 5, right: 5),
                       child: new Text(
-                        "Hour",
+                        "Select hour",
                         style: new TextStyle(
                             fontSize: 12.0,
                             color: const Color(0xFF000000),
@@ -404,25 +385,46 @@ class _OnDutyFragmentState extends State<OnDutyFragment>
                       padding: EdgeInsets.only(top: 10),
                     ),
                     Container(
-                        padding: EdgeInsets.only(left: 5, right: 5),
-                        child: TextField(
-                          enabled: false,
-                          style: TextStyle(
+                      padding: EdgeInsets.only(left: 5, right: 5),
+                      child: new DropdownButtonFormField<String>(
+                        isExpanded: true,
+                        style: new TextStyle(
+                          fontFamily: "Poppins",
+                          fontWeight: FontWeight.w400,
+                          color: Colors.black,
+                        ),
+                        decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.all(0),
+                          labelText: "Select subject",
+                          labelStyle: TextStyle(
                             fontFamily: "Poppins",
-                            fontWeight: FontWeight.w400,
+                            fontWeight: FontWeight.w200,
                             color: Colors.black,
                           ),
-                          controller: subjectController,
-                          decoration: InputDecoration(
-                            contentPadding: const EdgeInsets.all(0),
-                            labelText: "Subject",
-                            labelStyle: TextStyle(
-                              fontFamily: "Poppins",
-                              fontWeight: FontWeight.w200,
-                              color: Colors.black,
-                            ),
-                          ),
-                        )),
+                        ),
+                        value: yearController.text,
+                        onChanged: (value) {
+                          setState(() {
+                            yearController.text = value;
+                          });
+                        },
+                        items: year.map(
+                              (item) {
+                            return DropdownMenuItem(
+                              value: item.toString(),
+                              child: new Text(
+                                item.toString(),
+                                style: new TextStyle(
+                                  fontFamily: "Poppins",
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            );
+                          },
+                        ).toList(),
+                      ),
+                    ),
                     new Padding(
                       padding: EdgeInsets.only(top: 10),
                     ),
