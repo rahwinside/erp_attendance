@@ -17,7 +17,6 @@ class SuperUserFragmentPresenter {
     print(username + " " + auth_token);
     api.fetch(username, auth_token, department, year, date, hour).then((
         dynamic res) {
-      print(res);
       _view.onFetchSuccess(res);
     }).catchError((Object error) => _view.onFetchError(error.toString()));
   }

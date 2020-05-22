@@ -18,9 +18,6 @@ class SuperUserSelectionRestDataSource {
       "date": date,
       "hour": hour,
     }).then((dynamic res) {
-      print("here");
-      print(res.toString());
-      print(res.runtimeType);
       if (res == "no-class")
         throw new Exception(
             "No class was scheduled for this hour.");

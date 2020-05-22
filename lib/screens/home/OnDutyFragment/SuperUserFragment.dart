@@ -11,6 +11,14 @@ var auth_token = "";
 var department = "";
 var hour = "1";
 
+List final_json_array = [], super_json_array = [], regular_json_array = [];
+
+// super_json is true if the hour was substituted with a regular hour.
+bool super_json = true;
+
+List<String> subject_array = new List<String>();
+List<String> pk_table_array = new List<String>();
+
 final List<String> year = <String>[
   "I",
   "II",
@@ -55,15 +63,48 @@ class OnDutyFragment extends StatefulWidget {
 
 class _OnDutyFragmentState extends State<OnDutyFragment>
     implements SuperUserFragmentContract {
-
   void preselect(dynamic res) {
-    List json_array = res;
-    json_array.forEach((element) {
-
+    super_json = true;
+    final_json_array = [];
+    super_json_array = [];
+    regular_json_array = [];
+    subject_array = [];
+    pk_table_array = [];
+    res.forEach((element) {
+      if (element["source"] == "super") {
+        super_json_array.add(element);
+      } else if (element["source"] == "regular") {
+        regular_json_array.add(element);
+      }
     });
 
-    print(res);
-    print(res.runtimeType);
+    // rarest case - single elective being substituted with a different hour
+    super_json_array.forEach((super_element) {
+      regular_json_array.forEach((regular_element) {
+        if (super_element['subCode_dept_sem'] ==
+            regular_element['subCode_dept_sem']) {
+          print("All electives substituted");
+          super_json = false;
+        }
+      });
+    });
+
+    // final_json_array wil have the regular timetable if an elective/regular
+    // hour was substituted with a regular hour
+    final_json_array = super_json ? super_json_array : regular_json_array;
+
+    final_json_array.forEach((element) {
+      subject_array.add(element["subject_code"].toString().toUpperCase() +
+          " - " +
+          element["subject_name"].toString());
+      pk_table_array.add(element["subCode_dept_sem"].toString());
+    });
+
+    subjectController.text = subject_array[0];
+
+    print(subject_array);
+    print(pk_table_array);
+
     setState(() {});
   }
 
@@ -79,8 +120,8 @@ class _OnDutyFragmentState extends State<OnDutyFragment>
 
     dateController.text = "";
     deptController.text = "";
-    subjectController.text = "";
     messageController.text = "";
+//    subjectController.text = "";
     hourSelected = [true, false, false, false, false, false, false, false];
     buttonActive = false;
     _presenter = new SuperUserFragmentPresenter(this);
@@ -94,7 +135,7 @@ class _OnDutyFragmentState extends State<OnDutyFragment>
         department_abbrev = "dit";
       }
       _presenter.doFetch(username, auth_token, department_abbrev,
-          yearController.text.toString(), formattedDate, "5");
+          yearController.text.toString(), "2020-05-22", "5");
     });
   }
 
@@ -402,13 +443,18 @@ class _OnDutyFragmentState extends State<OnDutyFragment>
                             color: Colors.black,
                           ),
                         ),
-                        value: yearController.text,
+                        value: get_subject_array_status()
+                            ? null
+                            : subjectController.text,
                         onChanged: (value) {
                           setState(() {
-                            yearController.text = value;
+                            pk_table =
+                            pk_table_array[subject_array.indexOf(value)];
+                            print("selected: " + pk_table);
+                            subjectController.text = value;
                           });
                         },
-                        items: year.map(
+                        items: subject_array.isEmpty ? null : subject_array.map(
                               (item) {
                             return DropdownMenuItem(
                               value: item.toString(),
@@ -459,7 +505,6 @@ class _OnDutyFragmentState extends State<OnDutyFragment>
                   new RaisedButton(
                       key: null,
                       onPressed: !buttonActive ? null : buttonPressed,
-//                  onPressed: buttonPressed,
                       color: Colors.white,
                       splashColor: Colors.purple,
                       elevation: 5.0,
@@ -481,6 +526,13 @@ class _OnDutyFragmentState extends State<OnDutyFragment>
   }
 
   void buttonPressed() {
+
+  }
+
+  bool get_subject_array_status() {
+    print("getting: " + subject_array.isEmpty.toString() +
+        subjectController.text.toString());
+    return subject_array.isEmpty;
   }
 
   void _showSnackBar(String text) {
@@ -492,8 +544,6 @@ class _OnDutyFragmentState extends State<OnDutyFragment>
   void onFetchError(String errorTxt) {
     Navigator.pop(context);
     messageController.text = errorTxt.replaceFirst("Exception: ", '');
-//    dateController.text = "";
-    subjectController.text = "";
     print(errorTxt);
     setState(() {
       buttonActive = false;
