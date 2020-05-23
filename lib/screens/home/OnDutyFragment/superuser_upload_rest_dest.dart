@@ -5,8 +5,7 @@ import 'package:attendance/utils/network_util.dart';
 class SuperUserUploadAttendanceRest {
   NetworkUtil _netUtil = new NetworkUtil();
   static final BASE_URL = "https://weareeverywhere.in";
-  static final LOGIN_URL =
-      BASE_URL + "/update-attendance-modify-attendance.php";
+  static final LOGIN_URL = BASE_URL + "/take-attendance.php";
 
   Future<dynamic> upload(String username, String auth_token, String pk_table,
       String required_timestamp, String status_json) {

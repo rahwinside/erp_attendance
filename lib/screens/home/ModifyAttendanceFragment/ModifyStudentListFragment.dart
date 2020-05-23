@@ -335,7 +335,10 @@ class _ModifyStudentListFragmentState extends State<ModifyStudentListFragment>
         .then((res) {
       print(res.toString());
       Navigator.pop(context);
-      _showSnackBar("Attendance has been successfully uploaded.");
+      if (res == "update-success")
+        _showSnackBar("Changes committed.");
+      else
+        _showSnackBar("Failed to commit changes.");
       new Timer(const Duration(seconds: 1), () => Navigator.pop(context));
     });
   }

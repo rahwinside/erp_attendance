@@ -39,11 +39,11 @@ class LabeledCheckbox extends StatelessWidget {
     else
       return value
           ? LinearGradient(
-        begin: Alignment(-0.97, 0.24),
-        end: Alignment(-0.35, 0.21),
-        colors: [const Color(0xff38837b), const Color(0xff2ac0b1)],
-        stops: [0.0, 1.0],
-      )
+              begin: Alignment(-0.97, 0.24),
+              end: Alignment(-0.35, 0.21),
+              colors: [const Color(0xff38837b), const Color(0xff2ac0b1)],
+              stops: [0.0, 1.0],
+            )
           : LinearGradient(
         begin: Alignment(-0.97, 0.24),
         end: Alignment(-0.35, 0.21),
@@ -252,9 +252,7 @@ class _StudentListFragmentState extends State<StudentListFragment>
 
   Column loopable() {
     list.clear();
-    list.add(
-        new Padding(padding: EdgeInsets.only(top: 15))
-    );
+    list.add(new Padding(padding: EdgeInsets.only(top: 15)));
     for (var i = 0; i < names.length; i++) {
       list.add(LabeledCheckbox(
         labelroll: rolls[i],
@@ -337,7 +335,10 @@ class _StudentListFragmentState extends State<StudentListFragment>
         .then((res) {
       print(res.toString());
       Navigator.pop(context);
-      _showSnackBar("Attendance has been successfully uploaded.");
+      if (res == "update-success")
+        _showSnackBar("Attendance uploaded.");
+      else
+        _showSnackBar("Failed to upload attendance.");
       new Timer(const Duration(seconds: 1), () => Navigator.pop(context));
     });
   }

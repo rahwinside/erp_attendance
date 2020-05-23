@@ -55,7 +55,11 @@ class LabeledCheckbox extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        if (value != null) onChanged(!value);
+        if (value == true)
+          onChanged(null);
+        else if (value == null)
+          onChanged(false);
+        else if (value == false) onChanged(true);
       },
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -326,7 +330,10 @@ class _SuperUserStudentListFragmentState
         .then((res) {
       print(res.toString());
       Navigator.pop(context);
-      _showSnackBar("Changes committed.");
+      if (res == "update-success")
+        _showSnackBar("Changes committed.");
+      else
+        _showSnackBar("Failed to commit changes.");
       new Timer(const Duration(seconds: 1), () => Navigator.pop(context));
     });
   }
