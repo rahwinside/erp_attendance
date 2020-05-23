@@ -32,6 +32,8 @@ final List<String> year = <String>[
 final scaffoldKey = new GlobalKey<ScaffoldState>();
 
 final dateFormat = DateFormat("dd.MM.yyyy - EEEE");
+var date_fmt_for_API = new DateFormat('yyyy-MM-dd');
+
 List<bool> hourSelected = [
   true,
   false,
@@ -70,12 +72,12 @@ class _OnDutyFragmentState extends State<OnDutyFragment>
   void preselect(dynamic res) {
 //    print(res.toString());
     super_json = true;
-    final_json_array = [];
-    super_json_array = [];
-    regular_json_array = [];
-    subject_array = [];
-    pk_table_array = [];
-    required_timestamp_array = [];
+    final_json_array = new List<dynamic>();
+    super_json_array = new List<dynamic>();
+    regular_json_array = new List<dynamic>();
+    subject_array = new List<String>();
+    pk_table_array = new List<String>();
+    required_timestamp_array = new List<String>();
     res.forEach((element) {
       if (element["source"] == "super") {
         super_json_array.add(element);
@@ -130,10 +132,10 @@ class _OnDutyFragmentState extends State<OnDutyFragment>
     yearController.text = "III";
 
     var now = new DateTime.now();
-    var formatter = new DateFormat('yyyy-MM-dd');
-    String formattedDate = formatter.format(now);
+    print(now);
+    String formattedDate = date_fmt_for_API.format(now);
 
-    dateController.text = "";
+    dateController.text = dateFormat.format(now);
     deptController.text = "";
     messageController.text = "";
 //    subjectController.text = "";
@@ -150,7 +152,7 @@ class _OnDutyFragmentState extends State<OnDutyFragment>
         department_abbrev = "dit";
       }
       _presenter.doFetch(username, auth_token, department_abbrev,
-          yearController.text.toString(), "2020-05-22", "4");
+          yearController.text.toString(), formattedDate, "1");
     });
   }
 
@@ -262,6 +264,7 @@ class _OnDutyFragmentState extends State<OnDutyFragment>
                     Padding(
                       padding: const EdgeInsets.only(left: 5, right: 5),
                       child: new DateTimeField(
+                        controller: dateController,
                         style: TextStyle(
                           fontFamily: "Poppins",
                           color: Colors.black,
@@ -432,7 +435,10 @@ class _OnDutyFragmentState extends State<OnDutyFragment>
                               auth_token,
                               department_abbrev,
                               yearController.text.toString(),
-                              dateController.text.toString(),
+                              date_fmt_for_API.format(DateFormat("dd.MM.yyyy")
+                                  .parse(dateController.text
+                                      .toString()
+                                      .split(" ")[0])),
                               (index + 1).toString());
                         },
                       ),
@@ -568,8 +574,11 @@ class _OnDutyFragmentState extends State<OnDutyFragment>
 
   @override
   void onFetchError(String errorTxt) {
-    Navigator.pop(context);
+    final_json_array = new List<dynamic>();
+    super_json_array = new List<dynamic>();
+    regular_json_array = new List<dynamic>();
     messageController.text = errorTxt.replaceFirst("Exception: ", '');
+    Navigator.pop(context);
     print(errorTxt);
     setState(() {
       buttonActive = false;
@@ -579,7 +588,14 @@ class _OnDutyFragmentState extends State<OnDutyFragment>
 
   @override
   void onFetchSuccess(res) {
+    final_json_array = new List<dynamic>();
+    super_json_array = new List<dynamic>();
+    regular_json_array = new List<dynamic>();
+    subject_array = new List<String>();
+    pk_table_array = new List<String>();
+    required_timestamp_array = new List<String>();
     Navigator.pop(context);
+    messageController.text = "";
     if (res != "invalid-auth-or-access") {
       preselect(res);
     }
