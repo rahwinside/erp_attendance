@@ -247,6 +247,7 @@ class LoginScreenState extends State<LoginScreen>
                             padding: EdgeInsets.only(top: 5),
                           ),
                           new TextFormField(
+                            autocorrect: false,
                             style: TextStyle(
                               fontFamily: "Poppins",
                               fontWeight: FontWeight.w400,
@@ -291,6 +292,7 @@ class LoginScreenState extends State<LoginScreen>
                             padding: EdgeInsets.only(top: 5),
                           ),
                           TextFormField(
+                            autocorrect: false,
                             style: TextStyle(
                               fontFamily: "Poppins",
                               fontWeight: FontWeight.w400,

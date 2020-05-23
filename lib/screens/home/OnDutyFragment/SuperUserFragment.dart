@@ -445,17 +445,14 @@ class _OnDutyFragmentState extends State<OnDutyFragment>
                             color: Colors.black,
                           ),
                         ),
-                        value: get_subject_array_status()
+                        value: subject_array.isEmpty
                             ? null
                             : subjectController.text,
                         onChanged: (value) {
                           setState(() {
                             pk_table =
                             pk_table_array[subject_array.indexOf(value)];
-                            print("selected: " + pk_table);
-                            print("option old: " + subjectController.text);
                             subjectController.text = value;
-                            print("option: " + subjectController.text);
                             buttonActive = true;
                           });
                         },
@@ -534,11 +531,11 @@ class _OnDutyFragmentState extends State<OnDutyFragment>
 
   }
 
-  bool get_subject_array_status() {
-    print("getting: " + subject_array.isEmpty.toString() +
-        subjectController.text.toString());
-    return subject_array.isEmpty;
-  }
+//  bool get_subject_array_status() {
+//    print("getting: " + subject_array.isEmpty.toString() +
+//        subjectController.text.toString());
+//    return subject_array.isEmpty;
+//  }
 
   void _showSnackBar(String text) {
     scaffoldKey.currentState
