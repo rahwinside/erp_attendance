@@ -4,6 +4,7 @@ import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import 'SuperUserStudentListFragment.dart';
 import 'superuser_menu_presenter.dart';
 
 var username = "";
@@ -20,6 +21,7 @@ bool super_json = true;
 
 List<String> subject_array = new List<String>();
 List<String> pk_table_array = new List<String>();
+List<String> required_timestamp_array = new List<String>();
 
 final List<String> year = <String>[
   "I",
@@ -72,6 +74,7 @@ class _OnDutyFragmentState extends State<OnDutyFragment>
     regular_json_array = [];
     subject_array = [];
     pk_table_array = [];
+    required_timestamp_array = [];
     res.forEach((element) {
       if (element["source"] == "super") {
         super_json_array.add(element);
@@ -100,12 +103,14 @@ class _OnDutyFragmentState extends State<OnDutyFragment>
           " - " +
           element["subject_name"].toString());
       pk_table_array.add(element["subCode_dept_sem"].toString());
+      required_timestamp_array.add(element["required_timestamp"].toString());
     });
 
     subjectController.text = subject_array[0];
 
     print(subject_array);
     print(pk_table_array);
+    print(required_timestamp_array);
 
     setState(() {});
   }
@@ -452,6 +457,8 @@ class _OnDutyFragmentState extends State<OnDutyFragment>
                           setState(() {
                             pk_table =
                             pk_table_array[subject_array.indexOf(value)];
+                            required_timestamp = required_timestamp_array[
+                                subject_array.indexOf(value)];
                             subjectController.text = value;
                             buttonActive = true;
                           });
@@ -511,7 +518,7 @@ class _OnDutyFragmentState extends State<OnDutyFragment>
                       splashColor: Colors.purple,
                       elevation: 5.0,
                       child: new Text(
-                        "Update Attendance",
+                        "Modify Attendance",
                         style: TextStyle(
                           color: Colors.deepPurple,
                           fontFamily: 'Poppins',
@@ -528,7 +535,13 @@ class _OnDutyFragmentState extends State<OnDutyFragment>
   }
 
   void buttonPressed() {
-
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                SuperUserStudentListFragment(
+                  pk_table: pk_table,
+                  required_timestamp: required_timestamp,)));
   }
 
 //  bool get_subject_array_status() {
