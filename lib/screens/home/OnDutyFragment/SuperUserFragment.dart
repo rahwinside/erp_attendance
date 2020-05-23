@@ -68,6 +68,7 @@ class OnDutyFragment extends StatefulWidget {
 class _OnDutyFragmentState extends State<OnDutyFragment>
     implements SuperUserFragmentContract {
   void preselect(dynamic res) {
+//    print(res.toString());
     super_json = true;
     final_json_array = [];
     super_json_array = [];
@@ -80,6 +81,7 @@ class _OnDutyFragmentState extends State<OnDutyFragment>
         super_json_array.add(element);
       } else if (element["source"] == "regular") {
         regular_json_array.add(element);
+        print("added");
       }
     });
 
@@ -93,6 +95,12 @@ class _OnDutyFragmentState extends State<OnDutyFragment>
         }
       });
     });
+
+    if (super_json_array.isEmpty) {
+      super_json = false;
+    } else if (regular_json_array.isEmpty) {
+      super_json = true;
+    }
 
     // final_json_array wil have the regular timetable if an elective/regular
     // hour was substituted with a regular hour
@@ -142,7 +150,7 @@ class _OnDutyFragmentState extends State<OnDutyFragment>
         department_abbrev = "dit";
       }
       _presenter.doFetch(username, auth_token, department_abbrev,
-          yearController.text.toString(), "2020-05-22", "5");
+          yearController.text.toString(), "2020-05-22", "4");
     });
   }
 
@@ -306,7 +314,7 @@ class _OnDutyFragmentState extends State<OnDutyFragment>
                           });
                         },
                         items: year.map(
-                              (item) {
+                          (item) {
                             return DropdownMenuItem(
                               value: item.toString(),
                               child: new Text(
@@ -463,7 +471,9 @@ class _OnDutyFragmentState extends State<OnDutyFragment>
                             buttonActive = true;
                           });
                         },
-                        items: subject_array.isEmpty ? null : subject_array.map(
+                        items: subject_array.isEmpty
+                            ? null
+                            : subject_array.map(
                               (item) {
                             return DropdownMenuItem(
                               value: item.toString(),
@@ -541,7 +551,8 @@ class _OnDutyFragmentState extends State<OnDutyFragment>
             builder: (context) =>
                 SuperUserStudentListFragment(
                   pk_table: pk_table,
-                  required_timestamp: required_timestamp,)));
+                  required_timestamp: required_timestamp,
+                )));
   }
 
 //  bool get_subject_array_status() {

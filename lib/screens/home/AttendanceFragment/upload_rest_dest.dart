@@ -9,7 +9,15 @@ class UploadAttendanceRest {
 
   Future<dynamic> upload(String username, String auth_token, String pk_table,
       String datetime_column, String response) {
-    print(response.toString());
+    print(username +
+        " " +
+        auth_token +
+        " " +
+        pk_table +
+        " " +
+        datetime_column +
+        " " +
+        response);
     return _netUtil.post(LOGIN_URL, body: {
       "username": username,
       "auth_token": auth_token,
