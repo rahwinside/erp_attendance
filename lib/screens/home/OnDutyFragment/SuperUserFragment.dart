@@ -7,14 +7,17 @@ import 'package:intl/intl.dart';
 import 'SuperUserStudentListFragment.dart';
 import 'superuser_menu_presenter.dart';
 
-var username = "";
-var auth_token = "";
-var department = "";
+var username = null;
+var auth_token = null;
+var department = null;
 var hour = "1";
 
 List<dynamic> final_json_array = new List<dynamic>();
 List<dynamic> super_json_array = new List<dynamic>();
 List<dynamic> regular_json_array = new List<dynamic>();
+
+List<DropdownMenuItem<String>> _subjectDropDownItems =
+    new List<DropdownMenuItem<String>>();
 
 // super_json is true if the hour was substituted with a regular hour.
 bool super_json = true;
@@ -48,12 +51,11 @@ List<bool> hourSelected = [
 TextEditingController dateController = new TextEditingController();
 TextEditingController deptController = new TextEditingController();
 TextEditingController yearController = new TextEditingController();
-TextEditingController subjectController = new TextEditingController();
 TextEditingController messageController = new TextEditingController();
 
-String pk_table = "";
-String required_timestamp = "";
-String department_abbrev = "";
+String pk_table = null;
+String required_timestamp = null;
+String department_abbrev = null;
 
 // takeAttendance button is deactivated by default
 bool buttonActive = false;
@@ -69,15 +71,18 @@ class OnDutyFragment extends StatefulWidget {
 
 class _OnDutyFragmentState extends State<OnDutyFragment>
     implements SuperUserFragmentContract {
+  String subjectController = null;
+
   void preselect(dynamic res) {
 //    print(res.toString());
     super_json = true;
-    final_json_array = new List<dynamic>();
-    super_json_array = new List<dynamic>();
-    regular_json_array = new List<dynamic>();
-    subject_array = new List<String>();
-    pk_table_array = new List<String>();
-    required_timestamp_array = new List<String>();
+    final_json_array.clear();
+    super_json_array.clear();
+    regular_json_array.clear();
+    subject_array.clear();
+    pk_table_array.clear();
+    required_timestamp_array.clear();
+    _subjectDropDownItems.clear();
     res.forEach((element) {
       if (element["source"] == "super") {
         super_json_array.add(element);
@@ -116,13 +121,26 @@ class _OnDutyFragmentState extends State<OnDutyFragment>
       required_timestamp_array.add(element["required_timestamp"].toString());
     });
 
-    subjectController.text = subject_array[0];
+//    subjectController = subject_array[0];
 
     print(subject_array);
     print(pk_table_array);
     print(required_timestamp_array);
 
-    setState(() {});
+    setState(() {
+      subjectController = null;
+      buttonActive = true;
+      subject_array.forEach((subject) {
+        if (subjectController == null) {
+          print("updated value");
+          subjectController = subject;
+        }
+        _subjectDropDownItems.add(new DropdownMenuItem(
+          child: new Text(subject.toString()),
+          value: subject.toString(),
+        ));
+      });
+    });
   }
 
   SuperUserFragmentPresenter _presenter;
@@ -138,7 +156,7 @@ class _OnDutyFragmentState extends State<OnDutyFragment>
     dateController.text = dateFormat.format(now);
     deptController.text = "";
     messageController.text = "";
-//    subjectController.text = "";
+//    subjectController = "";
     hourSelected = [true, false, false, false, false, false, false, false];
     buttonActive = false;
     _presenter = new SuperUserFragmentPresenter(this);
@@ -317,7 +335,7 @@ class _OnDutyFragmentState extends State<OnDutyFragment>
                           });
                         },
                         items: year.map(
-                          (item) {
+                              (item) {
                             return DropdownMenuItem(
                               value: item.toString(),
                               child: new Text(
@@ -437,8 +455,8 @@ class _OnDutyFragmentState extends State<OnDutyFragment>
                               yearController.text.toString(),
                               date_fmt_for_API.format(DateFormat("dd.MM.yyyy")
                                   .parse(dateController.text
-                                      .toString()
-                                      .split(" ")[0])),
+                                  .toString()
+                                  .split(" ")[0])),
                               (index + 1).toString());
                         },
                       ),
@@ -464,36 +482,18 @@ class _OnDutyFragmentState extends State<OnDutyFragment>
                             color: Colors.black,
                           ),
                         ),
-                        value: subject_array.isEmpty
-                            ? null
-                            : subjectController.text,
+                        value: subjectController,
                         onChanged: (value) {
                           setState(() {
                             pk_table =
                             pk_table_array[subject_array.indexOf(value)];
                             required_timestamp = required_timestamp_array[
-                                subject_array.indexOf(value)];
-                            subjectController.text = value;
+                            subject_array.indexOf(value)];
+                            subjectController = value;
                             buttonActive = true;
                           });
                         },
-                        items: subject_array.isEmpty
-                            ? null
-                            : subject_array.map(
-                              (item) {
-                            return DropdownMenuItem(
-                              value: item.toString(),
-                              child: new Text(
-                                item.toString(),
-                                style: new TextStyle(
-                                  fontFamily: "Poppins",
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            );
-                          },
-                        ).toList(),
+                        items: _subjectDropDownItems,
                       ),
                     ),
                     new Padding(
@@ -561,12 +561,6 @@ class _OnDutyFragmentState extends State<OnDutyFragment>
                 )));
   }
 
-//  bool get_subject_array_status() {
-//    print("getting: " + subject_array.isEmpty.toString() +
-//        subjectController.text.toString());
-//    return subject_array.isEmpty;
-//  }
-
   void _showSnackBar(String text) {
     scaffoldKey.currentState
         .showSnackBar(new SnackBar(content: new Text(text)));
@@ -588,19 +582,10 @@ class _OnDutyFragmentState extends State<OnDutyFragment>
 
   @override
   void onFetchSuccess(res) {
-    final_json_array = new List<dynamic>();
-    super_json_array = new List<dynamic>();
-    regular_json_array = new List<dynamic>();
-    subject_array = new List<String>();
-    pk_table_array = new List<String>();
-    required_timestamp_array = new List<String>();
     Navigator.pop(context);
     messageController.text = "";
     if (res != "invalid-auth-or-access") {
       preselect(res);
     }
-    setState(() {
-      buttonActive = true;
-    });
   }
 }
