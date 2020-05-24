@@ -196,33 +196,90 @@ class _DashboardFragmentState extends State<DashboardFragment>
   Widget build(BuildContext context) {
     return new Scaffold(
       key: scaffoldKey,
-      body: Column(
-        children: <Widget>[
-          SingleChildScrollView(
-            padding: const EdgeInsets.all(20.0),
-            child: new Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  Container(
-                    height: 164.0,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5.0),
-                      gradient: LinearGradient(
-                        begin: Alignment(0.77, -0.83),
-                        end: Alignment(-0.9, 0.89),
-                        colors: [
-                          const Color(0xff13f1fc),
-                          const Color(0xff0470dc)
-                        ],
-                        stops: [0.0, 1.0],
-                      ),
-                    ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20.0),
+        child: new Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              Container(
+                height: 164.0,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5.0),
+                  gradient: LinearGradient(
+                    begin: Alignment(0.77, -0.83),
+                    end: Alignment(-0.9, 0.89),
+                    colors: [const Color(0xff13f1fc), const Color(0xff0470dc)],
+                    stops: [0.0, 1.0],
                   ),
-                ]),
-          ),
-        ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 10),
+              ),
+              Container(
+                width: 295.0,
+                height: 164.0,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5.0),
+                  gradient: LinearGradient(
+                    begin: Alignment(0.77, -0.83),
+                    end: Alignment(-0.9, 0.89),
+                    colors: [const Color(0xffff57b9), const Color(0xffa704fd)],
+                    stops: [0.0, 1.0],
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 10),
+              ),
+              Container(
+                height: 164.0,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5.0),
+                  gradient: LinearGradient(
+                    begin: Alignment(0.77, -0.83),
+                    end: Alignment(-0.9, 0.89),
+                    colors: [const Color(0xffdfec51), const Color(0xff73aa0a)],
+                    stops: [0.0, 1.0],
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 10),
+              ),
+              Container(
+                height: 164.0,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5.0),
+                  gradient: LinearGradient(
+                    begin: Alignment(0.77, -0.83),
+                    end: Alignment(-0.9, 0.89),
+                    colors: [const Color(0xffc56cd6), const Color(0xff3425af)],
+                    stops: [0.0, 1.0],
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 10),
+              ),
+              Container(
+                height: 164.0,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5.0),
+                  gradient: LinearGradient(
+                    begin: Alignment(0.77, -0.83),
+                    end: Alignment(-0.9, 0.89),
+                    colors: [const Color(0xfffcdf8a), const Color(0xfff38381)],
+                    stops: [0.0, 1.0],
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 10),
+              ),
+            ]),
       ),
     );
   }
