@@ -2,6 +2,7 @@ import 'package:attendance/auth.dart';
 import 'package:attendance/data/database_helper.dart';
 import 'package:attendance/models/user.dart';
 import 'package:attendance/screens/home/AttendanceFragment/AttendanceFragment.dart';
+import 'package:attendance/screens/home/dashboard/DashboardFragment.dart';
 import 'package:attendance/screens/home/settings/SettingsFragment.dart';
 import 'package:attendance/screens/login/login_screen.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +22,7 @@ class DrawerItem {
 
 class HomeScreen extends StatefulWidget {
   final drawerItems = [
-    new DrawerItem("Home", Icons.home),
+    new DrawerItem("Dashboard", Icons.home),
     new DrawerItem("Take Attendance", Icons.check),
     new DrawerItem("Modify Attendance", Icons.change_history),
     new DrawerItem("Superuser Attendance", Icons.supervisor_account),
@@ -62,6 +63,9 @@ class HomeScreenState extends State<HomeScreen>
 
   _getDrawerItemWidget(int pos) {
     switch (pos) {
+      case 0:
+        return new DashboardFragment();
+        break;
       case 1:
         return new AttendanceFragment();
         break;
