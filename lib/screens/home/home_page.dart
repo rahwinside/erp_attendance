@@ -69,7 +69,7 @@ class HomeScreenState extends State<HomeScreen>
         return new ModifyAttendanceFragment();
         break;
       case 3:
-        return new OnDutyFragment();
+        return new SuperUserFragment();
         break;
       case 6:
         return new SettingsFragment();

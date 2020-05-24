@@ -7,6 +7,22 @@ import 'package:intl/intl.dart';
 import 'SuperUserStudentListFragment.dart';
 import 'superuser_menu_presenter.dart';
 
+var username = null;
+var auth_token = null;
+var department = null;
+var hour = "1";
+
+List<dynamic> final_json_array = new List<dynamic>();
+List<dynamic> super_json_array = new List<dynamic>();
+List<dynamic> regular_json_array = new List<dynamic>();
+
+// super_json is true if the hour was substituted with a regular hour.
+bool super_json = true;
+
+List<String> subject_array = ["Select one..."];
+List<String> pk_table_array = new List<String>();
+List<String> required_timestamp_array = new List<String>();
+
 final List<String> year = <String>[
   "I",
   "II",
@@ -16,58 +32,42 @@ final List<String> year = <String>[
 final scaffoldKey = new GlobalKey<ScaffoldState>();
 
 final dateFormat = DateFormat("dd.MM.yyyy - EEEE");
-final date_fmt_for_API = new DateFormat('yyyy-MM-dd');
+var date_fmt_for_API = new DateFormat('yyyy-MM-dd');
 
-class SuperUserFragment extends StatefulWidget {
-  SuperUserFragment({Key key}) : super(key: key);
+List<bool> hourSelected = [
+  true,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false
+];
+
+TextEditingController dateController = new TextEditingController();
+TextEditingController deptController = new TextEditingController();
+TextEditingController yearController = new TextEditingController();
+TextEditingController messageController = new TextEditingController();
+
+String pk_table = null;
+String required_timestamp = null;
+String department_abbrev = null;
+
+// takeAttendance button is deactivated by default
+bool buttonActive = false;
+
+class OnDutyFragment extends StatefulWidget {
+  OnDutyFragment({Key key}) : super(key: key);
 
   @override
-  _SuperUserFragmentState createState() {
-    return new _SuperUserFragmentState();
+  _OnDutyFragmentState createState() {
+    return new _OnDutyFragmentState();
   }
 }
 
-class _SuperUserFragmentState extends State<SuperUserFragment>
+class _OnDutyFragmentState extends State<OnDutyFragment>
     implements SuperUserFragmentContract {
-  var username = null;
-  var auth_token = null;
-  var department = null;
-  var hour = "1";
-
-  List<dynamic> final_json_array = new List<dynamic>();
-  List<dynamic> super_json_array = new List<dynamic>();
-  List<dynamic> regular_json_array = new List<dynamic>();
-
-// super_json is true if the hour was substituted with a regular hour.
-  bool super_json = true;
-
-  List<String> subject_array = ["Select one..."];
-  List<String> pk_table_array = new List<String>();
-  List<String> required_timestamp_array = new List<String>();
-
-  List<bool> hourSelected = [
-    true,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false
-  ];
-
-  TextEditingController dateController = new TextEditingController();
-  TextEditingController deptController = new TextEditingController();
-  TextEditingController yearController = new TextEditingController();
-  TextEditingController messageController = new TextEditingController();
-
-  String pk_table = null;
-  String required_timestamp = null;
-  String department_abbrev = null;
-
-// takeAttendance button is deactivated by default
-  bool buttonActive = false;
-
   String subjectController = "Select one...";
 
   void preselect(dynamic res) {
@@ -77,8 +77,8 @@ class _SuperUserFragmentState extends State<SuperUserFragment>
     super_json_array.clear();
     regular_json_array.clear();
     subject_array = ["Select one..."];
-    pk_table_array = ["NA"];
-    required_timestamp_array = ["NA"];
+    pk_table_array.clear();
+    required_timestamp_array.clear();
     res.forEach((element) {
       if (element["source"] == "super") {
         super_json_array.add(element);
@@ -117,6 +117,8 @@ class _SuperUserFragmentState extends State<SuperUserFragment>
       required_timestamp_array.add(element["required_timestamp"].toString());
     });
 
+//    subjectController = subject_array[0];
+
     print(subject_array);
     print(pk_table_array);
     print(required_timestamp_array);
@@ -128,8 +130,9 @@ class _SuperUserFragmentState extends State<SuperUserFragment>
 
   SuperUserFragmentPresenter _presenter;
 
-  _SuperUserFragmentState() {
-    yearController.text = "I";
+  _OnDutyFragmentState() {
+//    resetUsers();
+    yearController.text = "III";
 
     var now = new DateTime.now();
     print(now);
@@ -138,7 +141,7 @@ class _SuperUserFragmentState extends State<SuperUserFragment>
     dateController.text = dateFormat.format(now);
     deptController.text = "";
     messageController.text = "";
-    subjectController = "Select one...";
+//    subjectController = "";
     hourSelected = [true, false, false, false, false, false, false, false];
     buttonActive = false;
     _presenter = new SuperUserFragmentPresenter(this);
@@ -150,18 +153,6 @@ class _SuperUserFragmentState extends State<SuperUserFragment>
       deptController.text = department;
       if (department == "Information Technology") {
         department_abbrev = "dit";
-      } else if (department == "Mechanical Engineering A") {
-        department_abbrev = "dmea";
-      } else if (department == "Mechanical Engineering B") {
-        department_abbrev = "dmeb";
-      } else if (department == "Computer Science and Engineering") {
-        department_abbrev = "dcse";
-      } else if (department == "Electrical and Electronics Engineering") {
-        department_abbrev = "deee";
-      } else if (department == "Electronics Electronics and Engineering") {
-        department_abbrev = "dece";
-      } else {
-        department_abbrev = "NA";
       }
       _presenter.doFetch(username, auth_token, department_abbrev,
           yearController.text.toString(), formattedDate, "1");
@@ -329,7 +320,7 @@ class _SuperUserFragmentState extends State<SuperUserFragment>
                           });
                         },
                         items: year.map(
-                          (item) {
+                              (item) {
                             return DropdownMenuItem(
                               value: item.toString(),
                               child: new Text(
@@ -461,25 +452,23 @@ class _SuperUserFragmentState extends State<SuperUserFragment>
                     new Padding(
                       padding: EdgeInsets.only(top: 10),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 5, right: 5),
-                      child: new Text(
-                        "Select subject",
-                        style: new TextStyle(
-                            fontSize: 12.0,
-                            color: const Color(0xFF000000),
-                            fontWeight: FontWeight.w200,
-                            fontFamily: "Poppins"),
-                      ),
-                    ),
                     Container(
                       padding: EdgeInsets.only(left: 5, right: 5),
-                      child: new DropdownButton<String>(
+                      child: new DropdownButtonFormField<String>(
                         isExpanded: true,
                         style: new TextStyle(
                           fontFamily: "Poppins",
                           fontWeight: FontWeight.w400,
                           color: Colors.black,
+                        ),
+                        decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.all(0),
+                          labelText: "Select subject",
+                          labelStyle: TextStyle(
+                            fontFamily: "Poppins",
+                            fontWeight: FontWeight.w200,
+                            color: Colors.black,
+                          ),
                         ),
                         onChanged: (value) {
                           setState(() {

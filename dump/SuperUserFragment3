@@ -1,11 +1,27 @@
 import 'package:attendance/data/database_helper.dart';
 import 'package:attendance/models/user.dart';
+import 'package:attendance/screens/home/OnDutyFragment/superuser_rest_ds.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import 'SuperUserStudentListFragment.dart';
-import 'superuser_menu_presenter.dart';
+
+var username = null;
+var auth_token = null;
+var department = null;
+var hour = "1";
+
+List<dynamic> final_json_array = new List<dynamic>();
+List<dynamic> super_json_array = new List<dynamic>();
+List<dynamic> regular_json_array = new List<dynamic>();
+
+// super_json is true if the hour was substituted with a regular hour.
+bool super_json = true;
+
+List<String> subject_array = ["Select one..."];
+List<String> pk_table_array = new List<String>();
+List<String> required_timestamp_array = new List<String>();
 
 final List<String> year = <String>[
   "I",
@@ -13,10 +29,35 @@ final List<String> year = <String>[
   "III",
   "IV",
 ];
+
+final List<String> _hours = <String>[
+  "Select one...",
+  "1",
+  "2",
+  "3",
+  "4",
+  "5",
+  "6",
+  "7",
+  "8",
+];
+
 final scaffoldKey = new GlobalKey<ScaffoldState>();
 
 final dateFormat = DateFormat("dd.MM.yyyy - EEEE");
-final date_fmt_for_API = new DateFormat('yyyy-MM-dd');
+var date_fmt_for_API = new DateFormat('yyyy-MM-dd');
+
+TextEditingController dateController = new TextEditingController();
+TextEditingController deptController = new TextEditingController();
+TextEditingController yearController = new TextEditingController();
+TextEditingController messageController = new TextEditingController();
+
+String pk_table = null;
+String required_timestamp = null;
+String department_abbrev = null;
+
+// takeAttendance button is deactivated by default
+bool buttonActive = false;
 
 class SuperUserFragment extends StatefulWidget {
   SuperUserFragment({Key key}) : super(key: key);
@@ -27,48 +68,9 @@ class SuperUserFragment extends StatefulWidget {
   }
 }
 
-class _SuperUserFragmentState extends State<SuperUserFragment>
-    implements SuperUserFragmentContract {
-  var username = null;
-  var auth_token = null;
-  var department = null;
-  var hour = "1";
-
-  List<dynamic> final_json_array = new List<dynamic>();
-  List<dynamic> super_json_array = new List<dynamic>();
-  List<dynamic> regular_json_array = new List<dynamic>();
-
-// super_json is true if the hour was substituted with a regular hour.
-  bool super_json = true;
-
-  List<String> subject_array = ["Select one..."];
-  List<String> pk_table_array = new List<String>();
-  List<String> required_timestamp_array = new List<String>();
-
-  List<bool> hourSelected = [
-    true,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false
-  ];
-
-  TextEditingController dateController = new TextEditingController();
-  TextEditingController deptController = new TextEditingController();
-  TextEditingController yearController = new TextEditingController();
-  TextEditingController messageController = new TextEditingController();
-
-  String pk_table = null;
-  String required_timestamp = null;
-  String department_abbrev = null;
-
-// takeAttendance button is deactivated by default
-  bool buttonActive = false;
-
-  String subjectController = "Select one...";
+class _SuperUserFragmentState extends State<SuperUserFragment> {
+  String _subjectController = "Select one...";
+  String _selectedHour = "Select one...";
 
   void preselect(dynamic res) {
 //    print(res.toString());
@@ -77,8 +79,8 @@ class _SuperUserFragmentState extends State<SuperUserFragment>
     super_json_array.clear();
     regular_json_array.clear();
     subject_array = ["Select one..."];
-    pk_table_array = ["NA"];
-    required_timestamp_array = ["NA"];
+    pk_table_array.clear();
+    required_timestamp_array.clear();
     res.forEach((element) {
       if (element["source"] == "super") {
         super_json_array.add(element);
@@ -117,31 +119,23 @@ class _SuperUserFragmentState extends State<SuperUserFragment>
       required_timestamp_array.add(element["required_timestamp"].toString());
     });
 
+//    subjectController = subject_array[0];
+
     print(subject_array);
     print(pk_table_array);
     print(required_timestamp_array);
 
     setState(() {
-      subjectController = "Select one...";
+      _subjectController = "Select one...";
     });
   }
 
-  SuperUserFragmentPresenter _presenter;
-
   _SuperUserFragmentState() {
     yearController.text = "I";
-
-    var now = new DateTime.now();
-    print(now);
-    String formattedDate = date_fmt_for_API.format(now);
-
-    dateController.text = dateFormat.format(now);
+    dateController.text = dateFormat.format(DateTime.now());
     deptController.text = "";
     messageController.text = "";
-    subjectController = "Select one...";
-    hourSelected = [true, false, false, false, false, false, false, false];
     buttonActive = false;
-    _presenter = new SuperUserFragmentPresenter(this);
     var db = new DatabaseHelper();
     db.getFirstUser().then((User user) {
       username = user.username;
@@ -163,8 +157,6 @@ class _SuperUserFragmentState extends State<SuperUserFragment>
       } else {
         department_abbrev = "NA";
       }
-      _presenter.doFetch(username, auth_token, department_abbrev,
-          yearController.text.toString(), formattedDate, "1");
     });
   }
 
@@ -176,9 +168,6 @@ class _SuperUserFragmentState extends State<SuperUserFragment>
       "images/loader.gif",
     );
     super.initState();
-    new Future.delayed(Duration.zero, () {
-      showProgressModal(context);
-    });
   }
 
   @override
@@ -359,146 +348,51 @@ class _SuperUserFragmentState extends State<SuperUserFragment>
                             fontFamily: "Poppins"),
                       ),
                     ),
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: ToggleButtons(
-                        children: <Widget>[
-                          Text(
-                            "1",
-                            style: new TextStyle(
-                              fontFamily: "Poppins",
-                              fontWeight: FontWeight.w400,
-                              color: Colors.black,
-                            ),
-                          ),
-                          Text(
-                            "2",
-                            style: new TextStyle(
-                              fontFamily: "Poppins",
-                              fontWeight: FontWeight.w400,
-                              color: Colors.black,
-                            ),
-                          ),
-                          Text(
-                            "3",
-                            style: new TextStyle(
-                              fontFamily: "Poppins",
-                              fontWeight: FontWeight.w400,
-                              color: Colors.black,
-                            ),
-                          ),
-                          Text(
-                            "4",
-                            style: new TextStyle(
-                              fontFamily: "Poppins",
-                              fontWeight: FontWeight.w400,
-                              color: Colors.black,
-                            ),
-                          ),
-                          Text(
-                            "5",
-                            style: new TextStyle(
-                              fontFamily: "Poppins",
-                              fontWeight: FontWeight.w400,
-                              color: Colors.black,
-                            ),
-                          ),
-                          Text(
-                            "6",
-                            style: new TextStyle(
-                              fontFamily: "Poppins",
-                              fontWeight: FontWeight.w400,
-                              color: Colors.black,
-                            ),
-                          ),
-                          Text(
-                            "7",
-                            style: new TextStyle(
-                              fontFamily: "Poppins",
-                              fontWeight: FontWeight.w400,
-                              color: Colors.black,
-                            ),
-                          ),
-                          Text(
-                            "8",
-                            style: new TextStyle(
-                              fontFamily: "Poppins",
-                              fontWeight: FontWeight.w400,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ],
-                        isSelected: hourSelected,
-                        onPressed: (int index) {
-                          setState(() {
-                            subjectController = "Select one...";
-                          });
-                          hourSelected = [
-                            false,
-                            false,
-                            false,
-                            false,
-                            false,
-                            false,
-                            false,
-                            false
-                          ];
-                          hourSelected[index] = true;
-                          showProgressModal(context);
-                          _presenter.doFetch(
-                              username,
-                              auth_token,
-                              department_abbrev,
-                              yearController.text.toString(),
-                              date_fmt_for_API.format(DateFormat("dd.MM.yyyy")
-                                  .parse(dateController.text
-                                  .toString()
-                                  .split(" ")[0])),
-                              (index + 1).toString());
-                        },
-                      ),
-                    ),
-                    new Padding(
-                      padding: EdgeInsets.only(top: 10),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 5, right: 5),
-                      child: new Text(
-                        "Select subject",
-                        style: new TextStyle(
-                            fontSize: 12.0,
-                            color: const Color(0xFF000000),
-                            fontWeight: FontWeight.w200,
-                            fontFamily: "Poppins"),
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.only(left: 5, right: 5),
-                      child: new DropdownButton<String>(
-                        isExpanded: true,
-                        style: new TextStyle(
+                    DropdownButtonFormField(
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.all(0),
+                        labelText: "Select hour",
+                        labelStyle: TextStyle(
                           fontFamily: "Poppins",
-                          fontWeight: FontWeight.w400,
+                          fontWeight: FontWeight.w200,
                           color: Colors.black,
                         ),
-                        onChanged: (value) {
-                          setState(() {
-                            pk_table =
-                            pk_table_array[subject_array.indexOf(value)];
-                            required_timestamp = required_timestamp_array[
-                            subject_array.indexOf(value)];
-                            subjectController = value;
-                            buttonActive = true;
-                          });
-                        },
-                        items: subject_array.map((String dropDownStringItem) {
-                          return DropdownMenuItem<String>(
-                            value: dropDownStringItem,
-                            child: Text(dropDownStringItem),
-                          );
-                        }).toList(),
-                        value: subjectController,
                       ),
+                      isExpanded: true,
+                      items: _hours.map((String dropDownStringItem) {
+                        return DropdownMenuItem<String>(
+                          value: dropDownStringItem,
+                          child: Text(
+                            dropDownStringItem,
+                            style: new TextStyle(
+                              fontFamily: "Poppins",
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black,
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                      onChanged: (value) => _onSelectedHour(value),
+                      value: _selectedHour,
+                    ),
+                    DropdownButtonFormField<String>(
+                      isExpanded: true,
+                      items: subject_array.map((String dropDownStringItem) {
+                        return DropdownMenuItem<String>(
+                          value: dropDownStringItem,
+                          child: Text(
+                            dropDownStringItem,
+                            style: new TextStyle(
+                              fontFamily: "Poppins",
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black,
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                      // onChanged: (value) => print(value),
+                      onChanged: (value) => _onSelectedSubject(value),
+                      value: _subjectController,
                     ),
                     new Padding(
                       padding: EdgeInsets.only(top: 10),
@@ -554,12 +448,89 @@ class _SuperUserFragmentState extends State<SuperUserFragment>
     );
   }
 
+  void _onSelectedHour(String value_x) {
+    showProgressModal(context);
+    subject_array = ["Select one..."];
+    SuperUserSelectionRestDataSource ds =
+        new SuperUserSelectionRestDataSource();
+    ds
+        .fetch(
+            username,
+            auth_token,
+            department_abbrev,
+            yearController.text.toString(),
+            date_fmt_for_API.format(DateFormat("dd.MM.yyyy")
+                .parse(dateController.text.toString().split(" ")[0])),
+            value_x)
+        .then((res) {
+      print(res);
+      if (res == "no-class") {
+        messageController.text = "No class was scheduled for this hour.";
+      } else if (res == "invalid-auth-token") {
+        messageController.text =
+            "You have been logged out, please login again.";
+      } else {
+        messageController.text = "";
+        bool super_json = true;
+        List<dynamic> final_json_array = [];
+        List<dynamic> super_json_array = [];
+        List<dynamic> regular_json_array = [];
+        res.forEach((element) {
+          if (element["source"] == "super") {
+            super_json_array.add(element);
+          } else if (element["source"] == "regular") {
+            regular_json_array.add(element);
+            print("added");
+          }
+        });
+
+        // rarest case - single elective being substituted with a different hour
+        super_json_array.forEach((super_element) {
+          regular_json_array.forEach((regular_element) {
+            if (super_element['subCode_dept_sem'] ==
+                regular_element['subCode_dept_sem']) {
+              print("All electives substituted");
+              super_json = false;
+            }
+          });
+        });
+
+        if (super_json_array.isEmpty) {
+          super_json = false;
+        } else if (regular_json_array.isEmpty) {
+          super_json = true;
+        }
+
+        // final_json_array wil have the regular timetable if an elective/regular
+        // hour was substituted with a regular hour
+        final_json_array = super_json ? super_json_array : regular_json_array;
+
+        final_json_array.forEach((element) {
+          subject_array.add(element["subject_code"].toString().toUpperCase() +
+              " - " +
+              element["subject_name"].toString());
+        });
+      }
+
+      Navigator.pop(context);
+      setState(() {
+        _subjectController = "Select one...";
+        subject_array = subject_array;
+        _selectedHour = value_x;
+      });
+    });
+  }
+
+  void _onSelectedSubject(String value) {
+    setState(() => _subjectController = value);
+    print(value);
+  }
+
   void buttonPressed() {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) =>
-                SuperUserStudentListFragment(
+            builder: (context) => SuperUserStudentListFragment(
                   pk_table: pk_table,
                   required_timestamp: required_timestamp,
                 )));
@@ -568,28 +539,5 @@ class _SuperUserFragmentState extends State<SuperUserFragment>
   void _showSnackBar(String text) {
     scaffoldKey.currentState
         .showSnackBar(new SnackBar(content: new Text(text)));
-  }
-
-  @override
-  void onFetchError(String errorTxt) {
-    final_json_array = new List<dynamic>();
-    super_json_array = new List<dynamic>();
-    regular_json_array = new List<dynamic>();
-    messageController.text = errorTxt.replaceFirst("Exception: ", '');
-    Navigator.pop(context);
-    print(errorTxt);
-    setState(() {
-      buttonActive = false;
-    });
-    // TODO: implement onFetchError
-  }
-
-  @override
-  void onFetchSuccess(res) {
-    Navigator.pop(context);
-    messageController.text = "";
-    if (res != "invalid-auth-or-access") {
-      preselect(res);
-    }
   }
 }
