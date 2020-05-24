@@ -452,8 +452,8 @@ class _SuperUserFragmentState extends State<SuperUserFragment>
                               yearController.text.toString(),
                               date_fmt_for_API.format(DateFormat("dd.MM.yyyy")
                                   .parse(dateController.text
-                                  .toString()
-                                  .split(" ")[0])),
+                                      .toString()
+                                      .split(" ")[0])),
                               (index + 1).toString());
                         },
                       ),
@@ -483,12 +483,17 @@ class _SuperUserFragmentState extends State<SuperUserFragment>
                         ),
                         onChanged: (value) {
                           setState(() {
-                            pk_table =
-                            pk_table_array[subject_array.indexOf(value)];
-                            required_timestamp = required_timestamp_array[
-                            subject_array.indexOf(value)];
                             subjectController = value;
-                            buttonActive = true;
+                            if (value == "Select one...") {
+                              buttonActive = false;
+                            } else {
+                              pk_table =
+                              pk_table_array[subject_array.indexOf(value)];
+                              required_timestamp = required_timestamp_array[
+                              subject_array.indexOf(value)];
+                              buttonActive = true;
+                              print(pk_table + required_timestamp);
+                            }
                           });
                         },
                         items: subject_array.map((String dropDownStringItem) {
