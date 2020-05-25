@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
 import 'ModifyAttendanceFragment/ModifyAttendanceFragment.dart';
-import 'OnDutyFragment/SuperUserFragment.dart';
+import 'SuperUserFragment/SuperUserFragment.dart';
 import 'about/AboutFragment.dart';
 import 'home_screen_presenter.dart';
 

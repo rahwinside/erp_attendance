@@ -297,7 +297,7 @@ class _SuperUserFragmentState extends State<SuperUserFragment>
                               context: context,
                               firstDate: DateTime(2020),
                               initialDate: currentValue ?? DateTime.now(),
-                              lastDate: DateTime.now());
+                              lastDate: DateTime(DateTime.now().year + 1));
                         },
                       ),
                     ),
