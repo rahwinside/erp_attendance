@@ -158,7 +158,7 @@ class _SuperUserFragmentState extends State<SuperUserFragment>
         department_abbrev = "dcse";
       } else if (department == "Electrical and Electronics Engineering") {
         department_abbrev = "deee";
-      } else if (department == "Electronics Electronics and Engineering") {
+      } else if (department == "Electronics and Communication Engineering") {
         department_abbrev = "dece";
       } else {
         department_abbrev = "NA";
