@@ -105,7 +105,7 @@ class _SuperUserFragmentState extends State<SuperUserFragment>
       super_json = true;
     }
 
-    // final_json_array wil have the regular timetable if an elective/regular
+    // final_json_array will have the regular timetable if an elective/regular
     // hour was substituted with a regular hour
     final_json_array = super_json ? super_json_array : regular_json_array;
 

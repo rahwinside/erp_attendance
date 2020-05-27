@@ -344,7 +344,7 @@ class _SuperUserStudentListFragmentState
       key: scaffoldKey,
       appBar: AppBar(
         title: Text(
-          "Superuser Attendance",
+          "On Duty Entry",
           style: TextStyle(
             fontFamily: "Poppins",
           ),
