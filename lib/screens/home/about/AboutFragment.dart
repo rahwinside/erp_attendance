@@ -6,9 +6,12 @@ class AboutFragment extends StatelessWidget {
   String detect_client() {
     if (Platform.isAndroid) {
       return "Android";
-    }
-    else if (Platform.isIOS) {
+    } else if (Platform.isIOS) {
       return "iPhone";
+    } else if (Platform.isMacOS) {
+      return "Darwin x64";
+    } else {
+      return "Blazor Web";
     }
   }
 
@@ -17,53 +20,53 @@ class AboutFragment extends StatelessWidget {
     return Scaffold(
       body: Center(
           child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Row(
               children: <Widget>[
-                Row(
+                Image.asset(
+                  "images/xstack.png",
+                  fit: BoxFit.fill,
+                  width: 75.0,
+                  height: 75.0,
+                ),
+                Padding(
+                  padding: EdgeInsets.only(right: 10),
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Image.asset(
-                      "images/xstack.png",
-                      fit: BoxFit.fill,
-                      width: 75.0,
-                      height: 75.0,
+                    Text(
+                      "Communicator",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 23,
+                        fontFamily: 'Poppins',
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(right: 10),
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          "Communicator",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 23,
-                            fontFamily: 'Poppins',
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        Text(
-                          "for xStack",
-                          style: TextStyle(
-                            color: Colors.deepPurple,
-                            fontSize: 20,
-                            fontFamily: 'Poppins',
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ],
+                    Text(
+                      "for xStack",
+                      style: TextStyle(
+                        color: Colors.deepPurple,
+                        fontSize: 20,
+                        fontFamily: 'Poppins',
+                        fontWeight: FontWeight.w400,
+                      ),
                     ),
                   ],
                 ),
-                Padding(
-                  padding: EdgeInsets.only(top: 20),
-                ),
-                RichText(
-                  text: TextSpan(
-                    text:
+              ],
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 20),
+            ),
+            RichText(
+              text: TextSpan(
+                text:
                     'xStack is an Enterprise Resource Planning software designed, built and maintained by ',
                     style: TextStyle(
                       color: Colors.black,
@@ -96,7 +99,8 @@ class AboutFragment extends StatelessWidget {
                         ),
                       ),
                       TextSpan(
-                        text: '. It was made possible by the open-source Mer project and the closed-source MixSpace project.',
+                        text:
+                        '. It was made possible by the open-source Mer project and the closed-source MixSpace project.',
                         style: TextStyle(
                           color: Colors.black,
                           fontFamily: 'Poppins',
@@ -110,13 +114,25 @@ class AboutFragment extends StatelessWidget {
                   padding: EdgeInsets.only(top: 20),
                 ),
                 Flexible(
-                  child: Text(
-                    "xStack Client: mer Mobile for " + detect_client(),
+                  child: Row(
+                    children: [
+                      Text(
+                        "xStack Client: ",
                     style: TextStyle(
                       color: Colors.black,
                       fontFamily: 'Poppins',
                       fontWeight: FontWeight.w600,
                     ),
+                  ),
+                      Text(
+                        "mer subsystem for " + detect_client(),
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontFamily: 'Poppins',
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 Flexible(
@@ -153,22 +169,30 @@ class AboutFragment extends StatelessWidget {
 //              ],
 //            ),
                 Wrap(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
-                    Text(
-                      "© 2020 ",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontFamily: 'Poppins',
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    Text(
-                      "Mer Community",
-                      style: TextStyle(
-                        color: Colors.deepPurple,
-                        fontFamily: 'Poppins',
-                        fontWeight: FontWeight.w600,
-                      ),
+                    Row(
+                      children: [
+                        Text(
+                          "© 2020 ",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        Text(
+                          "Mer Community",
+                          style: TextStyle(
+                            color: Colors.deepPurple,
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
                     ),
                     Text(
                       "Under GNU General Public License 2.0",
@@ -178,6 +202,8 @@ class AboutFragment extends StatelessWidget {
                         fontWeight: FontWeight.w400,
                       ),
                     ),
+                  ],
+                ),
                   ],
                 ),
                 Padding(
